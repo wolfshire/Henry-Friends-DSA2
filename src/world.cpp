@@ -19,6 +19,7 @@ void World::addObject(GameObject* o)
 
 void World::init()
 {
+    //objects
     GameObject* cam = new GameObject();
     cam->transform->pos.z = -10;
     Camera* camera = new Camera();
@@ -28,6 +29,12 @@ void World::init()
     addObject(cam);
 
     Camera::setMain(camera);
+
+    //spawn locations
+    spawns.push_back(new Transform(vec3(30, 0, 0), vec3(0, 0, 0), vec3(1, 1, 1))); //city A >
+    spawns.push_back(new Transform(vec3(-30, 0, 0), vec3(0, 0, 0), vec3(1, 1, 1))); //city B <
+    spawns.push_back(new Transform(vec3(0, 0, 30), vec3(0, 0, 0), vec3(1, 1, 1))); //city C ^
+    spawns.push_back(new Transform(vec3(0, 0, -30), vec3(0, 0, 0), vec3(1, 1, 1))); //city D v
 
     //textures
     Texture* tex_missing = new Texture("missing.png");
@@ -60,12 +67,7 @@ void World::init()
     red->addComponent(redRenderer);
     addObject(red);
 
-    GameObject* asteroid = new GameObject(vec3(0, 10, 10), vec3(0, 0, 0), vec3(1, 1, 1));
-    Model* asteroidModel = new Model("asteroid");
-    MeshRenderer* asteroidRenderer = new MeshRenderer(asteroidModel, mat_missing);
-    Asteroid* asteroidComponent = new Asteroid();
-    asteroid->addComponent(asteroidRenderer);
-    asteroid->addComponent(asteroidComponent);
+    GameObject* asteroid = Asteroid::createAsteroid(5.0f, spawns[2]);
     addObject(asteroid);
 
     for (int i = 0; i < objects.size(); i++)
@@ -74,6 +76,7 @@ void World::init()
 
 void World::update()
 {
+    //objects
     for (int i = 0; i < objects.size(); i++)
         (*objects[i]).update();
 }

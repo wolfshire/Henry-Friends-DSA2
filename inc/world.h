@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "gameobject.h"
+#include "transform.h"
 using namespace std;
 
 class World
@@ -16,4 +17,5 @@ public:
 	void render();
 private:
 	vector<GameObject*> objects;
+    vector<Transform*> spawns;
 };
