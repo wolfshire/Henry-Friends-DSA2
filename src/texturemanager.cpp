@@ -43,7 +43,8 @@ void TextureManager::LoadTexture(std::string name)
     unsigned int width(0), height(0);
     //OpenGL's image ID to map to
     GLuint gl_texID;
-    const char* filename = (TEX_DIR + name).c_str();
+    std::string path = TEX_DIR + name;
+    const char* filename = path.c_str();
 
     std::cout << "Loading texture: " << filename << std::endl;
 
