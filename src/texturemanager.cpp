@@ -104,7 +104,7 @@ void TextureManager::UnloadTexture(std::string name)
 {
     if (textures.find(name) != textures.end())
     {
-        glDeleteTextures(1, &textures[name]->id);
+        glDeleteTextures(1, &textures[name]->m_nTextureID);
         textures.erase(name);
     }
 }
