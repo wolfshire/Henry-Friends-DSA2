@@ -85,7 +85,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;SOIL.lib;freetype261.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;FreeImage.lib;SOIL.lib;freetype261.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -110,7 +110,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;SOIL.lib;freetype261.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;FreeImage.lib;SOIL.lib;freetype261.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -146,6 +146,7 @@
     <ClCompile Include="src\shader.cpp" />
     <ClCompile Include="src\shadermanager.cpp" />
     <ClCompile Include="src\texture.cpp" />
+    <ClCompile Include="src\texturemanager.cpp" />
     <ClCompile Include="src\transform.cpp" />
     <ClCompile Include="src\vertex.cpp" />
     <ClCompile Include="src\world.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="inc\shader.h" />
     <ClInclude Include="inc\shadermanager.h" />
     <ClInclude Include="inc\texture.h" />
+    <ClInclude Include="inc\texturemanager.h" />
     <ClInclude Include="inc\transform.h" />
     <ClInclude Include="inc\vertex.h" />
     <ClInclude Include="inc\world.h" />

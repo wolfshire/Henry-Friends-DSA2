@@ -5,6 +5,7 @@
 #include "model.h"
 #include "meshrenderer.h"
 #include "texture.h"
+#include "texturemanager.h"
 #include "shadermanager.h"
 #include "asteroid.h"
 #include <iostream>
@@ -30,9 +31,9 @@ void World::init()
     Camera::setMain(camera);
 
     //textures
-    Texture* tex_missing = new Texture("missing.png");
-    Texture* tex_blue = new Texture("blue.png");
-    Texture* tex_green = new Texture("green.png");
+    Texture* tex_missing = TextureManager::instance->GetTexture("missing.png");
+    Texture* tex_blue = TextureManager::instance->GetTexture("blue.png");
+    Texture* tex_green = TextureManager::instance->GetTexture("green.png");
 
     //materials
     Material* mat_missing = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_missing);

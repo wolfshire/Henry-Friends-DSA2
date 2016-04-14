@@ -45,6 +45,6 @@ int Material::getDataSize()
 
 void Material::readyGL()
 {
-    glUseProgram(getShader()->getProgram());
-    glBindTexture(GL_TEXTURE_2D, texture->getId());
+    glUseProgram(shader->getProgram());
+    texture->bind();
 }

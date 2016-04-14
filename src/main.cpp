@@ -1,5 +1,6 @@
 #include <GL\glew.h>
 #include <GLFW\glfw3.h>
+#include <FreeImage.h>
 #include <iostream>
 #include <sstream>
 #include "camera.h"
@@ -13,6 +14,14 @@ using namespace std;
 
 #include <glm\gtx\transform.hpp>
 using namespace glm;
+
+//functions
+void init();
+void update();
+void render();
+void renderGui();
+void freeImageErrorHandler(FREE_IMAGE_FORMAT, const char*);
+void cleanup();
 
 //Engine vars
 GLFWwindow* window;
@@ -41,6 +50,10 @@ void init()
     glfwGetWindowSize(window, w, h);
     Font::SX = 2.0 / *w;
     Font::SY = 2.0 / *h;
+
+    FreeImage_Initialise(true);
+    std::cout << "FreeImage version: " << FreeImage_GetVersion() << std::endl;
+    FreeImage_SetOutputMessage(freeImageErrorHandler);
 
     Input::init(window);
     FontManager::init();
@@ -103,6 +116,21 @@ void renderGui()
     }
 }
 
+void cleanup()
+{
+    FreeImage_DeInitialise();
+}
+
+void freeImageErrorHandler(FREE_IMAGE_FORMAT fif, const char* message)
+{
+    std::cout << "\n*** ";
+
+    if (fif != FIF_UNKNOWN)
+        std::cout << FreeImage_GetFormatFromFIF(fif) << " Format\n";
+
+    std::cout << message << " ***\n";
+}
+
 int main()
 {
     if (!glfwInit())
@@ -159,6 +187,8 @@ int main()
 
         numFrames++;
     }
+
+    cleanup();
 
     glfwTerminate();
 

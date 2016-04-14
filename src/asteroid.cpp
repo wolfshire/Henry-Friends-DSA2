@@ -17,5 +17,5 @@ void Asteroid::init()
 void Asteroid::update()
 {
     trans->pos.y -= moveSpeed * GameTime::dt;
-    std::cout << "asteroid: " << trans->pos.y << std::endl;
+    //std::cout << "asteroid: " << trans->pos.y << std::endl;
 }
