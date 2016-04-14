@@ -2,25 +2,25 @@
 #include <GL\glew.h>
 #include <glm\glm.hpp>
 #include <string>
+#include <sstream>
 #include <unordered_map>
-using namespace std;
 using namespace glm;
 
 class Shader
 {
 public:
-	Shader(GLuint);
+	Shader(std::string);
 
 	GLuint getProgram();
-    void addUniform(string);
-	GLuint getUniformLocation(string);
-	void setUniformi(string, int);
-	void setUniformf(string, float);
-	void setUniformd(string, double);
-	void setUniform2f(string, const vec2&);
-	void setUniform3f(string, const vec3&);
-	void setUniform4f(string, const vec4&);
+    void bind();
+	GLuint getUniformLocation(std::string);
 private:
-	GLuint shader;
-	unordered_map<string, GLuint> uniforms;
+    void load(std::string);
+    std::string readText(std::string, std::vector<std::string>*);
+    void addUniform(std::string);
+    std::vector<std::string>& split(const std::string&, char, std::vector<std::string>&);
+    std::vector<std::string> split(const std::string&, char);
+
+	GLuint program;
+	std::unordered_map<std::string, GLuint> uniforms;
 };

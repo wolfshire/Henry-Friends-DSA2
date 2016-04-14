@@ -3,22 +3,20 @@
 #include <string>
 #include <unordered_map>
 #include "shader.h"
-using namespace std;
 
 class ShaderManager
 {
 public:
 	static void init();
 	static Shader* getDefaultShader();
-	static Shader* getShader(string);
+	static Shader* getShader(std::string);
 
 	static ShaderManager* instance;
 private:
-    static string readText(string);
-    static void load(string);
+    void load(std::string);
 
 	ShaderManager();
 	~ShaderManager();
 
-	unordered_map<string, Shader*> loadedShaders;
+	std::unordered_map<std::string, Shader*> loadedShaders;
 };

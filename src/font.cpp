@@ -12,7 +12,6 @@ Font::Font(FT_Face _face)
     g = face->glyph;
 
     Shader* shader = ShaderManager::getShader("font");
-    shader->addUniform("tex");
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

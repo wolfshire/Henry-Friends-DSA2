@@ -1,57 +1,145 @@
+#include <GL\glew.h>
 #include <string>
+#include <fstream>
+#include <iostream>
 #include "shader.h"
-using namespace std;
 
-Shader::Shader(GLuint loc)
+Shader::Shader(std::string name)
 {
-	shader = loc;
+    load(name);
 }
 
 GLuint Shader::getProgram()
 {
-	return shader;
+	return program;
 }
 
-void Shader::addUniform(string name)
+GLuint Shader::getUniformLocation(std::string name)
 {
-    unordered_map<string, GLuint>::const_iterator i = uniforms.find(name);
+    return uniforms[name];
+}
 
+void Shader::bind()
+{
+    glUseProgram(program);
+}
+
+void Shader::addUniform(std::string name)
+{
     //if the key doesn't already exist, add it
-    if (i == uniforms.end())
-        uniforms[name] = glGetUniformLocation(shader, name.c_str());
+    if (uniforms.find(name) == uniforms.end())
+        uniforms[name] = glGetUniformLocation(program, name.c_str());
 }
 
-GLuint Shader::getUniformLocation(string name)
+std::string Shader::readText(std::string filename, std::vector<std::string>* unis)
 {
-	return uniforms[name];
+    std::cout << "Reading shader file: " << filename << std::endl;
+    std::ifstream file("shaders\\" + filename);
+    std::string line;
+    std::string text;
+
+    if (file.is_open())
+    {
+        while (getline(file, line))
+        {
+            if (line.find("uniform") != std::string::npos)
+                unis->push_back(split(line, ' ')[2]);
+
+            text += line + "\n";
+        }
+
+        file.close();
+    }
+
+    std::cout << "Finished read" << std::endl;
+    return text;
 }
 
-void Shader::setUniformi(string name, int value)
+void Shader::load(std::string name)
 {
-	glProgramUniform1i(shader, getUniformLocation(name), value);
+    std::cout << "Loading shader: " << name << std::endl;
+
+    std::vector<std::string>* unis = new std::vector<std::string>();
+    std::string v = readText(name + ".vs", unis);
+    std::string f = readText(name + ".fs", unis);
+    const char* vert = v.c_str();
+    const char* frag = f.c_str();
+
+    std::cout << "Compiling vertex shader" << std::endl;
+    GLuint vs = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vs, 1, &vert, NULL);
+    glCompileShader(vs);
+
+    int success = -1;
+    glGetShaderiv(vs, GL_COMPILE_STATUS, &success);
+    if (GL_TRUE != success)
+    {
+        std::cout << "ERROR: GL vertex shader index " << vs << " did not compile" << std::endl;
+        exit(-1);
+    }
+
+    std::cout << "Compiling fragment shader" << std::endl;
+    GLuint fs = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fs, 1, &frag, NULL);
+    glCompileShader(fs);
+
+    success = -1;
+    glGetShaderiv(fs, GL_COMPILE_STATUS, &success);
+    if (GL_TRUE != success)
+    {
+        std::cout << "ERROR: GL fragment shader index " << fs << " did not compile" << std::endl;
+        exit(-1);
+    }
+
+    std::cout << "Reserving pointer for shader" << std::endl;
+    program = glCreateProgram();
+
+    if (program == 0)
+    {
+        std::cout << "ERROR: Unable to create program space for shader" << std::endl;
+        exit(-1);
+    }
+
+    std::cout << "Linking vertex and fragment" << std::endl;
+    glAttachShader(program, vs);
+    glAttachShader(program, fs);
+    glLinkProgram(program);
+
+    glGetShaderiv(program, GL_LINK_STATUS, &success);
+    if (GL_TRUE != success)
+    {
+        std::cout << "ERROR: shader '" << name << "' did not link properly" << std::endl;
+        exit(-1);
+    }
+
+    glUseProgram(program);
+
+    //add all uniforms to map
+    while (unis->size() > 0)
+    {
+        addUniform(unis->at(unis->size() - 1));
+        unis->pop_back();
+    }
+
+    glUseProgram(0);
+
+    std::cout << "Loaded shader!" << std::endl;
 }
 
-void Shader::setUniformf(string name, float value)
+std::vector<std::string> &Shader::split(const std::string &s, char delim, std::vector<std::string> &elems)
 {
-	glProgramUniform1f(shader, getUniformLocation(name), value);
+    std::stringstream ss(s);
+    std::string item;
+    while (std::getline(ss, item, delim))
+    {
+        elems.push_back(item);
+    }
+    return elems;
 }
 
-void Shader::setUniformd(string name, double value)
+std::vector<std::string> Shader::split(const std::string &s, char delim)
 {
-	glProgramUniform1d(shader, getUniformLocation(name), value);
-}
-
-void Shader::setUniform2f(string name, const vec2& value)
-{
-	glProgramUniform2f(shader, getUniformLocation(name), value.x, value.y);
-}
-
-void Shader::setUniform3f(string name, const vec3& value)
-{
-	glProgramUniform3f(shader, getUniformLocation(name), value.x, value.y, value.z);
-}
-
-void Shader::setUniform4f(string name, const vec4& value)
-{
-    glProgramUniform4f(shader, getUniformLocation(name), value.x, value.y, value.z, value.w);
+    std::vector<std::string> elems;
+    split(s, delim, elems);
+    return elems;
 }
