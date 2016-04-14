@@ -7,8 +7,3 @@ int Mesh::getNumIndices()
 {
 	return indices.size();
 }
-
-int Mesh::getDataCount()
-{
-	return data.size();
-}

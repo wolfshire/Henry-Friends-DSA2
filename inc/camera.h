@@ -1,25 +1,23 @@
 #pragma once
 #include "gamec.h"
-#include "transform.h"
+#include <glm\gtc\matrix_transform.hpp>
 
 class Camera : public GameComponent
 {
 public:
 	Camera();
-	virtual void init();
-	virtual void update();
-    mat4 getProjectionMatrix();
-    mat4 getViewMatrix();
+	void update() override;
+    glm::mat4 getProjectionMatrix();
+    glm::mat4 getViewMatrix();
 	static Camera* getMain();
 	static void setMain(Camera*);
 private:
 	static Camera* main;
 
-	mat4 proj;
-	mat4 viewtrans;
-	mat4 viewrotx;
-	mat4 view;
+    glm::mat4 proj;
+    glm::mat4 viewtrans;
+    glm::mat4 viewrotx;
+    glm::mat4 view;
 
 	bool hasMoved;
-	Transform* trans;
 };

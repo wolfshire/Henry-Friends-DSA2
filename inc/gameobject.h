@@ -1,14 +1,15 @@
 #pragma once
+#include <glm\gtc\matrix_transform.hpp>
 #include <vector>
-#include "gamec.h"
-#include "transform.h"
 using namespace std;
 
+class Transform;
+class GameComponent;
 class GameObject
 {
 public:
 	GameObject();
-    GameObject(vec3, vec3, vec3);
+    GameObject(glm::vec3, glm::vec3, glm::vec3);
 	~GameObject();
 
 	void addComponent(GameComponent*);

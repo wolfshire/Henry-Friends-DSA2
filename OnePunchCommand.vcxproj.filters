@@ -158,5 +158,8 @@
     <ClInclude Include="inc\texturemanager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="inc\vertexformat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

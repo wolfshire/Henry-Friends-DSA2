@@ -6,11 +6,8 @@ class Asteroid : public GameComponent
 {
 public:
     Asteroid();
-    virtual void init();
-    virtual void update();
+    void update() override;
 
-    double moveSpeed = 5.0f;
-private:
-    Transform* trans;
+    float moveSpeed = 5.0f;
 };
 

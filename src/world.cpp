@@ -3,11 +3,13 @@
 #include "world.h"
 #include "mattype.h"
 #include "model.h"
+#include "material.h"
 #include "meshrenderer.h"
 #include "texture.h"
 #include "texturemanager.h"
 #include "shadermanager.h"
 #include "asteroid.h"
+#include "transform.h"
 #include <iostream>
 
 World::World() {}
@@ -41,7 +43,7 @@ void World::init()
     Material* mat_green = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_green);
 
     //models
-    Model* mod_cube = new Model("cube");
+    Model* mod_cube = new Model("square");
 
     GameObject* blue = new GameObject();
     blue->transform->pos = vec3(5, 0, 0);
@@ -61,26 +63,26 @@ void World::init()
     red->addComponent(redRenderer);
     addObject(red);
 
-    GameObject* asteroid = new GameObject(vec3(0, 10, 10), vec3(0, 0, 0), vec3(1, 1, 1));
-    Model* asteroidModel = new Model("asteroid");
-    MeshRenderer* asteroidRenderer = new MeshRenderer(asteroidModel, mat_missing);
-    Asteroid* asteroidComponent = new Asteroid();
-    asteroid->addComponent(asteroidRenderer);
-    asteroid->addComponent(asteroidComponent);
-    addObject(asteroid);
+    //GameObject* asteroid = new GameObject(vec3(0, 10, 10), vec3(0, 0, 0), vec3(1, 1, 1));
+    //Model* asteroidModel = new Model("asteroid");
+    //MeshRenderer* asteroidRenderer = new MeshRenderer(asteroidModel, mat_missing);
+    //Asteroid* asteroidComponent = new Asteroid();
+    //asteroid->addComponent(asteroidRenderer);
+    //asteroid->addComponent(asteroidComponent);
+    //addObject(asteroid);
 
-    for (int i = 0; i < objects.size(); i++)
+    for (unsigned int i = 0; i < objects.size(); i++)
         (*objects[i]).init();
 }
 
 void World::update()
 {
-    for (int i = 0; i < objects.size(); i++)
+    for (unsigned int i = 0; i < objects.size(); i++)
         (*objects[i]).update();
 }
 
 void World::render()
 {
-    for (int i = 0; i < objects.size(); i++)
+    for (unsigned int i = 0; i < objects.size(); i++)
         (*objects[i]).render();
 }

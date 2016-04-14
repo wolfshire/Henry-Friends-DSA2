@@ -9,6 +9,7 @@
 #include "font.h"
 #include "fontmanager.h"
 #include "shadermanager.h"
+#include "transform.h"
 #include "world.h"
 using namespace std;
 
@@ -48,8 +49,8 @@ void init()
     int* w = new int;
     int* h = new int;
     glfwGetWindowSize(window, w, h);
-    Font::SX = 2.0 / *w;
-    Font::SY = 2.0 / *h;
+    Font::SX = 2.0f / *w;
+    Font::SY = 2.0f / *h;
 
     FreeImage_Initialise(true);
     std::cout << "FreeImage version: " << FreeImage_GetVersion() << std::endl;

@@ -51,7 +51,7 @@ void Font::renderText(string text, float x, float y, Color c)
     Shader* shader = ShaderManager::getShader("font");
     GLuint uniLoc = shader->getUniformLocation("color");
 
-    glUseProgram(shader->getProgram());
+    shader->bind();
     glBindVertexArray(vao);
 
     glActiveTexture(GL_TEXTURE0);

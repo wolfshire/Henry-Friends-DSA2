@@ -10,10 +10,11 @@ public:
 	~Mesh();
 
 	int getNumIndices();
-	int getDataCount();
 
 	vector<int> indices;
-	vector<float> data;
+	vector<glm::vec3> pos;
+    vector<glm::vec2> uvs;
+    vector<glm::vec3> norms;
 	bool hasUVs;
 	bool hasNormals;
 };

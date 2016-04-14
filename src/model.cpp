@@ -10,7 +10,10 @@ Model::Model(string modelName)
 	load();
 }
 
-Model::~Model() {}
+Model::~Model()
+{
+    delete mesh;
+}
 
 Mesh* Model::getMesh()
 {
@@ -83,6 +86,9 @@ void Model::genMeshData(vector<string> lines)
 		}
 	}
 
+    //for (int i = 0; i < points.size(); i++)
+        //cout << points[i].x << "," << points[i].y << "," << points[i].z << endl;
+
 	vector<string> indices;
 
 	//create verts for all the data
@@ -131,12 +137,27 @@ void Model::genMeshData(vector<string> lines)
 		}
 	}
 
-	if (mesh != NULL)
-		delete mesh;
+    points.clear();
+    uvs.clear();
+    norms.clear();
+    for (int i = 0; i < nodup.size(); i++)
+    {
+        points.push_back(nodup[i].pos);
+        uvs.push_back(nodup[i].uv);
+        norms.push_back(nodup[i].norm);
+    }
+
+    if (mesh != nullptr)
+        delete mesh;
 
 	mesh = new Mesh();
 	mesh->indices = index;
-	mesh->data = toVectorFloat(nodup, hasUVs, hasNormals);
+    mesh->pos = points;
 	mesh->hasUVs = hasUVs;
-	mesh->hasNormals = hasNormals;
+    mesh->hasNormals = hasNormals;
+
+    if (hasUVs)
+        mesh->uvs = uvs;
+    if (hasNormals)
+        mesh->norms = norms;
 }
