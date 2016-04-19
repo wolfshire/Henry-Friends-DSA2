@@ -43,7 +43,10 @@ std::string Shader::readText(std::string filename, std::vector<std::string>* uni
         while (getline(file, line))
         {
             if (line.find("uniform") != std::string::npos)
-                unis->push_back(split(line, ' ')[2]);
+            {
+                std::string part = split(line, ' ')[2];
+                unis->push_back(part.substr(0, part.length() - 1));
+            }
 
             text += line + "\n";
         }

@@ -1,6 +1,7 @@
 #include <GL\glew.h>
 #include "meshrenderer.h"
 #include "transform.h"
+#include <glm\gtc\type_ptr.hpp>
 
 #include <iostream>
 using namespace std;
@@ -12,15 +13,13 @@ MeshRenderer::MeshRenderer(EVertexFormat fmt, Model* model, Material* mat)
     format = fmt;
     mesh = model->getMesh();
     material = mat;
+    bufferUsageHint = GL_STREAM_DRAW;
+    drawMode = GL_TRIANGLES;
 
+    setStride();
     createBuffers();
-    std::cout << "created buffers" << std::endl;
-
     loadData();
-    std::cout << "loaded data" << std::endl;
-
     load();
-    std::cout << "loaded vao" << std::endl;
 }
 
 MeshRenderer::~MeshRenderer()
@@ -33,10 +32,6 @@ MeshRenderer::~MeshRenderer()
 void MeshRenderer::init()
 {
     GameComponent::init();
-
-    setStride();
-    bufferUsageHint = GL_STREAM_DRAW;
-    drawMode = GL_TRIANGLES;
 }
 
 void MeshRenderer::clear()
@@ -48,9 +43,9 @@ void MeshRenderer::clear()
 void MeshRenderer::loadData()
 {
     for (unsigned int i = 0; i < mesh->pos.size(); i++)
-        //if (mesh->hasUVs)
-            //addVertex(mesh->pos[i], mesh->uvs[i]);
-        //else
+        if (mesh->hasUVs)
+            addVertex(mesh->pos[i], mesh->uvs[i]);
+        else
             addVertex(mesh->pos[i]);
 
     for (unsigned int i = 0; i < mesh->indices.size(); i++)
@@ -219,48 +214,15 @@ void MeshRenderer::addIndices(int* ind, int num)
 
 void MeshRenderer::render()
 {
-    if (!loaded)
+    if (!loaded) return;
 
     material->readyGL();
     glBindVertexArray(vao);
 
-    glProgramUniformMatrix4fv(material->getShader()->getProgram(),
-        material->getShader()->getUniformLocation("model"),
-        1,
-        GL_FALSE,
-        &(transform->getModelMatrix())[0][0]);
+    glUniformMatrix4fv(material->getShader()->getUniformLocation("model"), 1, GL_FALSE,
+        value_ptr(transform->getModelMatrix()));
+
+    glUniform1f(material->getShader()->getUniformLocation("color"), 1.0f);
 
     glDrawElements(drawMode, mesh->getNumIndices(), GL_UNSIGNED_INT, NULL);
 }
-
-/*
-void MeshRenderer::init()
-{
-    transform = gameObject->transform;
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
-
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, mesh->getDataCount() * sizeof(float), &mesh->data[0], GL_STATIC_DRAW);
-	
-	int size = material->getDataSize();
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, size, (void*)0);
-
-	if (mesh->hasUVs)
-	{
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, size, (void*)12);
-	}
-
-	if (mesh->hasNormals)
-	{
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, size, (void*)20);
-	}
-
-	glGenBuffers(1, &ibo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh->getNumIndices() * sizeof(int), &mesh->indices[0], GL_STATIC_DRAW);
-}*/

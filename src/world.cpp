@@ -43,23 +43,23 @@ void World::init()
     Material* mat_green = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_green);
 
     //models
-    Model* mod_cube = new Model("square");
+    Model* mod_cube = new Model("cube");
 
     GameObject* blue = new GameObject();
     blue->transform->pos = vec3(5, 0, 0);
-    MeshRenderer* blueRenderer = new MeshRenderer(EVertexFormat::XYZ, mod_cube, mat_blue);
+    MeshRenderer* blueRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, mod_cube, mat_blue);
     blue->addComponent(blueRenderer);
     addObject(blue);
-
+    
     GameObject* green = new GameObject();
     green->transform->pos = vec3(0, 5, 0);
-    MeshRenderer* greenRenderer = new MeshRenderer(EVertexFormat::XYZ, mod_cube, mat_green);
+    MeshRenderer* greenRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, mod_cube, mat_green);
     green->addComponent(greenRenderer);
     addObject(green);
 
     GameObject* red = new GameObject();
     red->transform->pos = vec3(0, 0, 5);
-    MeshRenderer* redRenderer = new MeshRenderer(EVertexFormat::XYZ, mod_cube, mat_missing);
+    MeshRenderer* redRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, mod_cube, mat_missing);
     red->addComponent(redRenderer);
     addObject(red);
 

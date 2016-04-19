@@ -97,38 +97,6 @@ void TextureManager::loadTexture(std::string name)
 
     //Free FreeImage's copy of the data
     FreeImage_Unload(image);
-    /*
-    FREE_IMAGE_FORMAT eFormat = FreeImage_GetFileType(filename, 0);//Detect the file format
-    FIBITMAP* image = FreeImage_Load(eFormat, filename); //Load the file as FreeImage imagefile
-    image = FreeImage_ConvertTo32Bits(image); //convert to 32bits
-
-    int w = FreeImage_GetWidth(image);
-    int h = FreeImage_GetHeight(image);
-
-    GLubyte* tempGLTexture = new GLubyte[4 * w * h];//Create a new texture to hold the information onto
-    char* pixeles = (char*)FreeImage_GetBits(image);//Create a pixel container
-                                                    //FreeImage loads in BGRA format, so you need to swap some bytes (Or use GL_BGR).
-    for (int nPixel = 0; nPixel < (w * h); nPixel++)
-    {
-        tempGLTexture[nPixel * 4 + 0] = pixeles[nPixel * 4 + 2];
-        tempGLTexture[nPixel * 4 + 1] = pixeles[nPixel * 4 + 1];
-        tempGLTexture[nPixel * 4 + 2] = pixeles[nPixel * 4 + 0];
-        tempGLTexture[nPixel * 4 + 3] = pixeles[nPixel * 4 + 3];
-    }
-    FreeImage_Unload(image); //RE_DONE with the image, unload it
-
-    //Now generate the OpenGL texture object
-    GLuint texID;
-    glGenTextures(1, &texID); //Generate a container
-    textures[name] = new Texture(texID);
-    glBindTexture(GL_TEXTURE_2D, texID); //Set the active texture
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid*)tempGLTexture); //Set the data
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); //set parameters
-
-    if (glGetError())
-    {
-        std::cout << "There was an error loading the texture" << std::endl;
-    }*/
 }
 
 void TextureManager::unloadTexture(std::string name)

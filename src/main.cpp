@@ -17,6 +17,7 @@
 #include "meshrenderer.h"
 using namespace std;
 
+#include <glm\gtc\type_ptr.hpp>
 #include <glm\gtx\transform.hpp>
 using namespace glm;
 
@@ -33,6 +34,7 @@ GLFWwindow* window;
 Shader* defaultShader;
 GLuint uniProj;
 GLuint uniView;
+GLuint uniModel;
 World world;
 Font* font;
 
@@ -46,14 +48,8 @@ double lastTime;
 int numFrames = 0;
 double frameTime;
 
-//test vars
-Texture* tex_blue;
-Material* mat_blue;
-Model* mod_cube;
-GameObject* test;
-
 GLuint vao, vbo, ibo;
-mat4 iden = mat4();
+mat4 model;
 
 void init()
 {
@@ -78,17 +74,7 @@ void init()
     defaultShader = ShaderManager::getDefaultShader();
     uniProj = defaultShader->getUniformLocation("proj");
     uniView = defaultShader->getUniformLocation("view");
-
-    //test
-    tex_blue = TextureManager::instance->getTexture("blue.png");
-    mat_blue = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_blue);
-    mod_cube = new Model("cube");
-
-    test = new GameObject();
-    test->transform->pos = vec3(0, 0, 5);
-    MeshRenderer* testRenderer = new MeshRenderer(EVertexFormat::XYZ, mod_cube, mat_blue);
-    test->addComponent(testRenderer);
-    test->init();
+    uniModel = defaultShader->getUniformLocation("model");
 
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
@@ -96,7 +82,13 @@ void init()
     glGenBuffers(1, &vbo);
     glGenBuffers(1, &ibo);
 
-    float verts[] = 
+    /*float verts[] =
+    {
+        0.0f, 1.0f, 0.0f,
+        1.0f, -1.0f, 0.0f,
+        -1.0f, -1.0f, 0.0f
+    };*/
+    float verts[] =
     {
         0.0f, 0.0f, 0.0f,
         0.0f, 1.0f, 0.0f,
@@ -106,17 +98,18 @@ void init()
 
     int indices[] =
     {
+        0, 1, 2,
         0, 2, 3
     };
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(float), &verts[0], GL_STREAM_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), &verts[0], GL_STREAM_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 3 * sizeof(int), &indices[0], GL_STREAM_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(int), &indices[0], GL_STREAM_DRAW);
 
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, false, 12, 0);
 }
 
 void update()
@@ -129,33 +122,29 @@ void update()
         debug = !debug;
     }
 
-    test->update();
+    model = translate(mat4(), vec3(-5, -2, 5));
 
-    //world.update();
+    world.update();
 }
 
 void render()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glProgramUniformMatrix4fv(defaultShader->getProgram(), uniProj, 1, GL_FALSE,
-        &(Camera::getMain()->getProjectionMatrix())[0][0]);
+    defaultShader->bind();
+    
+    glUniformMatrix4fv(uniProj, 1, GL_FALSE,
+        value_ptr(Camera::getMain()->getProjectionMatrix()));
 
-    glProgramUniformMatrix4fv(defaultShader->getProgram(), uniView, 1, GL_FALSE,
-        &(Camera::getMain()->getViewMatrix())[0][0]);
+    glUniformMatrix4fv(uniView, 1, GL_FALSE,
+        value_ptr(Camera::getMain()->getViewMatrix()));
 
-    glProgramUniformMatrix4fv(defaultShader->getProgram(),
-        defaultShader->getUniformLocation("model"),
-        1,
-        GL_FALSE,
-        &(iden)[0][0]);
+    glUniformMatrix4fv(uniModel, 1, GL_FALSE, value_ptr(model));
 
     glBindVertexArray(vao);
-    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, NULL);
-
-    test->render();
-
-    //world.render();
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+    
+    world.render();
 }
 
 void renderGui()
