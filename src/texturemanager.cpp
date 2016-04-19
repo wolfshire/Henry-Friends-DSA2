@@ -64,15 +64,16 @@ void TextureManager::loadTexture(std::string name)
     if (FreeImage_FIFSupportsReading(fif))
     {
         image = FreeImage_Load(fif, filename);
-        //image = FreeImage_ConvertTo32Bits(image);
+        image = FreeImage_ConvertTo32Bits(image);
     }
     //if the image failed to load, use missing tex
     if (!image)
     {
         std::cout << "Error loading texture: " << filename << std::endl;
-        const char* missName = (TEX_DIR + MISSING).c_str();
+        std::string missNamePath = (TEX_DIR + MISSING);
+        const char* missName = missNamePath.c_str();
         image = FreeImage_Load(fif, missName);
-        //image = FreeImage_ConvertTo32Bits(image);
+        image = FreeImage_ConvertTo32Bits(image);
         delete missName;
     }
 
@@ -92,8 +93,7 @@ void TextureManager::loadTexture(std::string name)
     glGenTextures(1, &gl_texID);
     textures[name] = new Texture(gl_texID);
     glBindTexture(GL_TEXTURE_2D, gl_texID);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, bits);
-    //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_ABGR_EXT, GL_UNSIGNED_BYTE, bits);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, bits);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
     //Free FreeImage's copy of the data
