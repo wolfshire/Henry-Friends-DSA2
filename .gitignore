@@ -1,7 +1,8 @@
 [Dd]ebug/
+.vs/*
 *.suo
 *.sdf
-*vcxproj.user
+*.vcxproj.user
 
 # Compiled Object files
 *.slo
