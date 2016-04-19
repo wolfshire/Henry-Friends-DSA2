@@ -6,8 +6,8 @@ class GameTime
 public:
 	static void init();
 	static void update();
-	static double dt;
-	static double elapsed;
+	static float dt;
+	static float elapsed;
 private:
 	static double lastTime;
 };

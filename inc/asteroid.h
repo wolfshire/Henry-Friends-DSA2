@@ -14,15 +14,12 @@ class Asteroid : public GameComponent
 {
 public:
     Asteroid();
-    Asteroid(double);
-    Asteroid(double, Transform*);
-    virtual void init();
-    virtual void update();
-    static GameObject* createAsteroid(double);
-    static GameObject* createAsteroid(double, Transform*);
-
-    double moveSpeed = 5.0f;
+    Asteroid(float);
+    Asteroid(float, Transform*);
+    void update() override;
+    static GameObject* createAsteroid(float);
+    static GameObject* createAsteroid(float, Transform*);
 private:
-    Transform* trans;
+    float moveSpeed = 5.0f;
 };
 

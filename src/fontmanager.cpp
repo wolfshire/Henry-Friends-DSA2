@@ -47,5 +47,5 @@ void FontManager::load(string name)
 
     instance->loadedFonts[name] = new Font(face);
 
-    cout << "Loaded!" << endl;
+    cout << "Loaded font!" << endl;
 }

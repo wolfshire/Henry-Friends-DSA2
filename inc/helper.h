@@ -20,7 +20,7 @@ vector<float> toVectorFloat(vector<Vertex> verts, bool hasUV, bool hasNormal)
 {
 	vector<float> data;
 
-	for (int i = 0; i < verts.size(); i++)
+	for (unsigned int i = 0; i < verts.size(); i++)
 	{
 		data.push_back(verts[i].pos.x);
 		data.push_back(verts[i].pos.y);

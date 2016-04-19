@@ -2,18 +2,17 @@
 #include <glm\glm.hpp>
 #include <glm\gtc\matrix_transform.hpp>
 #include <glm\gtc\quaternion.hpp>
+#include "gamec.h"
 
-using namespace glm;
-
-class Transform
+class Transform : public GameComponent
 {
 public:
 	Transform();
-    Transform(vec3,vec3,vec3);
+    Transform(glm::vec3, glm::vec3, glm::vec3);
 	~Transform();
-    mat4 getModelMatrix();
+    glm::mat4 getModelMatrix();
 
-	vec3 pos;
-	quat rot;
-	vec3 scale;
+    glm::vec3 pos;
+    glm::quat rot;
+    glm::vec3 scale;
 };

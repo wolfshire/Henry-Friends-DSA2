@@ -1,19 +1,19 @@
 #pragma once
 #include <GL\glew.h>
-#include <string>
-#include "color.h"
-using namespace std;
+#include <FreeImage.h>
+#include <cstring>
 
 class Texture
 {
 public:
-	Texture(string);
-
+	//constructor/destructor
+	Texture(GLuint);
+	~Texture();
+	//methods
 	GLuint getId();
-private:
-	void loadImage(string);
-
-	const string TEX_DIR = "textures\\";
-	const string MISSING = "missing.png";
-	GLuint id;
+    void bind();
+	void LoadTexture(std::string);
+	//variables
+	std::string m_sFileName;
+    GLuint m_nTextureID;
 };

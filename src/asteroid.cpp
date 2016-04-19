@@ -3,33 +3,26 @@
 Asteroid::Asteroid()
 {
     type = EGameComponentType::ASTEROID;
-    
 }
 
-Asteroid::Asteroid(double speed)
+Asteroid::Asteroid(float speed)
 {
     moveSpeed = speed;
 }
 
-Asteroid::Asteroid(double speed, Transform* t)
+Asteroid::Asteroid(float speed, Transform* t)
 {
     moveSpeed = speed;
     trans = t;
 }
 
-
-void Asteroid::init()
-{
-    trans = gameObject->transform;
-}
-
 void Asteroid::update()
 {
     trans->pos.y -= moveSpeed * GameTime::dt;
-    std::cout << "asteroid: " << trans->pos.y << std::endl;
+    //std::cout << "asteroid: " << trans->pos.y << std::endl;
 }
 
-GameObject* Asteroid::createAsteroid(double speed)
+GameObject* Asteroid::createAsteroid(float speed)
 {
     //texturing
     Texture* tex_missing = new Texture("missing.png");
@@ -46,7 +39,7 @@ GameObject* Asteroid::createAsteroid(double speed)
     return asteroid;
 }
 
-GameObject * Asteroid::createAsteroid(double speed, Transform* t)
+GameObject * Asteroid::createAsteroid(float speed, Transform* t)
 {
     //texturing
     Texture* tex_missing = new Texture("missing.png");

@@ -1,5 +1,6 @@
 #include <GL\glew.h>
 #include <GLFW\glfw3.h>
+#include <FreeImage.h>
 #include <iostream>
 #include <sstream>
 #include "camera.h"
@@ -8,17 +9,32 @@
 #include "font.h"
 #include "fontmanager.h"
 #include "shadermanager.h"
+#include "texturemanager.h"
+#include "transform.h"
 #include "world.h"
+#include "material.h"
+#include "model.h"
+#include "meshrenderer.h"
 using namespace std;
 
+#include <glm\gtc\type_ptr.hpp>
 #include <glm\gtx\transform.hpp>
 using namespace glm;
 
+//functions
+void init();
+void update();
+void render();
+void renderGui();
+void freeImageErrorHandler(FREE_IMAGE_FORMAT, const char*);
+void cleanup();
+
 //Engine vars
 GLFWwindow* window;
-GLuint defShader;
+Shader* defaultShader;
 GLuint uniProj;
 GLuint uniView;
+GLuint uniModel;
 World world;
 Font* font;
 
@@ -32,6 +48,9 @@ double lastTime;
 int numFrames = 0;
 double frameTime;
 
+GLuint vao, vbo, ibo;
+mat4 model;
+
 void init()
 {
     glClearColor(101 / 255.0f, 156 / 255.0f, 239 / 255.0f, 1.0f);
@@ -39,10 +58,12 @@ void init()
     int* w = new int;
     int* h = new int;
     glfwGetWindowSize(window, w, h);
-    Font::SX = 2.0 / *w;
-    Font::SY = 2.0 / *h;
+    Font::SX = 2.0f / *w;
+    Font::SY = 2.0f / *h;
 
     Input::init(window);
+    TextureManager::init();
+    FreeImage_SetOutputMessage(freeImageErrorHandler);
     FontManager::init();
     GameTime::init();
     ShaderManager::init();
@@ -50,9 +71,45 @@ void init()
 
     font = FontManager::getDefaultFont();
 
-    defShader = ShaderManager::getDefaultShader()->getProgram();
-    uniProj = glGetUniformLocation(defShader, "proj");
-    uniView = glGetUniformLocation(defShader, "view");
+    defaultShader = ShaderManager::getDefaultShader();
+    uniProj = defaultShader->getUniformLocation("proj");
+    uniView = defaultShader->getUniformLocation("view");
+    uniModel = defaultShader->getUniformLocation("model");
+
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+
+    glGenBuffers(1, &vbo);
+    glGenBuffers(1, &ibo);
+
+    /*float verts[] =
+    {
+        0.0f, 1.0f, 0.0f,
+        1.0f, -1.0f, 0.0f,
+        -1.0f, -1.0f, 0.0f
+    };*/
+    float verts[] =
+    {
+        0.0f, 0.0f, 0.0f,
+        0.0f, 1.0f, 0.0f,
+        1.0f, 1.0f, 0.0f,
+        1.0f, 0.0f, 0.0f
+    };
+
+    int indices[] =
+    {
+        0, 1, 2,
+        0, 2, 3
+    };
+
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), &verts[0], GL_STREAM_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(int), &indices[0], GL_STREAM_DRAW);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, false, 12, 0);
 }
 
 void update()
@@ -65,6 +122,8 @@ void update()
         debug = !debug;
     }
 
+    model = translate(mat4(), vec3(-5, -2, 5));
+
     world.update();
 }
 
@@ -72,12 +131,19 @@ void render()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glProgramUniformMatrix4fv(defShader, uniProj, 1, GL_FALSE,
-        &(Camera::getMain()->getProjectionMatrix())[0][0]);
+    defaultShader->bind();
+    
+    glUniformMatrix4fv(uniProj, 1, GL_FALSE,
+        value_ptr(Camera::getMain()->getProjectionMatrix()));
 
-    glProgramUniformMatrix4fv(defShader, uniView, 1, GL_FALSE,
-        &(Camera::getMain()->getViewMatrix())[0][0]);
+    glUniformMatrix4fv(uniView, 1, GL_FALSE,
+        value_ptr(Camera::getMain()->getViewMatrix()));
 
+    glUniformMatrix4fv(uniModel, 1, GL_FALSE, value_ptr(model));
+
+    glBindVertexArray(vao);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+    
     world.render();
 }
 
@@ -101,6 +167,16 @@ void renderGui()
         stream << "(" << pos.x << ", " << pos.y << ", " << pos.z << ")";
         font->renderText("Camera Pos: " + stream.str(), -1 + 4 * Font::SX, 1 - (y += 18) * Font::SY, Color(0.0f, 1.0f, 0.0f));
     }
+}
+
+void freeImageErrorHandler(FREE_IMAGE_FORMAT fif, const char* message)
+{
+    std::cout << "\n*** ";
+
+    if (fif != FIF_UNKNOWN)
+        std::cout << FreeImage_GetFormatFromFIF(fif) << " Format\n";
+
+    std::cout << message << " ***\n";
 }
 
 int main()

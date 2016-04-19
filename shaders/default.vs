@@ -11,6 +11,6 @@ out vec2 uvCoord;
 
 void main()
 {
-    gl_Position = proj * (view * ( model * vec4(pos, 1.0)));
+    gl_Position = proj * (view * (model * vec4(pos, 1.0)));
     uvCoord = uv;
 }

@@ -1,7 +1,7 @@
 #include "gametime.h"
 
-double GameTime::dt = 0;
-double GameTime::elapsed = 0;
+float GameTime::dt = 0;
+float GameTime::elapsed = 0;
 double GameTime::lastTime = 0;
 
 void GameTime::init()
@@ -12,7 +12,7 @@ void GameTime::init()
 
 void GameTime::update()
 {
-	dt = glfwGetTime() - lastTime;
+	dt = (float)(glfwGetTime() - lastTime);
 	lastTime = glfwGetTime();
 	elapsed += dt;
 }

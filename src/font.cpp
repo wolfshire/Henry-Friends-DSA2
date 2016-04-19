@@ -12,7 +12,6 @@ Font::Font(FT_Face _face)
     g = face->glyph;
 
     Shader* shader = ShaderManager::getShader("font");
-    shader->addUniform("tex");
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -39,9 +38,9 @@ Font::Font(FT_Face _face)
 
 Font::~Font() {}
 
-float Font::getSize() { return size; }
+unsigned int Font::getSize() { return size; }
 
-void Font::setSize(float _size)
+void Font::setSize(unsigned int _size)
 {
     size = _size;
     FT_Set_Pixel_Sizes(face, 0, size);
@@ -52,13 +51,13 @@ void Font::renderText(string text, float x, float y, Color c)
     Shader* shader = ShaderManager::getShader("font");
     GLuint uniLoc = shader->getUniformLocation("color");
 
-    glUseProgram(shader->getProgram());
+    shader->bind();
     glBindVertexArray(vao);
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, tex);
 
-    for (int i = 0; i < text.length(); i++)
+    for (unsigned int i = 0; i < text.length(); i++)
     {
         if (FT_Load_Char(face, text[i], FT_LOAD_RENDER))
             continue;

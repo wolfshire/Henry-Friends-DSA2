@@ -2,21 +2,20 @@
 #include <string>
 #include <vector>
 #include "mesh.h"
-using namespace std;
 
 class Model
 {
 public:
-	Model(string);
+	Model(std::string);
 	~Model();
 
 	Mesh* getMesh();
 private:
 	void load();
 	void readModelData();
-	void genMeshData(vector<string>);
+	void genMeshData(std::vector<std::string>);
 
-	const string MODEL_DIR = "models\\";
-	string name;
-	Mesh* mesh;
+	const std::string MODEL_DIR = "models\\";
+    std::string name;
+	Mesh* mesh = nullptr;
 };

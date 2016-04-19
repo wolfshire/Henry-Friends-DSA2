@@ -4,6 +4,7 @@
 #include "gameobject.h"
 #include "meshrenderer.h"
 #include "asteroid.h"
+#include "transform.h"
 
 GameObject::GameObject()
 {
@@ -35,7 +36,7 @@ inline T GameObject::getComponent(T comp)
 
 void GameObject::init()
 {
-	for (int i = 0; i < components.size(); i++)
+	for (unsigned int i = 0; i < components.size(); i++)
 	{
 		switch (components[i]->type)
 		{
@@ -57,13 +58,13 @@ void GameObject::init()
 		}
 	}
 
-	for (int i = 0; i < children.size(); i++)
+	for (unsigned int i = 0; i < children.size(); i++)
 		(*children[i]).init();
 }
 
 void GameObject::update()
 {
-	for (int i = 0; i < components.size(); i++)
+	for (unsigned int i = 0; i < components.size(); i++)
 	{
 		switch (components[i]->type)
 		{
@@ -82,13 +83,13 @@ void GameObject::update()
 		}
 	}
 
-	for (int i = 0; i < children.size(); i++)
+	for (unsigned int i = 0; i < children.size(); i++)
 		(*children[i]).update();
 }
 
 void GameObject::render()
 {
-	for (int i = 0; i < components.size(); i++)
+	for (unsigned int i = 0; i < components.size(); i++)
 	{
 		switch (components[i]->type)
 		{
@@ -101,7 +102,7 @@ void GameObject::render()
 		}
 	}
 
-	for (int i = 0; i < children.size(); i++)
+	for (unsigned int i = 0; i < children.size(); i++)
 		(*children[i]).render();
 }
 

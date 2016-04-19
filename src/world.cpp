@@ -3,10 +3,13 @@
 #include "world.h"
 #include "mattype.h"
 #include "model.h"
+#include "material.h"
 #include "meshrenderer.h"
 #include "texture.h"
+#include "texturemanager.h"
 #include "shadermanager.h"
 #include "asteroid.h"
+#include "transform.h"
 #include <iostream>
 
 World::World() {}
@@ -37,9 +40,9 @@ void World::init()
     spawns.push_back(new Transform(vec3(0, 0, -30), vec3(0, 0, 0), vec3(1, 1, 1))); //city D v
 
     //textures
-    Texture* tex_missing = new Texture("missing.png");
-    Texture* tex_blue = new Texture("blue.png");
-    Texture* tex_green = new Texture("green.png");
+    Texture* tex_missing = TextureManager::instance->getTexture("missing.png");
+    Texture* tex_blue = TextureManager::instance->getTexture("blue.png");
+    Texture* tex_green = TextureManager::instance->getTexture("green.png");
 
     //materials
     Material* mat_missing = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_missing);
@@ -51,38 +54,42 @@ void World::init()
 
     GameObject* blue = new GameObject();
     blue->transform->pos = vec3(5, 0, 0);
-    MeshRenderer* blueRenderer = new MeshRenderer(mod_cube, mat_blue);
+    MeshRenderer* blueRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, mod_cube, mat_blue);
     blue->addComponent(blueRenderer);
     addObject(blue);
-
+    
     GameObject* green = new GameObject();
     green->transform->pos = vec3(0, 5, 0);
-    MeshRenderer* greenRenderer = new MeshRenderer(mod_cube, mat_green);
+    MeshRenderer* greenRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, mod_cube, mat_green);
     green->addComponent(greenRenderer);
     addObject(green);
 
     GameObject* red = new GameObject();
     red->transform->pos = vec3(0, 0, 5);
-    MeshRenderer* redRenderer = new MeshRenderer(mod_cube, mat_missing);
+    MeshRenderer* redRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, mod_cube, mat_missing);
     red->addComponent(redRenderer);
     addObject(red);
 
-    GameObject* asteroid = Asteroid::createAsteroid(5.0f, spawns[2]);
-    addObject(asteroid);
+    //GameObject* asteroid = new GameObject(vec3(0, 10, 10), vec3(0, 0, 0), vec3(1, 1, 1));
+    //Model* asteroidModel = new Model("asteroid");
+    //MeshRenderer* asteroidRenderer = new MeshRenderer(asteroidModel, mat_missing);
+    //Asteroid* asteroidComponent = new Asteroid();
+    //asteroid->addComponent(asteroidRenderer);
+    //asteroid->addComponent(asteroidComponent);
+    //addObject(asteroid);
 
-    for (int i = 0; i < objects.size(); i++)
+    for (unsigned int i = 0; i < objects.size(); i++)
         (*objects[i]).init();
 }
 
 void World::update()
 {
-    //objects
-    for (int i = 0; i < objects.size(); i++)
+    for (unsigned int i = 0; i < objects.size(); i++)
         (*objects[i]).update();
 }
 
 void World::render()
 {
-    for (int i = 0; i < objects.size(); i++)
+    for (unsigned int i = 0; i < objects.size(); i++)
         (*objects[i]).render();
 }
