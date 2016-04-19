@@ -12,8 +12,8 @@ public:
     Font(FT_Face);
     ~Font();
 
-    float getSize();
-    void setSize(float);
+    unsigned int getSize();
+    void setSize(unsigned int);
     void renderText(string, float, float, Color);
 
     static float SX;
@@ -24,5 +24,5 @@ private:
     GLuint tex;
     GLuint vao;
     GLuint vbo;
-    float size;
+    unsigned int size;
 };

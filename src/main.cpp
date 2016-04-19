@@ -9,8 +9,12 @@
 #include "font.h"
 #include "fontmanager.h"
 #include "shadermanager.h"
+#include "texturemanager.h"
 #include "transform.h"
 #include "world.h"
+#include "material.h"
+#include "model.h"
+#include "meshrenderer.h"
 using namespace std;
 
 #include <glm\gtx\transform.hpp>
@@ -26,7 +30,7 @@ void cleanup();
 
 //Engine vars
 GLFWwindow* window;
-GLuint defShader;
+Shader* defaultShader;
 GLuint uniProj;
 GLuint uniView;
 World world;
@@ -42,6 +46,15 @@ double lastTime;
 int numFrames = 0;
 double frameTime;
 
+//test vars
+Texture* tex_blue;
+Material* mat_blue;
+Model* mod_cube;
+GameObject* test;
+
+GLuint vao, vbo, ibo;
+mat4 iden = mat4();
+
 void init()
 {
     glClearColor(101 / 255.0f, 156 / 255.0f, 239 / 255.0f, 1.0f);
@@ -52,11 +65,9 @@ void init()
     Font::SX = 2.0f / *w;
     Font::SY = 2.0f / *h;
 
-    FreeImage_Initialise(true);
-    std::cout << "FreeImage version: " << FreeImage_GetVersion() << std::endl;
-    FreeImage_SetOutputMessage(freeImageErrorHandler);
-
     Input::init(window);
+    TextureManager::init();
+    FreeImage_SetOutputMessage(freeImageErrorHandler);
     FontManager::init();
     GameTime::init();
     ShaderManager::init();
@@ -64,9 +75,48 @@ void init()
 
     font = FontManager::getDefaultFont();
 
-    defShader = ShaderManager::getDefaultShader()->getProgram();
-    uniProj = glGetUniformLocation(defShader, "proj");
-    uniView = glGetUniformLocation(defShader, "view");
+    defaultShader = ShaderManager::getDefaultShader();
+    uniProj = defaultShader->getUniformLocation("proj");
+    uniView = defaultShader->getUniformLocation("view");
+
+    //test
+    tex_blue = TextureManager::instance->getTexture("blue.png");
+    mat_blue = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_blue);
+    mod_cube = new Model("cube");
+
+    test = new GameObject();
+    test->transform->pos = vec3(0, 0, 5);
+    MeshRenderer* testRenderer = new MeshRenderer(EVertexFormat::XYZ, mod_cube, mat_blue);
+    test->addComponent(testRenderer);
+    test->init();
+
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+
+    glGenBuffers(1, &vbo);
+    glGenBuffers(1, &ibo);
+
+    float verts[] = 
+    {
+        0.0f, 0.0f, 0.0f,
+        0.0f, 1.0f, 0.0f,
+        1.0f, 1.0f, 0.0f,
+        1.0f, 0.0f, 0.0f
+    };
+
+    int indices[] =
+    {
+        0, 2, 3
+    };
+
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(float), &verts[0], GL_STREAM_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 3 * sizeof(int), &indices[0], GL_STREAM_DRAW);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
 }
 
 void update()
@@ -79,20 +129,33 @@ void update()
         debug = !debug;
     }
 
-    world.update();
+    test->update();
+
+    //world.update();
 }
 
 void render()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glProgramUniformMatrix4fv(defShader, uniProj, 1, GL_FALSE,
+    glProgramUniformMatrix4fv(defaultShader->getProgram(), uniProj, 1, GL_FALSE,
         &(Camera::getMain()->getProjectionMatrix())[0][0]);
 
-    glProgramUniformMatrix4fv(defShader, uniView, 1, GL_FALSE,
+    glProgramUniformMatrix4fv(defaultShader->getProgram(), uniView, 1, GL_FALSE,
         &(Camera::getMain()->getViewMatrix())[0][0]);
 
-    world.render();
+    glProgramUniformMatrix4fv(defaultShader->getProgram(),
+        defaultShader->getUniformLocation("model"),
+        1,
+        GL_FALSE,
+        &(iden)[0][0]);
+
+    glBindVertexArray(vao);
+    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, NULL);
+
+    test->render();
+
+    //world.render();
 }
 
 void renderGui()
@@ -115,11 +178,6 @@ void renderGui()
         stream << "(" << pos.x << ", " << pos.y << ", " << pos.z << ")";
         font->renderText("Camera Pos: " + stream.str(), -1 + 4 * Font::SX, 1 - (y += 18) * Font::SY, Color(0.0f, 1.0f, 0.0f));
     }
-}
-
-void cleanup()
-{
-    FreeImage_DeInitialise();
 }
 
 void freeImageErrorHandler(FREE_IMAGE_FORMAT fif, const char* message)
@@ -188,8 +246,6 @@ int main()
 
         numFrames++;
     }
-
-    cleanup();
 
     glfwTerminate();
 

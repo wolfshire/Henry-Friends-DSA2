@@ -10,7 +10,7 @@ class Transform;
 class MeshRenderer : public GameComponent
 {
 public:
-	MeshRenderer(Model*, Material*);
+	MeshRenderer(EVertexFormat, Model*, Material*);
 	~MeshRenderer();
 
     void clear();

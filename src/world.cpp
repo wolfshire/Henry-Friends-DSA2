@@ -33,9 +33,9 @@ void World::init()
     Camera::setMain(camera);
 
     //textures
-    Texture* tex_missing = TextureManager::instance->GetTexture("missing.png");
-    Texture* tex_blue = TextureManager::instance->GetTexture("blue.png");
-    Texture* tex_green = TextureManager::instance->GetTexture("green.png");
+    Texture* tex_missing = TextureManager::instance->getTexture("missing.png");
+    Texture* tex_blue = TextureManager::instance->getTexture("blue.png");
+    Texture* tex_green = TextureManager::instance->getTexture("green.png");
 
     //materials
     Material* mat_missing = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_missing);
@@ -47,19 +47,19 @@ void World::init()
 
     GameObject* blue = new GameObject();
     blue->transform->pos = vec3(5, 0, 0);
-    MeshRenderer* blueRenderer = new MeshRenderer(mod_cube, mat_blue);
+    MeshRenderer* blueRenderer = new MeshRenderer(EVertexFormat::XYZ, mod_cube, mat_blue);
     blue->addComponent(blueRenderer);
     addObject(blue);
 
     GameObject* green = new GameObject();
     green->transform->pos = vec3(0, 5, 0);
-    MeshRenderer* greenRenderer = new MeshRenderer(mod_cube, mat_green);
+    MeshRenderer* greenRenderer = new MeshRenderer(EVertexFormat::XYZ, mod_cube, mat_green);
     green->addComponent(greenRenderer);
     addObject(green);
 
     GameObject* red = new GameObject();
     red->transform->pos = vec3(0, 0, 5);
-    MeshRenderer* redRenderer = new MeshRenderer(mod_cube, mat_missing);
+    MeshRenderer* redRenderer = new MeshRenderer(EVertexFormat::XYZ, mod_cube, mat_missing);
     red->addComponent(redRenderer);
     addObject(red);
 

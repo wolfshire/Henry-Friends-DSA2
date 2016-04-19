@@ -5,10 +5,11 @@
 #include <iostream>
 using namespace std;
 
-MeshRenderer::MeshRenderer(Model* model, Material* mat)
+MeshRenderer::MeshRenderer(EVertexFormat fmt, Model* model, Material* mat)
 {
     type = MESH_RENDERER;
 
+    format = fmt;
     mesh = model->getMesh();
     material = mat;
 
@@ -47,7 +48,10 @@ void MeshRenderer::clear()
 void MeshRenderer::loadData()
 {
     for (unsigned int i = 0; i < mesh->pos.size(); i++)
-        addVertex(mesh->pos[i]);
+        //if (mesh->hasUVs)
+            //addVertex(mesh->pos[i], mesh->uvs[i]);
+        //else
+            addVertex(mesh->pos[i]);
 
     for (unsigned int i = 0; i < mesh->indices.size(); i++)
         addIndex(mesh->indices[i]);
@@ -106,10 +110,25 @@ void MeshRenderer::load()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexPos * sizeof(int), &indices[0], bufferUsageHint);
 
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, false, stride, 0);
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 4, GL_FLOAT, false, stride, (void*)12);
+    switch (format)
+    {
+    case XYZ:
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, stride, 0);
+        break;
+    case XYZ_COLOR:
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, stride, 0);
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 4, GL_FLOAT, false, stride, (void*)12);
+        break;
+    case XYZ_UV:
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, stride, 0);
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 2, GL_FLOAT, false, stride, (void*)12);
+        break;
+    }
 
     loaded = true;
 }

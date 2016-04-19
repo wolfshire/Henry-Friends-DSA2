@@ -9,15 +9,16 @@ class TextureManager
 public:
     static TextureManager* instance;
 
-    Texture* GetTexture(std::string);
+    static void init();
+    Texture* getTexture(std::string);
 
 private:
     TextureManager();
     ~TextureManager();
 
-    void LoadTexture(std::string);
-    void UnloadTexture(std::string);
-    void UnloadAllTextures();
+    void loadTexture(std::string);
+    void unloadTexture(std::string);
+    void unloadAllTextures();
 
     const std::string TEX_DIR = "textures\\";
     const std::string MISSING = "missing.png";
