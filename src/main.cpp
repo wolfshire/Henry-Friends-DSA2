@@ -61,6 +61,9 @@ void init()
     Font::SX = 2.0f / *w;
     Font::SY = 2.0f / *h;
 
+    glCullFace(GL_FRONT_AND_BACK);
+    glEnable(GL_DEPTH_TEST);
+
     Input::init(window);
     TextureManager::init();
     FreeImage_SetOutputMessage(freeImageErrorHandler);
