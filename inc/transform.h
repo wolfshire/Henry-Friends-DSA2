@@ -11,6 +11,7 @@ public:
     Transform(glm::vec3, glm::vec3, glm::vec3);
 	~Transform();
     glm::mat4 getModelMatrix();
+    void rotate(glm::vec3);
 
     glm::vec3 pos;
     glm::quat rot;

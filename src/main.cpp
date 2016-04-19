@@ -82,12 +82,6 @@ void init()
     glGenBuffers(1, &vbo);
     glGenBuffers(1, &ibo);
 
-    /*float verts[] =
-    {
-        0.0f, 1.0f, 0.0f,
-        1.0f, -1.0f, 0.0f,
-        -1.0f, -1.0f, 0.0f
-    };*/
     float verts[] =
     {
         0.0f, 0.0f, 0.0f,

@@ -21,7 +21,7 @@ void Camera::update()
     viewrotx = glm::rotate(viewtrans, transform->rot.x, glm::vec3(0.0f, 1.0f, 0.0f));
     view = glm::rotate(viewrotx, transform->rot.y, glm::vec3(1.0f, 0.0f, 0.0f));
 
-    view = lookAt(transform->pos, transform->pos + glm::vec3(0, 0, 1), glm::vec3(0, 1, 0));
+    //view = lookAt(transform->pos, transform->pos + glm::vec3(0, 0, 1), glm::vec3(0, 1, 0));
 }
 
 glm::mat4 Camera::getProjectionMatrix() { return proj; }
