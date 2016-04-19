@@ -222,7 +222,5 @@ void MeshRenderer::render()
     glUniformMatrix4fv(material->getShader()->getUniformLocation("model"), 1, GL_FALSE,
         value_ptr(transform->getModelMatrix()));
 
-    glUniform1f(material->getShader()->getUniformLocation("color"), 1.0f);
-
     glDrawElements(drawMode, mesh->getNumIndices(), GL_UNSIGNED_INT, NULL);
 }

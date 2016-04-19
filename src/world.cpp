@@ -40,7 +40,7 @@ void World::init()
     spawns.push_back(new Transform(vec3(0, 0, -30), vec3(0, 0, 0), vec3(1, 1, 1))); //city D v
 
     //textures
-    Texture* tex_missing = TextureManager::instance->getTexture("missing.png");
+    Texture* tex_missing = TextureManager::instance->getTexture("emma.png");
     Texture* tex_blue = TextureManager::instance->getTexture("blue.png");
     Texture* tex_green = TextureManager::instance->getTexture("green.png");
 

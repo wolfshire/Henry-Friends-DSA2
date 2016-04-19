@@ -18,5 +18,10 @@ Transform::~Transform() {}
 
 glm::mat4 Transform::getModelMatrix()
 {
-    return glm::translate(glm::mat4(), glm::vec3(pos.x, pos.y, pos.z));//* glm::mat4_cast(rot) * glm::scale(glm::mat4(), scale);
+    return glm::translate(glm::mat4(), glm::vec3(pos.x, pos.y, pos.z)) * glm::mat4_cast(rot) * glm::scale(glm::mat4(), scale);
+}
+
+void Transform::rotate(glm::vec3 euler)
+{
+    rot = glm::normalize(rot * glm::quat(euler));
 }
