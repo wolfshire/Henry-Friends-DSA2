@@ -80,9 +80,23 @@ void Model::genMeshData(vector<string> lines)
 		else if (lines[i].find("f") == 0)
 		{
 			vector<string> verts = split(lines[i].substr(2, lines[i].length() - 2), ' ');
-			f.push_back(verts[0]);
-			f.push_back(verts[1]);
-			f.push_back(verts[2]);
+
+            if (verts.size() > 3)
+            {
+                f.push_back(verts[0]);
+                f.push_back(verts[1]);
+                f.push_back(verts[2]);
+
+                f.push_back(verts[0]);
+                f.push_back(verts[2]);
+                f.push_back(verts[3]);
+            }
+            else
+            {
+                f.push_back(verts[0]);
+                f.push_back(verts[1]);
+                f.push_back(verts[2]);
+            }
 		}
 	}
 

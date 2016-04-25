@@ -5,11 +5,26 @@
 #include "transform.h"
 #include "input.h"
 
-Camera* Camera::main = NULL;
+Camera* Camera::main = nullptr;
 
 Camera::Camera()
 {
 	type = EGameComponentType::CAMERA;
+    w = 16;
+    h = 9;
+}
+
+Camera::Camera(int screenw, int screenh)
+{
+    type = EGameComponentType::CAMERA;
+    w = screenw;
+    h = screenh;
+}
+
+void Camera::setAspect(glm::vec2 aspect)
+{
+    w = aspect.x;
+    h = aspect.y;
 }
 
 Camera* Camera::getMain() { return main; }
@@ -21,7 +36,7 @@ void Camera::update()
 	mousePos = Input::getMousePosition();
 	cout << glm::eulerAngles(transform->rot).x << endl;
 
-    proj = glm::perspective(75.0, 16.0 / 9, 0.01, 500.0);
+    proj = glm::perspective(75.0, (double)w / h, 0.01, 500.0);
     viewtrans = glm::translate(glm::mat4(1.0f), transform->pos);
     viewrotx = glm::rotate(viewtrans, transform->rot.x, glm::vec3(0.0f, 1.0f, 0.0f));
 

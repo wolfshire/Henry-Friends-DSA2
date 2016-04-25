@@ -8,6 +8,8 @@ unordered_map<int, bool> Input::pressed;
 unordered_map<int, bool> Input::released;
 double* Input::mx = new double();
 double* Input::my = new double();
+double* Input::lx = new double();
+double* Input::ly = new double();
 
 int Input::VALID_KEYS[] =
 {
@@ -111,6 +113,8 @@ Input::Input() {}
 void Input::init(GLFWwindow* win)
 {
 	window = win;
+
+    setCursorMode(GLFW_CURSOR_DISABLED);
 }
 
 void Input::update()
@@ -143,6 +147,8 @@ void Input::update()
         prev[VALID_KEYS[i]] = cur[VALID_KEYS[i]];
 
     //mouse input
+    *lx = *mx;
+    *ly = *my;
     glfwGetCursorPos(window, mx, my);
 }
 
@@ -223,4 +229,19 @@ char Input::getKeyChar(int keycode)
 glm::vec2 Input::getMousePosition()
 {
     return glm::vec2(*mx, *my);
+}
+
+glm::vec2 Input::getMouseDelta()
+{
+    return glm::vec2(*mx - *lx, *my - *ly);
+}
+
+void Input::setCursorMode(int mode)
+{
+    if (mode != GLFW_CURSOR_NORMAL ||
+        mode != GLFW_CURSOR_HIDDEN ||
+        mode != GLFW_CURSOR_DISABLED)
+        mode = GLFW_CURSOR_NORMAL;
+
+    glfwSetInputMode(window, GLFW_CURSOR, mode);
 }
