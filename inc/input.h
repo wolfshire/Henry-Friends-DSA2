@@ -15,6 +15,8 @@ public:
     static bool getKeyDown(int);
 	static char getKeyChar(int);
     static glm::vec2 getMousePosition();
+    static glm::vec2 getMouseDelta();
+    static void setCursorMode(int);
 private:
 	static GLFWwindow* window;
     static unordered_map<int, bool> cur;
@@ -23,6 +25,8 @@ private:
     static unordered_map<int, bool> released;
     static double* mx;
     static double* my;
+    static double* lx;
+    static double* ly;
 
     static int VALID_KEYS[];
     static int NUM_KEYS;
