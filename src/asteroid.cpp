@@ -22,7 +22,7 @@ Asteroid::Asteroid(float speed, Transform* t)
 
 void Asteroid::update()
 {
-    transform->pos.y -= moveSpeed * GameTime::dt;
+    transform->pos.y += moveSpeed * GameTime::dt;
     //std::cout << "asteroid: " << trans->pos.y << std::endl;
 }
 /*

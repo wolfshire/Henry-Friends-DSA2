@@ -1,11 +1,13 @@
 #include "input.h"
 #include <iostream>
 
-GLFWwindow* Input::window = NULL;
+GLFWwindow* Input::window = nullptr;
 unordered_map<int, bool> Input::cur;
 unordered_map<int, bool> Input::prev;
 unordered_map<int, bool> Input::pressed;
 unordered_map<int, bool> Input::released;
+double* Input::mx = new double();
+double* Input::my = new double();
 
 int Input::VALID_KEYS[] =
 {
@@ -139,6 +141,9 @@ void Input::update()
     prev.clear();
     for (int i = 0; i < NUM_KEYS; i++)
         prev[VALID_KEYS[i]] = cur[VALID_KEYS[i]];
+
+    //mouse input
+    glfwGetCursorPos(window, mx, my);
 }
 
 bool Input::getKey(int keycode)
@@ -213,4 +218,9 @@ char Input::getKeyChar(int keycode)
 	case GLFW_KEY_EQUAL: return upper ? '+' : '=';
 	default: return '\0';
 	}
+}
+
+glm::vec2 Input::getMousePosition()
+{
+    return glm::vec2(*mx, *my);
 }
