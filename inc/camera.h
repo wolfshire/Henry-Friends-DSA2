@@ -22,6 +22,10 @@ private:
     glm::mat4 viewtrans;
     glm::mat4 viewrotx;
     glm::mat4 view;
+	glm::mat4 rotation;
+	
+	glm::vec2 mousePos;
+	glm::vec2 lastPos;
 
 	bool hasMoved;
 };

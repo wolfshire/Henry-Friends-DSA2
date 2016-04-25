@@ -51,6 +51,7 @@ void World::init()
 
     //models
     Model* mod_cube = new Model("cube");
+	Model* asteroidModel = new Model("asteroid");
 
     GameObject* blue = new GameObject();
     blue->transform->pos = vec3(5, 0, 0);
@@ -69,14 +70,16 @@ void World::init()
     MeshRenderer* redRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, mod_cube, mat_missing);
     red->addComponent(redRenderer);
     addObject(red);
-
-    //GameObject* asteroid = new GameObject(vec3(0, 10, 10), vec3(0, 0, 0), vec3(1, 1, 1));
-    //Model* asteroidModel = new Model("asteroid");
-    //MeshRenderer* asteroidRenderer = new MeshRenderer(asteroidModel, mat_missing);
-    //Asteroid* asteroidComponent = new Asteroid();
-    //asteroid->addComponent(asteroidRenderer);
-    //asteroid->addComponent(asteroidComponent);
-    //addObject(asteroid);
+	
+	for (int i = 0; i < 10; i++) {
+		GameObject* asteroid = new GameObject();
+		asteroid->transform->pos = vec3(0, -10 * i, 10);
+		MeshRenderer* asteroidRenderer = new MeshRenderer(XYZ_UV, asteroidModel, mat_missing);
+		Asteroid* asteroidComponent = new Asteroid();
+		asteroid->addComponent(asteroidComponent);
+		asteroid->addComponent(asteroidRenderer);
+		addObject(asteroid);
+	}
 
     for (unsigned int i = 0; i < objects.size(); i++)
         (*objects[i]).init();
