@@ -6,8 +6,8 @@ unordered_map<int, bool> Input::cur;
 unordered_map<int, bool> Input::prev;
 unordered_map<int, bool> Input::pressed;
 unordered_map<int, bool> Input::released;
-double* Input::mx = nullptr;
-double* Input::my = nullptr;
+double* Input::mx = new double();
+double* Input::my = new double();
 
 int Input::VALID_KEYS[] =
 {
