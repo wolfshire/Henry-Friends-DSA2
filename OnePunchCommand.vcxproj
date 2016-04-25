@@ -145,6 +145,7 @@
     <ClCompile Include="src\model.cpp" />
     <ClCompile Include="src\shader.cpp" />
     <ClCompile Include="src\shadermanager.cpp" />
+    <ClCompile Include="src\engine.cpp" />
     <ClCompile Include="src\texture.cpp" />
     <ClCompile Include="src\texturemanager.cpp" />
     <ClCompile Include="src\transform.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="inc\asteroid.h" />
     <ClInclude Include="inc\camera.h" />
     <ClInclude Include="inc\color.h" />
+    <ClInclude Include="inc\engine.h" />
     <ClInclude Include="inc\flymove.h" />
     <ClInclude Include="inc\font.h" />
     <ClInclude Include="inc\fontmanager.h" />
