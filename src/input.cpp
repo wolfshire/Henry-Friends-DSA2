@@ -139,6 +139,9 @@ void Input::update()
     prev.clear();
     for (int i = 0; i < NUM_KEYS; i++)
         prev[VALID_KEYS[i]] = cur[VALID_KEYS[i]];
+
+    //mouse input
+    glfwGetCursorPos(window, mx, my);
 }
 
 bool Input::getKey(int keycode)
@@ -213,4 +216,9 @@ char Input::getKeyChar(int keycode)
 	case GLFW_KEY_EQUAL: return upper ? '+' : '=';
 	default: return '\0';
 	}
+}
+
+glm::vec2 Input::getMousePosition()
+{
+    return glm::vec2(*mx, *my);
 }
