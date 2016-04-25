@@ -128,6 +128,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="fist.cpp" />
     <ClCompile Include="src\asteroid.cpp" />
     <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\color.cpp" />
@@ -152,6 +153,7 @@
     <ClCompile Include="src\world.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="fist.h" />
     <ClInclude Include="inc\asteroid.h" />
     <ClInclude Include="inc\camera.h" />
     <ClInclude Include="inc\color.h" />
