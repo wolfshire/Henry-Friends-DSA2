@@ -1,11 +1,13 @@
 #include "input.h"
 #include <iostream>
 
-GLFWwindow* Input::window = NULL;
+GLFWwindow* Input::window = nullptr;
 unordered_map<int, bool> Input::cur;
 unordered_map<int, bool> Input::prev;
 unordered_map<int, bool> Input::pressed;
 unordered_map<int, bool> Input::released;
+double* Input::mx = nullptr;
+double* Input::my = nullptr;
 
 int Input::VALID_KEYS[] =
 {
