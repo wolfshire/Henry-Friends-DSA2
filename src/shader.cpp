@@ -78,6 +78,14 @@ void Shader::load(std::string name)
     if (GL_TRUE != success)
     {
         std::cout << "ERROR: GL vertex shader index " << vs << " did not compile" << std::endl;
+
+        GLint length;
+        glGetShaderiv(vs, GL_INFO_LOG_LENGTH, &length);
+        GLchar* log = (GLchar*)malloc(length);
+        glGetShaderInfoLog(vs, length, 0, log);
+        std::cout << log << std::endl;
+        free(log);
+
         exit(-1);
     }
 
@@ -91,6 +99,14 @@ void Shader::load(std::string name)
     if (GL_TRUE != success)
     {
         std::cout << "ERROR: GL fragment shader index " << fs << " did not compile" << std::endl;
+
+        GLint length;
+        glGetShaderiv(fs, GL_INFO_LOG_LENGTH, &length);
+        GLchar* log = (GLchar*)malloc(length);
+        glGetShaderInfoLog(fs, length, 0, log);
+        std::cout << log << std::endl;
+        free(log);
+
         exit(-1);
     }
 
