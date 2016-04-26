@@ -116,6 +116,7 @@ GameObject* GameObject::getParent()
 void GameObject::setParent(GameObject* parent)
 {
 	this->parent = parent;
+    transform->parent = parent->transform;
 }
 
 void GameObject::addChild(GameObject* child)

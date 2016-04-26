@@ -43,11 +43,13 @@ void World::init()
     Texture* tex_missing = TextureManager::instance->getTexture("emma.png");
     Texture* tex_blue = TextureManager::instance->getTexture("blue.png");
     Texture* tex_green = TextureManager::instance->getTexture("green.png");
+    Texture* tex_red = TextureManager::instance->getTexture("red.png");
 
     //materials
     Material* mat_missing = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_missing);
     Material* mat_blue = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_blue);
     Material* mat_green = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_green);
+    Material* mat_red = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_red);
 
     //models
     Model* mod_cube = new Model("cube");
@@ -80,6 +82,17 @@ void World::init()
 		asteroid->addComponent(asteroidRenderer);
 		addObject(asteroid);
 	}
+
+    GameObject* parent = new GameObject();
+    parent->transform->pos = vec3(3, 3, 3);
+    MeshRenderer* parentRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, mod_cube, mat_red);
+    parent->addComponent(parentRenderer);
+    GameObject* child = new GameObject();
+    child->transform->pos = vec3(1, 1, 1);
+    MeshRenderer* childRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, mod_cube, mat_missing);
+    child->addComponent(childRenderer);
+    parent->addChild(child);
+    addObject(parent);
 
     for (unsigned int i = 0; i < objects.size(); i++)
         (*objects[i]).init();
