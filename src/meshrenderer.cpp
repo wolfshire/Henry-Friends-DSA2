@@ -220,7 +220,7 @@ void MeshRenderer::render()
     glBindVertexArray(vao);
 
     glUniformMatrix4fv(material->getShader()->getUniformLocation("model"), 1, GL_FALSE,
-        value_ptr(transform->getModelMatrix()));
+        value_ptr(transform->getTransformation()));
 
     glDrawElements(drawMode, mesh->getNumIndices(), GL_UNSIGNED_INT, NULL);
 }

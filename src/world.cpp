@@ -94,6 +94,17 @@ void World::init()
 	fist->addComponent(fistRenderer);
 	addObject(fist);
 
+    GameObject* parent = new GameObject();
+    parent->transform->pos = vec3(3, 3, 3);
+    MeshRenderer* parentRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, mod_cube, mat_red);
+    parent->addComponent(parentRenderer);
+    GameObject* child = new GameObject();
+    child->transform->pos = vec3(1, 1, 1);
+    MeshRenderer* childRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, mod_cube, mat_missing);
+    child->addComponent(childRenderer);
+    parent->addChild(child);
+    addObject(parent);
+
     for (unsigned int i = 0; i < objects.size(); i++)
         (*objects[i]).init();
 }
