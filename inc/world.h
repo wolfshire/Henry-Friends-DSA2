@@ -15,6 +15,9 @@ public:
 	void init();
 	void update();
 	void render();
+
+	void city();
+	void buildSkyscraper();
 private:
 	vector<GameObject*> objects;
     vector<Transform*> spawns;

@@ -57,23 +57,26 @@ void World::init()
 	Model* asteroidModel = new Model("asteroid");
 	Model* fistModel = new Model("cube");
 
-    GameObject* blue = new GameObject();
+	city();
+
+    /*GameObject* blue = new GameObject();
     blue->transform->pos = vec3(5, 0, 0);
     MeshRenderer* blueRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, mod_cube, mat_blue);
     blue->addComponent(blueRenderer);
-    addObject(blue);
+    addObject(blue);*/
+	
     
-    GameObject* green = new GameObject();
+    /*GameObject* green = new GameObject();
     green->transform->pos = vec3(0, 5, 0);
     MeshRenderer* greenRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, mod_cube, mat_green);
     green->addComponent(greenRenderer);
-    addObject(green);
+    addObject(green);*/
 
-    GameObject* red = new GameObject();
+    /*GameObject* red = new GameObject();
     red->transform->pos = vec3(0, 0, 5);
     MeshRenderer* redRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, mod_cube, mat_missing);
     red->addComponent(redRenderer);
-    addObject(red);
+    addObject(red);*/
 	
 	for (int i = 0; i < 10; i++) {
 		GameObject* asteroid = new GameObject();
@@ -94,7 +97,7 @@ void World::init()
 	fist->addComponent(fistRenderer);
 	addObject(fist);
 
-    GameObject* parent = new GameObject();
+    /*GameObject* parent = new GameObject();
     parent->transform->pos = vec3(3, 3, 3);
     MeshRenderer* parentRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, mod_cube, mat_red);
     parent->addComponent(parentRenderer);
@@ -103,7 +106,7 @@ void World::init()
     MeshRenderer* childRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, mod_cube, mat_missing);
     child->addComponent(childRenderer);
     parent->addChild(child);
-    addObject(parent);
+    addObject(parent);*/
 
     for (unsigned int i = 0; i < objects.size(); i++)
         (*objects[i]).init();
@@ -119,4 +122,59 @@ void World::render()
 {
     for (unsigned int i = 0; i < objects.size(); i++)
         (*objects[i]).render();
+}
+
+//creating city
+void World::city()
+{
+	//load city model
+	Model* city_cube = new Model("cube");
+
+	//city texture
+	Texture* tex_city = TextureManager::instance->getTexture("emma.png");
+	Texture* tex_city_platform = TextureManager::instance->getTexture("platform.png");
+	Texture* tex_city_metal = TextureManager::instance->getTexture("metal.png");
+
+	//city material
+	Material* mat_city = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_city);
+	Material* mat_city_platform = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_city_platform);
+	Material* mat_city_building = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_city_metal);
+
+
+	//create test cube
+	GameObject* blue = new GameObject();
+	blue->transform->pos = vec3(0,0,100);
+	blue->transform->scale = vec3(3, 3, 3);
+	MeshRenderer* blueRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, city_cube, mat_city);
+	blue->addComponent(blueRenderer);
+	addObject(blue);
+
+	//create city platform
+	GameObject* platform = new GameObject();
+	platform->transform->pos = vec3(0, 15, 50);
+	platform->transform->scale = vec3(100, 1, 100);
+	MeshRenderer* platRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, city_cube, mat_city_platform);
+	platform->addComponent(platRenderer);
+	addObject(platform);
+
+	//create building
+	GameObject* building1 = new GameObject();
+	building1->transform->pos = vec3(30, 0, 100);
+	building1->transform->scale = vec3(5, 50, 5);
+	MeshRenderer* buildingRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, city_cube, mat_city_building);
+	building1->addComponent(buildingRenderer);
+	addObject(building1);
+
+	//create building
+	GameObject* building2 = new GameObject();
+	building2->transform->pos = vec3(-30, 0, 100);
+	building2->transform->scale = vec3(5, 30, 5);
+	MeshRenderer* buildingRenderer2 = new MeshRenderer(EVertexFormat::XYZ_UV, city_cube, mat_city_building);
+	building2->addComponent(buildingRenderer2);
+	addObject(building2);
+}
+
+void World::buildSkyscraper()
+{
+	//nothin' yet
 }
