@@ -55,7 +55,8 @@ std::string Shader::readText(std::string filename, std::vector<std::string>* uni
     }
 
     std::cout << "Finished read" << std::endl;
-    return text;
+	std::cout << text << std::endl;
+	return text;
 }
 
 void Shader::load(std::string name)

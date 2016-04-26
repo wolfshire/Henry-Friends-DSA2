@@ -81,7 +81,10 @@
     <ClCompile Include="src\texturemanager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fist.cpp">
+    <ClCompile Include="src\engine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fist.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -164,7 +167,10 @@
     <ClInclude Include="inc\vertexformat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="fist.h">
+    <ClInclude Include="inc\engine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\fist.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

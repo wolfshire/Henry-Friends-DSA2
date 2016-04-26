@@ -34,7 +34,7 @@ void Camera::update()
 {
 	//set mouse position
 	mousePos = Input::getMousePosition();
-	cout << glm::eulerAngles(transform->rot).x << endl;
+	//cout << glm::eulerAngles(transform->rot).x << endl;
 
     proj = glm::perspective(75.0, (double)w / h, 0.01, 500.0);
     viewtrans = glm::translate(glm::mat4(1.0f), transform->pos);
