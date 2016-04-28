@@ -47,7 +47,7 @@ void Camera::update()
 	float ySpeed = std::abs(mousePos.y - lastPos.y);
 	float sensitivity = 1000.0f; //larger = slower
 
-	cout << transform->rot.x << "," << transform->rot.y << "," << transform->rot.z << "," << transform->rot.w << endl;
+	//cout << transform->rot.x << "," << transform->rot.y << "," << transform->rot.z << "," << transform->rot.w << endl;
 	
 	if (mousePos.x < lastPos.x) {
 		transform->rot *= glm::quat_cast(glm::rotate(rotation, xSpeed / sensitivity, glm::vec3(0, 1, 0)));

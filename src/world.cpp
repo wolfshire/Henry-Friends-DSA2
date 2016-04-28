@@ -13,16 +13,24 @@
 #include "fist.h"
 #include <iostream>
 
+#include <stdio.h>      /* printf, NULL */
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>		/* time */
+
 World::World() {}
 World::~World() {}
 
 void World::addObject(GameObject* o)
 {
+	o->init();
     objects.push_back(o);
 }
 
 void World::init()
 {
+	//random seed
+	srand(time(NULL));
+
     //objects
     GameObject* cam = new GameObject();
     cam->transform->pos.z = -10;
@@ -55,39 +63,9 @@ void World::init()
 
     //models
     Model* mod_cube = new Model("cube");
-	Model* asteroidModel = new Model("asteroid");
 	Model* fistModel = new Model("cube");
 
 	city();
-
-    /*GameObject* blue = new GameObject();
-    blue->transform->pos = vec3(5, 0, 0);
-    MeshRenderer* blueRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, mod_cube, mat_blue);
-    blue->addComponent(blueRenderer);
-    addObject(blue);*/
-	
-    
-    /*GameObject* green = new GameObject();
-    green->transform->pos = vec3(0, 5, 0);
-    MeshRenderer* greenRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, mod_cube, mat_green);
-    green->addComponent(greenRenderer);
-    addObject(green);*/
-
-    /*GameObject* red = new GameObject();
-    red->transform->pos = vec3(0, 0, 5);
-    MeshRenderer* redRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, mod_cube, mat_missing);
-    red->addComponent(redRenderer);
-    addObject(red);*/
-	
-	for (int i = 0; i < 10; i++) {
-		GameObject* asteroid = new GameObject();
-		asteroid->transform->pos = vec3(0, -10 * i, 10);
-		MeshRenderer* asteroidRenderer = new MeshRenderer(XYZ_UV, asteroidModel, mat_missing);
-		Asteroid* asteroidComponent = new Asteroid();
-		asteroid->addComponent(asteroidComponent);
-		asteroid->addComponent(asteroidRenderer);
-		addObject(asteroid);
-	}
 
 	GameObject* fist = new GameObject();
 	fist->transform->scale = vec3(.5, .9, .5);
@@ -109,12 +87,19 @@ void World::init()
     parent->addChild(child);
     addObject(parent);*/
 
-    for (unsigned int i = 0; i < objects.size(); i++)
-        (*objects[i]).init();
+    /*for (unsigned int i = 0; i < objects.size(); i++)
+        (*objects[i]).init();*/
 }
 
 void World::update()
 {
+	
+	int random = rand() % 100;
+	if (random == 0) {
+		spawnAsteroid(0, -100, 100);
+		cout << "spawn" << endl;
+	}
+
     for (unsigned int i = 0; i < objects.size(); i++)
         (*objects[i]).update();
 }
@@ -123,6 +108,21 @@ void World::render()
 {
     for (unsigned int i = 0; i < objects.size(); i++)
         (*objects[i]).render();
+}
+
+void World::spawnAsteroid(float x, float y, float z)
+{
+	Model* asteroidModel = new Model("asteroid");
+	Texture* tex_missing = TextureManager::instance->getTexture("emma.png");
+	Material* mat_missing = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_missing);
+
+	GameObject* asteroid = new GameObject();
+	asteroid->transform->pos = vec3(x,y,z);
+	MeshRenderer* asteroidRenderer = new MeshRenderer(XYZ_UV, asteroidModel, mat_missing);
+	Asteroid* asteroidComponent = new Asteroid();
+	asteroid->addComponent(asteroidComponent);
+	asteroid->addComponent(asteroidRenderer);
+	addObject(asteroid);
 }
 
 //creating city

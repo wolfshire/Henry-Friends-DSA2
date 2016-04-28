@@ -7,7 +7,6 @@ class Asteroid : public GameComponent
 public:
     Asteroid();
     Asteroid(float);
-    Asteroid(float, Transform*);
     void update() override;
     //static GameObject* createAsteroid(float);
     //static GameObject* createAsteroid(float, Transform*);

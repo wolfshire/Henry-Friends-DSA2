@@ -16,6 +16,8 @@ public:
 	void update();
 	void render();
 
+	void spawnAsteroid(float,float,float);
+
 	void city();
 	void buildSkyscraper();
 private:

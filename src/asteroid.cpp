@@ -11,13 +11,7 @@ Asteroid::Asteroid()
 
 Asteroid::Asteroid(float speed)
 {
-    moveSpeed = speed;
-}
-
-Asteroid::Asteroid(float speed, Transform* t)
-{
-    moveSpeed = speed;
-    transform = t;
+	moveSpeed = speed;
 }
 
 void Asteroid::update()
