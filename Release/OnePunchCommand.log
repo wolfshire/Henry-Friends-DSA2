@@ -1,0 +1,46 @@
+﻿Build started 4/26/2016 12:07:08 PM.
+     1>Project "C:\Users\Wolfshire\Desktop\DSA2\henry-friends-dsa2\OnePunchCommand.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt src\world.cpp
+         world.cpp
+     1>src\world.cpp(30): warning C4316: 'Camera': object allocated on the heap may not be aligned 16
+     1>src\world.cpp(39): warning C4316: 'Transform': object allocated on the heap may not be aligned 16
+     1>src\world.cpp(40): warning C4316: 'Transform': object allocated on the heap may not be aligned 16
+     1>src\world.cpp(41): warning C4316: 'Transform': object allocated on the heap may not be aligned 16
+     1>src\world.cpp(42): warning C4316: 'Transform': object allocated on the heap may not be aligned 16
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Wolfshire\Desktop\DSA2\henry-friends-dsa2\Release\OnePunchCommand.exe" /NOLOGO opengl32.lib glew32.lib glfw3.lib FreeImage.lib freetype261.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\Wolfshire\Desktop\DSA2\henry-friends-dsa2\Release\OnePunchCommand.pdb" /OPT:REF /OPT:ICF /LTCG:incremental /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Wolfshire\Desktop\DSA2\henry-friends-dsa2\Release\OnePunchCommand.lib" /MACHINE:X86 /SAFESEH Release\fist.obj
+         Release\asteroid.obj
+         Release\camera.obj
+         Release\color.obj
+         Release\engine.obj
+         Release\flymove.obj
+         Release\font.obj
+         Release\fontmanager.obj
+         Release\gamec.obj
+         Release\gameobject.obj
+         Release\gametime.obj
+         Release\input.obj
+         Release\main.obj
+         Release\material.obj
+         Release\mesh.obj
+         Release\meshrenderer.obj
+         Release\model.obj
+         Release\shader.obj
+         Release\shadermanager.obj
+         Release\texture.obj
+         Release\texturemanager.obj
+         Release\transform.obj
+         Release\vertex.obj
+         Release\world.obj
+         Generating code
+         3 of 2432 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+           0 functions were new in current compilation
+           3 functions had inline decision re-evaluated but remain unchanged
+         Finished generating code
+         OnePunchCommand.vcxproj -> C:\Users\Wolfshire\Desktop\DSA2\henry-friends-dsa2\Release\OnePunchCommand.exe
+     1>Done Building Project "C:\Users\Wolfshire\Desktop\DSA2\henry-friends-dsa2\OnePunchCommand.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.80

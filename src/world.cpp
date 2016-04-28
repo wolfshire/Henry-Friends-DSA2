@@ -26,6 +26,7 @@ void World::init()
     //objects
     GameObject* cam = new GameObject();
     cam->transform->pos.z = -10;
+	//cam->transform->rot = glm::quat(0, 0, 0, 1);
     Camera* camera = new Camera();
     FlyMove* flymove = new FlyMove();
     cam->addComponent(camera);
