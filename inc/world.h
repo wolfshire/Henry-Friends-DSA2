@@ -15,7 +15,13 @@ public:
 	void init();
 	void update();
 	void render();
+
+	void spawnAsteroid(Transform*);
+
+	void city();
+	void buildSkyscraper();
 private:
 	vector<GameObject*> objects;
     vector<Transform*> spawns;
+	int fistIndex;
 };

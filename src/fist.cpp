@@ -14,23 +14,15 @@ Fist::Fist(float speed)
 	moveSpeed = speed;
 }
 
-Fist::Fist(float speed, Transform* t)
-{
-	moveSpeed = speed;
-	transform = t;
-
-}
-
 void Fist::update()
 {
-	//transform->rot *= moveSpeed * GameTime::dt;
-	
-
+	cout << "Fist update" << endl;
+	transform->pos += glm::vec3(glm::vec4(0, 0, moveSpeed * GameTime::dt, 0) * transform->rot);
 }
 
 void Fist::punch() 
 {
-	
+	cout << "Fist punch" << endl;
 }
 
 void Fist::reset() 

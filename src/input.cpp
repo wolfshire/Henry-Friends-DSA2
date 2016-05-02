@@ -117,6 +117,10 @@ void Input::init(GLFWwindow* win)
     setCursorMode(GLFW_CURSOR_DISABLED);
 }
 
+void Input::resetCursor() {
+	glfwSetCursorPos(window, 1280/2, 720/2);
+}
+
 void Input::update()
 {
     pressed.clear();

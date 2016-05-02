@@ -17,6 +17,7 @@ public:
     static glm::vec2 getMousePosition();
     static glm::vec2 getMouseDelta();
     static void setCursorMode(int);
+	static void resetCursor();
 private:
 	static GLFWwindow* window;
     static unordered_map<int, bool> cur;
