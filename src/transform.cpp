@@ -29,13 +29,13 @@ Transform::Transform(glm::vec3 p, glm::vec3 r, glm::vec3 s)
 }
 
 void Transform::setTransform(Transform* other) {
-	pos.x = other->transform->pos.x;
-	pos.y = other->transform->pos.y;
-	pos.z = other->transform->pos.z;
-	rot.x = other->transform->rot.x;
-	rot.y = other->transform->rot.y;
-	rot.z = other->transform->rot.z;
-	rot.w = other->transform->rot.w;
+	pos.x = other->pos.x;
+	pos.y = other->pos.y;
+	pos.z = other->pos.z;
+	rot.x = other->rot.x;
+	rot.y = other->rot.y;
+	rot.z = other->rot.z;
+	rot.w = other->rot.w;
 }
 
 Transform::~Transform() {}
