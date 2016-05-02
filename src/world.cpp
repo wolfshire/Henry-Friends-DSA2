@@ -79,6 +79,7 @@ void World::init()
 	fist->addComponent(fistRenderer);
 	addObject(fist);
 	fistIndex = objects.size() - 1;
+	
 
     /*GameObject* parent = new GameObject();
     parent->transform->pos = vec3(3, 3, 3);
@@ -115,8 +116,10 @@ void World::update()
 		}
 	}
 	if (Input::getKeyDown(GLFW_KEY_E)) {
-		objects[fistIndex]->transform->setTransform(objects[0]->transform);
-		//cout << "e pressed" << endl;
+		//punch	
+	objects[fistIndex]->transform->setTransform(Camera::getMain()->transform);
+		
+	
 	}
 }
 

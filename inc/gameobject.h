@@ -29,6 +29,7 @@ public:
 	GameObject* getChild(int);
 
 	Transform* transform;
+	
 private:
 	vector<GameComponent*> components;
 	vector<GameObject*> children;
