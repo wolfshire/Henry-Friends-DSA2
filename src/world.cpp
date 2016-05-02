@@ -66,7 +66,7 @@ void World::init()
     Model* mod_cube = new Model("cube");
 	Model* fistModel = new Model("cube");
 
-	city();
+	buildCity();
 
 	GameObject* fist = new GameObject();
 	fist->transform->scale = vec3(.5, .9, .5);
@@ -141,7 +141,7 @@ void World::spawnAsteroid(Transform* t)
 }
 
 //creating city
-void World::city()
+void World::buildCity()
 {
 	//load city model
 	Model* city_cube = new Model("cube");
@@ -156,41 +156,50 @@ void World::city()
 	Material* mat_city_platform = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_city_platform);
 	Material* mat_city_building = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_city_metal);
 
+	//builds platform				buildPlatform(Texture*, Material*, vec3, vec3)
+	buildPlatform(tex_city_platform, mat_city_platform, vec3(0, 15, 50), vec3(100, 1, 100));
 
-	//create test cube
-	GameObject* blue = new GameObject();
-	blue->transform->pos = vec3(0,0,100);
-	blue->transform->scale = vec3(3, 3, 3);
-	MeshRenderer* blueRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, city_cube, mat_city);
-	blue->addComponent(blueRenderer);
-	addObject(blue);
+	//builds skyscraper             buildSkyscraper(Texture*, Material*, vec3, vec3)
+	buildSkyscraper(tex_city_metal, mat_city_building, vec3(30, 0, 100), vec3(5, 50, 5));
 
-	//create city platform
-	GameObject* platform = new GameObject();
-	platform->transform->pos = vec3(0, 15, 50);
-	platform->transform->scale = vec3(100, 1, 100);
-	MeshRenderer* platRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, city_cube, mat_city_platform);
-	platform->addComponent(platRenderer);
-	addObject(platform);
-
-	//create building
-	GameObject* building1 = new GameObject();
-	building1->transform->pos = vec3(30, 0, 100);
-	building1->transform->scale = vec3(5, 50, 5);
-	MeshRenderer* buildingRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, city_cube, mat_city_building);
-	building1->addComponent(buildingRenderer);
-	addObject(building1);
-
-	//create building
-	GameObject* building2 = new GameObject();
-	building2->transform->pos = vec3(-30, 0, 100);
-	building2->transform->scale = vec3(5, 30, 5);
-	MeshRenderer* buildingRenderer2 = new MeshRenderer(EVertexFormat::XYZ_UV, city_cube, mat_city_building);
-	building2->addComponent(buildingRenderer2);
-	addObject(building2);
 }
 
-void World::buildSkyscraper()
+void World::buildSkyscraper(Texture* t, Material* m, vec3 pos, vec3 scale)
 {
-	//nothin' yet
+	//load city model
+	Model* city_Cube = new Model("cube");
+
+	//load the texture
+	Texture* city_Texture = t;
+
+	//load the material
+	Material* city_Material = m;
+
+	//load Game Object 
+	GameObject* building = new GameObject();
+	building->transform->pos = pos;
+	building->transform->scale = scale;
+	MeshRenderer* renderer = new MeshRenderer(EVertexFormat::XYZ_UV, city_Cube, city_Material);
+	building->addComponent(renderer);
+	addObject(building);
 }
+void World::buildPlatform(Texture* t, Material* m, vec3 pos, vec3 scale)
+{
+	//load  model
+	Model* platform_Cube = new Model("cube");
+
+	//load the texture
+	Texture* platform_Texture = t;
+
+	//load the material
+	Material* platform_Material = m;
+
+	//load Game Object 
+	GameObject* platform = new GameObject();
+	platform->transform->pos = pos;
+	platform->transform->scale = scale;
+	MeshRenderer* renderer = new MeshRenderer(EVertexFormat::XYZ_UV, platform_Cube, platform_Material);
+	platform->addComponent(renderer);
+	addObject(platform);
+}
+
