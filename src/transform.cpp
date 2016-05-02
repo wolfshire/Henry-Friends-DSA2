@@ -28,6 +28,16 @@ Transform::Transform(glm::vec3 p, glm::vec3 r, glm::vec3 s)
     parentMatrix = glm::mat4();
 }
 
+void Transform::setTransform(Transform* other) {
+	pos.x = other->transform->pos.x;
+	pos.y = other->transform->pos.y;
+	pos.z = other->transform->pos.z;
+	rot.x = other->transform->rot.x;
+	rot.y = other->transform->rot.y;
+	rot.z = other->transform->rot.z;
+	rot.w = other->transform->rot.w;
+}
+
 Transform::~Transform() {}
 
 void Transform::update()
@@ -80,3 +90,4 @@ void Transform::rotate(glm::vec3 euler)
 {
     rot = glm::normalize(rot * glm::quat(euler));
 }
+

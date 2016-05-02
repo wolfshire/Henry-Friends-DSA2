@@ -113,7 +113,7 @@ void World::update()
 		}
 	}
 	if (Input::getKeyDown(GLFW_KEY_E)) {
-		objects[fistIndex]->transform = objects[0]->transform;
+		objects[fistIndex]->transform->setTransform(objects[0]->transform);
 		//cout << "e pressed" << endl;
 	}
 }
