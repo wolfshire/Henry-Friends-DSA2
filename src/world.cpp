@@ -35,6 +35,7 @@ void World::init()
     //objects
     GameObject* cam = new GameObject();
     cam->transform->pos.z = -10;
+	cam->transform->pos.y = -30; 
 	//cam->transform->rot = glm::quat(0, 0, 0, 1);
     Camera* camera = new Camera();
     FlyMove* flymove = new FlyMove();
@@ -66,6 +67,7 @@ void World::init()
     Model* mod_cube = new Model("cube");
 	Model* fistModel = new Model("cube");
 
+	//builds the City
 	buildCity();
 
 	GameObject* fist = new GameObject();
@@ -128,7 +130,7 @@ void World::spawnAsteroid(Transform* t)
 {
 	cout << "spawn asteroid" << endl;
 	Model* asteroidModel = new Model("asteroid");
-	Texture* tex_missing = TextureManager::instance->getTexture("emma.png");
+	Texture* tex_missing = TextureManager::instance->getTexture("meteorite.png");
 	Material* mat_missing = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_missing);
 
 	GameObject* asteroid = new GameObject();
@@ -145,23 +147,39 @@ void World::buildCity()
 {
 	//load city model
 	Model* city_cube = new Model("cube");
+	Model* sun_sphere = new Model("asteroid");
 
 	//city texture
 	Texture* tex_city = TextureManager::instance->getTexture("emma.png");
-	Texture* tex_city_platform = TextureManager::instance->getTexture("platform.png");
+	Texture* tex_city_platform = TextureManager::instance->getTexture("asphalt.png");
 	Texture* tex_city_metal = TextureManager::instance->getTexture("metal.png");
+	Texture* tex_sun = TextureManager::instance->getTexture("yellow.png");
 
 	//city material
 	Material* mat_city = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_city);
 	Material* mat_city_platform = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_city_platform);
 	Material* mat_city_building = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_city_metal);
+	Material* mat_sun = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_sun);
 
-	//builds platform				buildPlatform(Texture*, Material*, vec3, vec3)
+	//load Game Object 
+	GameObject* sun = new GameObject();
+	sun->transform->pos = vec3(-80,-80,200);
+	sun->transform->scale = vec3(20, 20, 20);
+	MeshRenderer* sun_renderer = new MeshRenderer(EVertexFormat::XYZ_UV, sun_sphere, mat_sun);
+	sun->addComponent(sun_renderer);
+	addObject(sun);
+
+	//builds platform				buildPlatform(Texture*, Material*, vec3(pos), vec3(scale))
 	buildPlatform(tex_city_platform, mat_city_platform, vec3(0, 15, 50), vec3(100, 1, 100));
 
-	//builds skyscraper             buildSkyscraper(Texture*, Material*, vec3, vec3)
-	buildSkyscraper(tex_city_metal, mat_city_building, vec3(30, 0, 100), vec3(5, 50, 5));
+	int num_Buildings = 6;
 
+	for (int i = 0; i < num_Buildings; i++)
+	{
+		//builds skyscraper             buildSkyscraper(Texture*, Material*, vec3(pos), vec3(scale))
+		buildSkyscraper(tex_city_metal, mat_city_building, vec3(-80 + i * 30, 0, 100), vec3(5, 20 + rand() % 30, 5));
+		buildSkyscraper(tex_city_metal, mat_city_building, vec3(-80 + i * 30, 0, 50), vec3(5, 20 + rand() % 30, 5));
+	}
 }
 
 void World::buildSkyscraper(Texture* t, Material* m, vec3 pos, vec3 scale)
