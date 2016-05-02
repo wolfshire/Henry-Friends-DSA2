@@ -25,7 +25,7 @@ private:
 	glm::mat4 rotation;
 	
 	glm::vec2 mousePos;
-	glm::vec2 lastPos;
+	glm::vec2 midPoint;
 
 	bool hasMoved;
 };

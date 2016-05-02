@@ -16,7 +16,7 @@ public:
 	void update();
 	void render();
 
-	void spawnAsteroid(float,float,float);
+	void spawnAsteroid(Transform*);
 
 	void city();
 	void buildSkyscraper();

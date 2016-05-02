@@ -12,6 +12,7 @@ Camera::Camera()
 	type = EGameComponentType::CAMERA;
     w = 16;
     h = 9;
+	midPoint = glm::vec2(1280 / 2, 720 / 2);
 }
 
 Camera::Camera(int screenw, int screenh)
@@ -19,6 +20,7 @@ Camera::Camera(int screenw, int screenh)
     type = EGameComponentType::CAMERA;
     w = screenw;
     h = screenh;
+	midPoint = glm::vec2(w / 2, h / 2);
 }
 
 void Camera::setAspect(glm::vec2 aspect)
@@ -43,28 +45,31 @@ void Camera::update()
 
 	//view *= rotation;
     //view = glm::rotate(viewrotx, transform->rot.y, glm::vec3(1.0f, 0.0f, 0.0f));
-	float xSpeed = std::abs(mousePos.x - lastPos.x);
-	float ySpeed = std::abs(mousePos.y - lastPos.y);
+	float xSpeed = std::abs(mousePos.x - midPoint.x);
+	float ySpeed = std::abs(mousePos.y - midPoint.y);
 	float sensitivity = 1000.0f; //larger = slower
 
 	//cout << transform->rot.x << "," << transform->rot.y << "," << transform->rot.z << "," << transform->rot.w << endl;
 	
-	if (mousePos.x < lastPos.x) {
+	if (mousePos.x < midPoint.x) {
 		transform->rot *= glm::quat_cast(glm::rotate(rotation, xSpeed / sensitivity, glm::vec3(0, 1, 0)));
 	}
-	if (mousePos.x > lastPos.x) {
+	if (mousePos.x > midPoint.x) {
 		transform->rot *= glm::quat_cast(glm::rotate(rotation, -xSpeed / sensitivity, glm::vec3(0, 1, 0)));
 	}
-	if (mousePos.y > lastPos.y && glm::eulerAngles(transform->rot).x < 0.1f) {
+	if (mousePos.y > midPoint.y && glm::eulerAngles(transform->rot).x < 0.1f) {
 		transform->rot *= glm::quat_cast(glm::rotate(rotation, ySpeed / sensitivity, glm::vec3(1, 0, 0)));
 	}
-	if (mousePos.y < lastPos.y && glm::eulerAngles(transform->rot).x > -0.75f) {
+	if (mousePos.y < midPoint.y && glm::eulerAngles(transform->rot).x > -0.75f) {
 		transform->rot *= glm::quat_cast(glm::rotate(rotation, -ySpeed / sensitivity, glm::vec3(1, 0, 0)));
 	}
 
 	transform->rot.z = 0;
 
-	lastPos = mousePos;
+	//cout << "(mp)" << mousePos.x << "," << mousePos.y << endl;
+	//cout << "(cp)" << midPoint.x << "," << midPoint.y << endl;
+
+	Input::resetCursor();
 }
 
 glm::mat4 Camera::getProjectionMatrix() { return proj; }

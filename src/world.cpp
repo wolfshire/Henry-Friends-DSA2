@@ -44,10 +44,10 @@ void World::init()
     Camera::setMain(camera);
 
     //spawn locations
-    spawns.push_back(new Transform(vec3(30, 0, 0), vec3(0, 0, 0), vec3(1, 1, 1))); //city A >
-    spawns.push_back(new Transform(vec3(-30, 0, 0), vec3(0, 0, 0), vec3(1, 1, 1))); //city B <
-    spawns.push_back(new Transform(vec3(0, 0, 30), vec3(0, 0, 0), vec3(1, 1, 1))); //city C ^
-    spawns.push_back(new Transform(vec3(0, 0, -30), vec3(0, 0, 0), vec3(1, 1, 1))); //city D v
+    spawns.push_back(new Transform(vec3(100, -20, 0), vec3(0, 0, 0), vec3(4))); //city A >
+    spawns.push_back(new Transform(vec3(-100, -20, 0), vec3(0, 0, 0), vec3(4))); //city B <
+    spawns.push_back(new Transform(vec3(0, -20, 100), vec3(0, 0, 0), vec3(4))); //city C ^
+    spawns.push_back(new Transform(vec3(0, -20, -100), vec3(0, 0, 0), vec3(4))); //city D v
 
     //textures
     Texture* tex_missing = TextureManager::instance->getTexture("emma.png");
@@ -93,15 +93,23 @@ void World::init()
 
 void World::update()
 {
-	
-	int random = rand() % 100;
-	if (random == 0) {
-		spawnAsteroid(0, -100, 100);
-		cout << "spawn" << endl;
-	}
+	int random = rand() % 400;
+	if (random == 0)
+		spawnAsteroid(spawns[0]);
+	else if (random == 1)
+		spawnAsteroid(spawns[1]);
+	else if (random == 2)
+		spawnAsteroid(spawns[2]);
+	else if (random == 3)
+		spawnAsteroid(spawns[3]);
 
-    for (unsigned int i = 0; i < objects.size(); i++)
-        (*objects[i]).update();
+	for (unsigned int i = 0; i < objects.size(); i++) {
+		(*objects[i]).update();
+		//if the object has left the play area
+		if (objects[i]->transform->pos.y > 150 || objects[i]->transform->pos.y < -150 || objects[i]->transform->pos.x > 150 || objects[i]->transform->pos.x < -150 || objects[i]->transform->pos.z > 150 || objects[i]->transform->pos.z < -150) {
+			//delete object
+		}
+	}
 }
 
 void World::render()
@@ -110,14 +118,15 @@ void World::render()
         (*objects[i]).render();
 }
 
-void World::spawnAsteroid(float x, float y, float z)
+void World::spawnAsteroid(Transform* t)
 {
+	cout << "spawn asteroid" << endl;
 	Model* asteroidModel = new Model("asteroid");
 	Texture* tex_missing = TextureManager::instance->getTexture("emma.png");
 	Material* mat_missing = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_missing);
 
 	GameObject* asteroid = new GameObject();
-	asteroid->transform->pos = vec3(x,y,z);
+	asteroid->transform = t;
 	MeshRenderer* asteroidRenderer = new MeshRenderer(XYZ_UV, asteroidModel, mat_missing);
 	Asteroid* asteroidComponent = new Asteroid();
 	asteroid->addComponent(asteroidComponent);

@@ -1,7 +1,10 @@
-﻿Build started 4/28/2016 12:12:33 PM.
+﻿Build started 5/2/2016 12:38:58 PM.
      1>Project "C:\Users\Wolfshire\Desktop\DSA2\henry-friends-dsa2\OnePunchCommand.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt src\world.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt src\camera.cpp src\world.cpp
+         camera.cpp
+     1>src\camera.cpp(28): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+     1>src\camera.cpp(29): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
          world.cpp
      1>src\world.cpp(32): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
      1>src\world.cpp(38): warning C4316: 'Camera': object allocated on the heap may not be aligned 16
@@ -35,13 +38,13 @@
          Release\vertex.obj
          Release\world.obj
          Generating code
-         2 of 2434 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+         2 of 2437 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
            0 functions were new in current compilation
-           9 functions had inline decision re-evaluated but remain unchanged
+           1 functions had inline decision re-evaluated but remain unchanged
          Finished generating code
          OnePunchCommand.vcxproj -> C:\Users\Wolfshire\Desktop\DSA2\henry-friends-dsa2\Release\OnePunchCommand.exe
      1>Done Building Project "C:\Users\Wolfshire\Desktop\DSA2\henry-friends-dsa2\OnePunchCommand.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:01.71
+Time Elapsed 00:00:02.07
