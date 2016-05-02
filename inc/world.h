@@ -2,6 +2,8 @@
 #include <vector>
 #include "gameobject.h"
 #include "transform.h"
+#include "texture.h"
+#include "material.h"
 using namespace std;
 
 class World
@@ -18,8 +20,9 @@ public:
 
 	void spawnAsteroid(Transform*);
 
-	void city();
-	void buildSkyscraper();
+	void buildCity();
+	void buildSkyscraper(Texture*, Material*, vec3, vec3);
+	void buildPlatform(Texture*, Material*, vec3, vec3);
 private:
 	vector<GameObject*> objects;
     vector<Transform*> spawns;

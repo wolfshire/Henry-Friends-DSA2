@@ -15,6 +15,7 @@ public:
     void update() override;
     bool hasChanged();
     void setParent(Transform*);
+	void setTransform(Transform*);
     glm::mat4 getTransformation();
     glm::mat4 getParentMatrix();
 

@@ -35,6 +35,7 @@ void World::init()
     //objects
     GameObject* cam = new GameObject();
     cam->transform->pos.z = -10;
+	cam->transform->pos.y = -30; 
 	//cam->transform->rot = glm::quat(0, 0, 0, 1);
     Camera* camera = new Camera();
     FlyMove* flymove = new FlyMove();
@@ -66,7 +67,8 @@ void World::init()
     Model* mod_cube = new Model("cube");
 	Model* fistModel = new Model("cube");
 
-	city();
+	//builds the City
+	buildCity();
 
 	GameObject* fist = new GameObject();
 	fist->transform->scale = vec3(.5, .9, .5);
@@ -77,6 +79,7 @@ void World::init()
 	fist->addComponent(fistRenderer);
 	addObject(fist);
 	fistIndex = objects.size() - 1;
+	
 
     /*GameObject* parent = new GameObject();
     parent->transform->pos = vec3(3, 3, 3);
@@ -113,8 +116,10 @@ void World::update()
 		}
 	}
 	if (Input::getKeyDown(GLFW_KEY_E)) {
-		objects[fistIndex]->transform = objects[0]->transform;
-		//cout << "e pressed" << endl;
+		//punch	
+	objects[fistIndex]->transform->setTransform(Camera::getMain()->transform);
+		
+	
 	}
 }
 
@@ -128,7 +133,7 @@ void World::spawnAsteroid(Transform* t)
 {
 	cout << "spawn asteroid" << endl;
 	Model* asteroidModel = new Model("asteroid");
-	Texture* tex_missing = TextureManager::instance->getTexture("emma.png");
+	Texture* tex_missing = TextureManager::instance->getTexture("meteorite.png");
 	Material* mat_missing = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_missing);
 
 	GameObject* asteroid = new GameObject();
@@ -141,56 +146,81 @@ void World::spawnAsteroid(Transform* t)
 }
 
 //creating city
-void World::city()
+void World::buildCity()
 {
 	//load city model
 	Model* city_cube = new Model("cube");
+	Model* sun_sphere = new Model("asteroid");
 
 	//city texture
 	Texture* tex_city = TextureManager::instance->getTexture("emma.png");
-	Texture* tex_city_platform = TextureManager::instance->getTexture("platform.png");
+	Texture* tex_city_platform = TextureManager::instance->getTexture("asphalt.png");
 	Texture* tex_city_metal = TextureManager::instance->getTexture("metal.png");
+	Texture* tex_sun = TextureManager::instance->getTexture("yellow.png");
 
 	//city material
 	Material* mat_city = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_city);
 	Material* mat_city_platform = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_city_platform);
 	Material* mat_city_building = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_city_metal);
+	Material* mat_sun = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_sun);
 
+	//load Game Object 
+	GameObject* sun = new GameObject();
+	sun->transform->pos = vec3(-80,-80,200);
+	sun->transform->scale = vec3(20, 20, 20);
+	MeshRenderer* sun_renderer = new MeshRenderer(EVertexFormat::XYZ_UV, sun_sphere, mat_sun);
+	sun->addComponent(sun_renderer);
+	addObject(sun);
 
-	//create test cube
-	GameObject* blue = new GameObject();
-	blue->transform->pos = vec3(0,0,100);
-	blue->transform->scale = vec3(3, 3, 3);
-	MeshRenderer* blueRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, city_cube, mat_city);
-	blue->addComponent(blueRenderer);
-	addObject(blue);
+	//builds platform				buildPlatform(Texture*, Material*, vec3(pos), vec3(scale))
+	buildPlatform(tex_city_platform, mat_city_platform, vec3(0, 15, 50), vec3(100, 1, 100));
 
-	//create city platform
-	GameObject* platform = new GameObject();
-	platform->transform->pos = vec3(0, 15, 50);
-	platform->transform->scale = vec3(100, 1, 100);
-	MeshRenderer* platRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, city_cube, mat_city_platform);
-	platform->addComponent(platRenderer);
-	addObject(platform);
+	int num_Buildings = 6;
 
-	//create building
-	GameObject* building1 = new GameObject();
-	building1->transform->pos = vec3(30, 0, 100);
-	building1->transform->scale = vec3(5, 50, 5);
-	MeshRenderer* buildingRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, city_cube, mat_city_building);
-	building1->addComponent(buildingRenderer);
-	addObject(building1);
-
-	//create building
-	GameObject* building2 = new GameObject();
-	building2->transform->pos = vec3(-30, 0, 100);
-	building2->transform->scale = vec3(5, 30, 5);
-	MeshRenderer* buildingRenderer2 = new MeshRenderer(EVertexFormat::XYZ_UV, city_cube, mat_city_building);
-	building2->addComponent(buildingRenderer2);
-	addObject(building2);
+	for (int i = 0; i < num_Buildings; i++)
+	{
+		//builds skyscraper             buildSkyscraper(Texture*, Material*, vec3(pos), vec3(scale))
+		buildSkyscraper(tex_city_metal, mat_city_building, vec3(-80 + i * 30, 0, 100), vec3(5, 20 + rand() % 30, 5));
+		buildSkyscraper(tex_city_metal, mat_city_building, vec3(-80 + i * 30, 0, 50), vec3(5, 20 + rand() % 30, 5));
+	}
 }
 
-void World::buildSkyscraper()
+void World::buildSkyscraper(Texture* t, Material* m, vec3 pos, vec3 scale)
 {
-	//nothin' yet
+	//load city model
+	Model* city_Cube = new Model("cube");
+
+	//load the texture
+	Texture* city_Texture = t;
+
+	//load the material
+	Material* city_Material = m;
+
+	//load Game Object 
+	GameObject* building = new GameObject();
+	building->transform->pos = pos;
+	building->transform->scale = scale;
+	MeshRenderer* renderer = new MeshRenderer(EVertexFormat::XYZ_UV, city_Cube, city_Material);
+	building->addComponent(renderer);
+	addObject(building);
 }
+void World::buildPlatform(Texture* t, Material* m, vec3 pos, vec3 scale)
+{
+	//load  model
+	Model* platform_Cube = new Model("cube");
+
+	//load the texture
+	Texture* platform_Texture = t;
+
+	//load the material
+	Material* platform_Material = m;
+
+	//load Game Object 
+	GameObject* platform = new GameObject();
+	platform->transform->pos = pos;
+	platform->transform->scale = scale;
+	MeshRenderer* renderer = new MeshRenderer(EVertexFormat::XYZ_UV, platform_Cube, platform_Material);
+	platform->addComponent(renderer);
+	addObject(platform);
+}
+
