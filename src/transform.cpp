@@ -2,9 +2,9 @@
 
 Transform::Transform()
 {
-	pos = glm::vec3(0.0, 0.0, 0.0);
+    pos = glm::vec3(0.0, 0.0, 0.0);
     rot = glm::quat();
-	scale = glm::vec3(1.0, 1.0, 1.0);
+    scale = glm::vec3(1.0, 1.0, 1.0);
 
     oldPos = pos;
     oldRot = rot;
@@ -28,14 +28,15 @@ Transform::Transform(glm::vec3 p, glm::vec3 r, glm::vec3 s)
     parentMatrix = glm::mat4();
 }
 
-void Transform::setTransform(Transform* other) {
-	pos.x = other->pos.x;
-	pos.y = other->pos.y;
-	pos.z = other->pos.z;
-	rot.x = other->rot.x;
-	rot.y = other->rot.y;
-	rot.z = other->rot.z;
-	rot.w = other->rot.w;
+void Transform::setTransform(Transform* other)
+{
+    pos.x = other->pos.x;
+    pos.y = other->pos.y;
+    pos.z = other->pos.z;
+    rot.x = other->rot.x;
+    rot.y = other->rot.y;
+    rot.z = other->rot.z;
+    rot.w = other->rot.w;
 }
 
 Transform::~Transform() {}

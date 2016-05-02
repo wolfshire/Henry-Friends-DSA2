@@ -16,7 +16,7 @@ public:
 
 	//gets the first component from the list of type T
 	template <typename T>
-	T getComponent(T);
+	T* getComponent();
 
 	void init();
 	void update();

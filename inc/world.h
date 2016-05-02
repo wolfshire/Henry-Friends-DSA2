@@ -13,6 +13,7 @@ public:
 	~World();
 
 	void addObject(GameObject*);
+    GameObject* removeObjectAt(int);
 
 	void init();
 	void update();
