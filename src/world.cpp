@@ -12,6 +12,7 @@
 #include "transform.h"
 #include "fist.h"
 #include <iostream>
+#include "input.h"
 
 #include <stdio.h>      /* printf, NULL */
 #include <stdlib.h>     /* srand, rand */
@@ -75,6 +76,7 @@ void World::init()
 	fist->addComponent(fistComponent);
 	fist->addComponent(fistRenderer);
 	addObject(fist);
+	fistIndex = objects.size() - 1;
 
     /*GameObject* parent = new GameObject();
     parent->transform->pos = vec3(3, 3, 3);
@@ -109,6 +111,10 @@ void World::update()
 		if (objects[i]->transform->pos.y > 150 || objects[i]->transform->pos.y < -150 || objects[i]->transform->pos.x > 150 || objects[i]->transform->pos.x < -150 || objects[i]->transform->pos.z > 150 || objects[i]->transform->pos.z < -150) {
 			//delete object
 		}
+	}
+	if (Input::getKeyDown(GLFW_KEY_E)) {
+		objects[fistIndex]->transform = objects[0]->transform;
+		//cout << "e pressed" << endl;
 	}
 }
 

@@ -4,6 +4,7 @@
 #include "gameobject.h"
 #include "meshrenderer.h"
 #include "asteroid.h"
+#include "fist.h"
 #include "transform.h"
 
 GameObject::GameObject()
@@ -52,6 +53,9 @@ void GameObject::init()
         case ASTEROID:
             dynamic_cast<Asteroid*>(components[i])->init();
             continue;
+		case FIST:
+			dynamic_cast<Fist*>(components[i])->init();
+			continue;
 		default:
 			cout << "Error: Unknown component type: " << components[i]->type << endl;
 			continue;
@@ -77,6 +81,9 @@ void GameObject::update()
         case ASTEROID:
             dynamic_cast<Asteroid*>(components[i])->update();
             continue;
+		case FIST:
+			dynamic_cast<Fist*>(components[i])->update();
+			continue;
 		default:
 			//cout << "Error: Unknown component type: " << components[i]->type << endl;
 			continue;

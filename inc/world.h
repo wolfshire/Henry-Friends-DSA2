@@ -23,4 +23,5 @@ public:
 private:
 	vector<GameObject*> objects;
     vector<Transform*> spawns;
+	int fistIndex;
 };

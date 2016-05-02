@@ -1,5 +1,6 @@
 #pragma once
 #include "gamec.h"
+#include <glm\gtc\matrix_transform.hpp>
 
 class Transform;
 class Fist : public GameComponent
