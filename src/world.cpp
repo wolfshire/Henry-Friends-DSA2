@@ -15,6 +15,7 @@
 #include <iostream>
 #include "input.h"
 #include "move.h"
+#include "gametime.h"
 
 #include <stdio.h>      /* printf, NULL */
 #include <stdlib.h>     /* srand, rand */
@@ -47,8 +48,8 @@ void World::init()
 
     //objects
     GameObject* cam = new GameObject();
-    cam->transform->pos.z = -10;
-    cam->transform->pos.y = -50;
+    cam->transform->pos.z = -75;
+    cam->transform->pos.y = -75;
     Camera* camera = new Camera();
     FlyMove* flymove = new FlyMove();
     cam->addComponent(camera);
@@ -117,19 +118,22 @@ void World::init()
 
 void World::update()
 {
-    for (unsigned int i = 0; i < objects.size(); i++)
-    {
-        (*objects[i]).update();
-        //if the object has left the play area
-        if (objects[i]->transform->pos.y > 150 || objects[i]->transform->pos.y < -150 || objects[i]->transform->pos.x > 150 || objects[i]->transform->pos.x < -150 || objects[i]->transform->pos.z > 150 || objects[i]->transform->pos.z < -150)
-        {
-            //delete object
-        }
-    }
+	spawnTimer += GameTime::dt;
 
-    //spawn asteroids
-    int random = rand() % 400;
-    //spawnAsteroid(spawns[0]);
+    //set spawn vector
+	spawns.clear();
+	for (int i = 0; i < objects.size(); i++)
+		if ((*objects[i]).tag == EGameObjectType::GO_CITY)
+			spawns.push_back((*objects[i]).transform->pos + vec3(0, -100, 0));
+	//spawn asteroid
+	if (spawnTimer > spawnFrequency && spawns.size() > 0) {
+		cout << "spawn asteroid" << endl;
+		spawnTimer = 0;
+		int random = rand() % spawns.size();
+		spawnAsteroid(spawns[random]);
+		if(spawnFrequency > .5f)
+			spawnFrequency -= 0.025f;
+	}
 
     if (Input::getKeyDown(GLFW_KEY_E))
     {
@@ -142,9 +146,9 @@ void World::update()
     {
         (*objects[i]).update();
         //if the object has left the play area
-        if (objects[i]->transform->pos.y > 150 || objects[i]->transform->pos.y < -150 ||
-            objects[i]->transform->pos.x > 150 || objects[i]->transform->pos.x < -150 ||
-            objects[i]->transform->pos.z > 150 || objects[i]->transform->pos.z < -150)
+        if (objects[i]->transform->pos.y > 300 || objects[i]->transform->pos.y < -300 ||
+            objects[i]->transform->pos.x > 300 || objects[i]->transform->pos.x < -300 ||
+            objects[i]->transform->pos.z > 300 || objects[i]->transform->pos.z < -300)
         {
             removeObjectAt(i);
             i--;
@@ -173,7 +177,7 @@ void World::update()
 
             if (bc == nullptr) continue;
 
-            if (c->isColliding(bc))
+            if (c->isColliding(bc) && c->gameObject->tag != bc->gameObject->tag)
             {
 				//c->gameObject->tag == EGameObjectType::GO_CITY
 				//bc...
@@ -217,14 +221,15 @@ void World::render()
         (*objects[i]).render();
 }
 
-void World::spawnAsteroid(Transform* t)
+void World::spawnAsteroid(vec3 pos)
 {
     Model* asteroidModel = new Model("asteroid");
     Texture* tex_missing = TextureManager::instance->getTexture("meteorite.png");
     Material* mat_missing = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_missing);
 
     GameObject* asteroid = new GameObject();
-    asteroid->transform = t;
+	asteroid->transform->scale = vec3(3);
+	asteroid->transform->pos = pos;
     MeshRenderer* asteroidRenderer = new MeshRenderer(XYZ_UV, asteroidModel, mat_missing);
     BoxCollider* bc = new BoxCollider(asteroidModel->getMesh());
     asteroid->addComponent(bc);
@@ -291,9 +296,9 @@ void World::buildCity()
         //builds skyscraper             buildSkyscraper(Texture*, Material*, vec3(pos), vec3(scale))
         buildSkyscraper(tex_city_metal, mat_city_building, vec3(-80 + i * 30, 0, 100), vec3(5, 20 + rand() % 30, 5));
         buildSkyscraper(tex_city_metal, mat_city_building, vec3(-80 + i * 30, 0, 50), vec3(5, 20 + rand() % 30, 5));
-        buildSkyscraper(tex_city_metal, mat_city_building, vec3(-80 + i * 30, 0, 0), vec3(5, 20 + rand() % 20, 5));
-        buildSkyscraper(tex_city_metal, mat_city_building, vec3(-80 + i * 30, 0, -100), vec3(5, 20 + rand() % 30, 5));
-        buildSkyscraper(tex_city_metal, mat_city_building, vec3(-80 + i * 30, 0, -50), vec3(5, 20 + rand() % 30, 5));
+        //buildSkyscraper(tex_city_metal, mat_city_building, vec3(-80 + i * 30, 0, 0), vec3(5, 20 + rand() % 20, 5));
+        //buildSkyscraper(tex_city_metal, mat_city_building, vec3(-80 + i * 30, 0, -100), vec3(5, 20 + rand() % 30, 5));
+        //buildSkyscraper(tex_city_metal, mat_city_building, vec3(-80 + i * 30, 0, -50), vec3(5, 20 + rand() % 30, 5));
     }
 }
 

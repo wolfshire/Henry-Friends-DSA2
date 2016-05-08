@@ -10,5 +10,5 @@ public:
     void init() override;
     void update() override;
 
-    float moveSpeed = 5.0f;
+    float moveSpeed = 10.0f;
 };

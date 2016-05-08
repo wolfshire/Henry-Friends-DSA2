@@ -19,7 +19,7 @@ public:
 	void update();
 	void render();
 
-	void spawnAsteroid(Transform*);
+	void spawnAsteroid(vec3);
 	void punchFist(Transform*);
 
 	void buildCity();
@@ -27,7 +27,7 @@ public:
 	void buildPlatform(Texture*, Material*, vec3, vec3);
 private:
 	vector<GameObject*> objects;
-    vector<Transform*> spawns;
+    vector<vec3> spawns;
 	int fistIndex;
 	int numAsteroids;
 
@@ -35,4 +35,7 @@ private:
     Material* mat_red;
     Material* mat_green;
 	Material* mat_sky;
+
+	float spawnTimer = 0.0f;
+	float spawnFrequency = 3.0f;
 };
