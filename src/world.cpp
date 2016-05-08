@@ -91,7 +91,7 @@ void World::init()
     fist->addComponent(fistComponent);
     fist->addComponent(fistRenderer);
     addObject(fist);
-    fistIndex = objects.size() - 1;
+
 
 	//skybox loading 
 	/*

@@ -128,6 +128,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\boxcollider.cpp" />
+    <ClCompile Include="src\collider.cpp" />
     <ClCompile Include="src\fist.cpp" />
     <ClCompile Include="src\asteroid.cpp" />
     <ClCompile Include="src\camera.cpp" />
@@ -147,6 +149,7 @@
     <ClCompile Include="src\model.cpp" />
     <ClCompile Include="src\shader.cpp" />
     <ClCompile Include="src\shadermanager.cpp" />
+    <ClCompile Include="src\spherecollider.cpp" />
     <ClCompile Include="src\texture.cpp" />
     <ClCompile Include="src\texturemanager.cpp" />
     <ClCompile Include="src\transform.cpp" />
@@ -154,6 +157,8 @@
     <ClCompile Include="src\world.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="inc\boxcollider.h" />
+    <ClInclude Include="inc\collider.h" />
     <ClInclude Include="inc\fist.h" />
     <ClInclude Include="inc\asteroid.h" />
     <ClInclude Include="inc\camera.h" />
@@ -176,6 +181,7 @@
     <ClInclude Include="inc\model.h" />
     <ClInclude Include="inc\shader.h" />
     <ClInclude Include="inc\shadermanager.h" />
+    <ClInclude Include="inc\spherecollider.h" />
     <ClInclude Include="inc\texture.h" />
     <ClInclude Include="inc\texturemanager.h" />
     <ClInclude Include="inc\transform.h" />

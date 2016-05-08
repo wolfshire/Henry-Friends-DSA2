@@ -24,4 +24,5 @@ void Asteroid::init()
 void Asteroid::update()
 {
     transform->pos.y += moveSpeed * GameTime::dt;
+	//transform->pos.x += moveSpeed * GameTime::dt;
 }
