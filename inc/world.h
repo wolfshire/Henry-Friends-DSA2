@@ -28,4 +28,5 @@ private:
 	vector<GameObject*> objects;
     vector<Transform*> spawns;
 	int fistIndex;
+	int numAsteroids;
 };

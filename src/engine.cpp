@@ -104,7 +104,8 @@ void Engine::init()
     FontManager::init();
     GameTime::init();
     ShaderManager::init();
-    world.init();
+
+	world.init();
 
     font = FontManager::getDefaultFont();
 
