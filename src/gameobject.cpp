@@ -26,14 +26,13 @@ void GameObject::addComponent(GameComponent* igc)
 	components.push_back(igc);
 }
 
-template<typename T>
-T* GameObject::getComponent()
+GameComponent* GameObject::getComponent(EGameComponentType type)
 {
-	for (int i = 0; i < components.size(); i++)
-		if (typeid(comp).name() == typeid(components[i]).name())
+	for (unsigned int i = 0; i < components.size(); i++)
+		if (components[i]->type == type)
 			return components[i];
 
-	return NULL;
+	return nullptr;
 }
 
 void GameObject::init()

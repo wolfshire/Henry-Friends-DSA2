@@ -14,6 +14,8 @@ public:
     virtual bool isColliding(Collider*);
 
     void setMesh(Mesh*);
+
+    bool colliding;
 protected:
     virtual void calculate();
 

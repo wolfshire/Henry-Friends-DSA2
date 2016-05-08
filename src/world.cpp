@@ -28,7 +28,7 @@ void World::addObject(GameObject* o)
     objects.push_back(o);
 }
 
-GameObject* World::removeObjectAt(int index)
+GameObject* World::removeObjectAt(unsigned int index)
 {
     if (index < 0 || index >= objects.size())
         throw new exception("Index out of bounds: " + index);
@@ -42,7 +42,7 @@ GameObject* World::removeObjectAt(int index)
 void World::init()
 {
     //random seed
-    srand(time(NULL));
+    srand((unsigned int)time(NULL));
 
     //objects
     GameObject* cam = new GameObject();
@@ -70,9 +70,9 @@ void World::init()
 
     //materials
     Material* mat_missing = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_missing);
-    Material* mat_blue = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_blue);
-    Material* mat_green = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_green);
-    Material *mat_red = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_red);
+    mat_blue = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_blue);
+    mat_green = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_green);
+    mat_red = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_red);
 
     //models
     Model* mod_cube = new Model("cube");
@@ -90,20 +90,6 @@ void World::init()
     fist->addComponent(fistRenderer);
     addObject(fist);
     fistIndex = objects.size() - 1;
-
-    /*GameObject* parent = new GameObject();
-    parent->transform->pos = vec3(3, 3, 3);
-    MeshRenderer* parentRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, mod_cube, mat_red);
-    parent->addComponent(parentRenderer);
-    GameObject* child = new GameObject();
-    child->transform->pos = vec3(1, 1, 1);
-    MeshRenderer* childRenderer = new MeshRenderer(EVertexFormat::XYZ_UV, mod_cube, mat_missing);
-    child->addComponent(childRenderer);
-    parent->addChild(child);
-    addObject(parent);*/
-
-    /*for (unsigned int i = 0; i < objects.size(); i++)
-        (*objects[i]).init();*/
 }
 
 void World::update()
@@ -131,7 +117,7 @@ void World::update()
     }
 
     //update all game objects
-    for (unsigned int i = objects.size() - 1; i >= 0; i--)
+    for (unsigned int i = 0; i < objects.size(); i++)
     {
         (*objects[i]).update();
         //if the object has left the play area
@@ -140,15 +126,51 @@ void World::update()
             objects[i]->transform->pos.z > 150 || objects[i]->transform->pos.z < -150)
         {
             removeObjectAt(i);
+            i--;
         }
     }
 
     //physics
     for (unsigned int i = 0; i < objects.size(); i++)
     {
-        BoxCollider* c = (BoxCollider*)(*objects[i]).getComponent<Collider>();
+        BoxCollider* c = (BoxCollider*)(*objects[i]).getComponent(EGameComponentType::COLLIDER);
 
+        if (c == nullptr) continue;
 
+        for (unsigned int k = i + 1; k < objects.size(); k++)
+        {
+            BoxCollider* bc = (BoxCollider*)(*objects[k]).getComponent(EGameComponentType::COLLIDER);
+
+            if (bc == nullptr) continue;
+
+            if (c->isColliding(bc))
+            {
+                c->colliding = true;
+                bc->colliding = true;
+            }
+            else
+            {
+                bc->colliding = false;
+            }
+        }
+    }
+
+    for (unsigned int i = 0; i < objects.size(); i++)
+    {
+        BoxCollider* c = (BoxCollider*)(*objects[i]).getComponent(EGameComponentType::COLLIDER);
+
+        if (c == nullptr) continue;
+
+        if (c->colliding)
+        {
+            MeshRenderer* mr = (MeshRenderer*)(*objects[i]).getComponent(EGameComponentType::MESH_RENDERER);
+            mr->setMaterial(mat_blue);
+        }
+        else
+        {
+            MeshRenderer* mr = (MeshRenderer*)(*objects[i]).getComponent(EGameComponentType::MESH_RENDERER);
+            mr->clearMaterial();
+        }
     }
 }
 

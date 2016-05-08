@@ -17,7 +17,7 @@ void BoxCollider::calculate()
     max = max = mesh->pos[0];
 
     //find min and max
-    for (int i = 1; i < mesh->pos.size(); i++)
+    for (unsigned int i = 1; i < mesh->pos.size(); i++)
     {
         //set max
         if (mesh->pos[i].x > max.x) max.x = mesh->pos[i].x;

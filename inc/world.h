@@ -13,7 +13,7 @@ public:
 	~World();
 
 	void addObject(GameObject*);
-    GameObject* removeObjectAt(int);
+    GameObject* removeObjectAt(unsigned int);
 
 	void init();
 	void update();
@@ -28,4 +28,8 @@ private:
 	vector<GameObject*> objects;
     vector<Transform*> spawns;
 	int fistIndex;
+
+    Material* mat_blue;
+    Material* mat_red;
+    Material* mat_green;
 };

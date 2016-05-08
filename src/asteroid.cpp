@@ -14,6 +14,13 @@ Asteroid::Asteroid(float speed)
 	moveSpeed = speed;
 }
 
+void Asteroid::init()
+{
+    transform = gameObject->transform;
+
+    gameObject->tag = EGameObjectType::GO_ASTEROID;
+}
+
 void Asteroid::update()
 {
     transform->pos.y += moveSpeed * GameTime::dt;

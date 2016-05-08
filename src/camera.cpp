@@ -25,8 +25,8 @@ Camera::Camera(int screenw, int screenh)
 
 void Camera::setAspect(glm::vec2 aspect)
 {
-    w = aspect.x;
-    h = aspect.y;
+    w = (int)aspect.x;
+    h = (int)aspect.y;
 }
 
 Camera* Camera::getMain() { return main; }

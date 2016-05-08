@@ -12,7 +12,7 @@ MeshRenderer::MeshRenderer(EVertexFormat fmt, Model* model, Material* mat)
 
     format = fmt;
     mesh = model->getMesh();
-    material = mat;
+    defMat = material = mat;
     bufferUsageHint = GL_STREAM_DRAW;
     drawMode = GL_TRIANGLES;
 
@@ -26,6 +26,12 @@ MeshRenderer::~MeshRenderer()
 {
     delete mesh;
     delete material;
+
+    if (defMat != nullptr)
+    {
+        delete defMat;
+    }
+
     delete transform;
 }
 
@@ -223,4 +229,14 @@ void MeshRenderer::render()
         value_ptr(transform->getTransformation()));
 
     glDrawElements(drawMode, mesh->getNumIndices(), GL_UNSIGNED_INT, NULL);
+}
+
+void MeshRenderer::setMaterial(Material* newMat)
+{
+    material = newMat;
+}
+
+void MeshRenderer::clearMaterial()
+{
+    material = defMat;
 }

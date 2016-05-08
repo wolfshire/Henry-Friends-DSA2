@@ -22,7 +22,7 @@ void Collider::update()
 
 bool Collider::isColliding(Collider* other)
 {
-
+    return false;
 }
 
 void Collider::setMesh(Mesh* newMesh)
