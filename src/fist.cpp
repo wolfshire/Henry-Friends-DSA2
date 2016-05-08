@@ -16,7 +16,7 @@ Fist::Fist(float speed)
 
 void Fist::update()
 {
-	transform->pos += glm::vec3(glm::vec4(0, 0, moveSpeed * GameTime::dt, 0) * transform->rot);
+	transform->pos += glm::vec3(glm::vec4(0, 0, 5 + moveSpeed * GameTime::dt, 0) * transform->rot);
 }
 
 void Fist::punch() 

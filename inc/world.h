@@ -29,8 +29,10 @@ private:
 	vector<GameObject*> objects;
     vector<Transform*> spawns;
 	int fistIndex;
+	int numAsteroids;
 
     Material* mat_blue;
     Material* mat_red;
     Material* mat_green;
+	Material* mat_sky;
 };
