@@ -123,6 +123,16 @@ void World::init()
 
 void World::update()
 {
+    for (unsigned int i = 0; i < objects.size(); i++)
+    {
+        (*objects[i]).update();
+        //if the object has left the play area
+        if (objects[i]->transform->pos.y > 150 || objects[i]->transform->pos.y < -150 || objects[i]->transform->pos.x > 150 || objects[i]->transform->pos.x < -150 || objects[i]->transform->pos.z > 150 || objects[i]->transform->pos.z < -150)
+        {
+            //delete object
+        }
+    }
+
     //spawn asteroids
     int random = rand() % 400;
     if (random == 0)
