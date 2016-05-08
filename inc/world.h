@@ -19,6 +19,7 @@ public:
 	void render();
 
 	void spawnAsteroid(Transform*);
+	void punchFist(Transform*);
 
 	void buildCity();
 	void buildSkyscraper(Texture*, Material*, vec3, vec3);

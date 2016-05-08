@@ -61,24 +61,14 @@ void World::init()
     Material* mat_missing = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_missing);
     Material* mat_blue = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_blue);
     Material* mat_green = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_green);
-	Material *mat_red = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_red);
-
-    //models
-    Model* mod_cube = new Model("cube");
-	Model* fistModel = new Model("cube");
+	Material* mat_red = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_red);
 
 	//builds the City
 	buildCity();
 
-	GameObject* fist = new GameObject();
-	fist->transform->scale = vec3(.5, .9, .5);
-	fist->transform->pos = vec3(0, 1, -10); //right below camera
-	MeshRenderer* fistRenderer = new MeshRenderer(XYZ_UV, fistModel, mat_red);
-	Fist* fistComponent = new Fist();
-	fist->addComponent(fistComponent);
-	fist->addComponent(fistRenderer);
-	addObject(fist);
-	fistIndex = objects.size() - 1;
+
+    //models
+    Model* mod_cube = new Model("cube");
 	
 
     /*GameObject* parent = new GameObject();
@@ -117,8 +107,7 @@ void World::update()
 	}
 	if (Input::getKeyDown(GLFW_KEY_E)) {
 		//punch	
-	objects[fistIndex]->transform->setTransform(Camera::getMain()->transform);
-		
+		punchFist(Camera::getMain()->transform);
 	
 	}
 }
@@ -143,6 +132,24 @@ void World::spawnAsteroid(Transform* t)
 	asteroid->addComponent(asteroidComponent);
 	asteroid->addComponent(asteroidRenderer);
 	addObject(asteroid);
+}
+
+void World::punchFist(Transform* t) {
+
+	Texture* tex_red = TextureManager::instance->getTexture("red.png");
+	Material* mat_red = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_red);
+
+	Model* fistModel = new Model("cube");
+	GameObject* fist = new GameObject();
+	fist->transform->scale = vec3(.5, .9, .5);
+	fist->transform->pos = vec3(0, 1, -10); //right below camera
+	MeshRenderer* fistRenderer = new MeshRenderer(XYZ_UV, fistModel, mat_red);
+	Fist* fistComponent = new Fist();
+	fist->addComponent(fistComponent);
+	fist->addComponent(fistRenderer);
+	addObject(fist);
+	fistIndex = objects.size() - 1;
+	fist->transform->setTransform(t);
 }
 
 //creating city
