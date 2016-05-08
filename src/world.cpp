@@ -94,12 +94,6 @@ void World::init()
 
 void World::update()
 {
-    if (Input::getKeyDown(GLFW_KEY_E))
-    {
-        //punch	
-        objects[fistIndex]->transform->setTransform(Camera::getMain()->transform);
-    }
-
     //spawn asteroids
     int random = rand() % 400;
     if (random == 0)
@@ -113,7 +107,8 @@ void World::update()
 
     if (Input::getKeyDown(GLFW_KEY_E))
     {
-        objects[fistIndex]->transform = objects[0]->transform;
+        //punch	
+        punchFist(Camera::getMain()->transform);
     }
 
     //update all game objects
@@ -193,6 +188,25 @@ void World::spawnAsteroid(Transform* t)
     asteroid->addComponent(asteroidComponent);
     asteroid->addComponent(asteroidRenderer);
     addObject(asteroid);
+}
+
+void World::punchFist(Transform* t)
+{
+
+    Texture* tex_red = TextureManager::instance->getTexture("red.png");
+    Material* mat_red = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_red);
+
+    Model* fistModel = new Model("cube");
+    GameObject* fist = new GameObject();
+    fist->transform->scale = vec3(.5, .9, .5);
+    fist->transform->pos = vec3(0, 1, -10); //right below camera
+    MeshRenderer* fistRenderer = new MeshRenderer(XYZ_UV, fistModel, mat_red);
+    Fist* fistComponent = new Fist();
+    fist->addComponent(fistComponent);
+    fist->addComponent(fistRenderer);
+    addObject(fist);
+    fistIndex = objects.size() - 1;
+    fist->transform->setTransform(t);
 }
 
 //creating city
