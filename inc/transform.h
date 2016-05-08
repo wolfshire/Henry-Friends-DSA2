@@ -10,7 +10,6 @@ public:
 	Transform();
     Transform(glm::vec3, glm::vec3, glm::vec3);
 	~Transform();
-    glm::mat4 getModelMatrix();
     void rotate(glm::vec3);
     void update() override;
     bool hasChanged();

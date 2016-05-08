@@ -1,6 +1,8 @@
 #pragma once
 #include <glm\gtc\matrix_transform.hpp>
 #include <vector>
+#include "gamectype.h"
+#include "gotype.h"
 using namespace std;
 
 class Transform;
@@ -15,8 +17,7 @@ public:
 	void addComponent(GameComponent*);
 
 	//gets the first component from the list of type T
-	template <typename T>
-	T getComponent(T);
+    GameComponent* getComponent(EGameComponentType);
 
 	void init();
 	void update();
@@ -29,6 +30,7 @@ public:
 	GameObject* getChild(int);
 
 	Transform* transform;
+    EGameObjectType tag = EGameObjectType::NOTAG;
 	
 private:
 	vector<GameComponent*> components;

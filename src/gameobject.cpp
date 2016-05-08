@@ -1,5 +1,6 @@
 #include <typeinfo>
 #include "camera.h"
+#include "collider.h"
 #include "flymove.h"
 #include "gameobject.h"
 #include "meshrenderer.h"
@@ -25,14 +26,13 @@ void GameObject::addComponent(GameComponent* igc)
 	components.push_back(igc);
 }
 
-template<typename T>
-inline T GameObject::getComponent(T comp)
+GameComponent* GameObject::getComponent(EGameComponentType type)
 {
-	for (int i = 0; i < components.size(); i++)
-		if (typeid(comp).name() == typeid(components[i]).name())
+	for (unsigned int i = 0; i < components.size(); i++)
+		if (components[i]->type == type)
 			return components[i];
 
-	return NULL;
+	return nullptr;
 }
 
 void GameObject::init()
@@ -56,6 +56,9 @@ void GameObject::init()
 		case FIST:
 			dynamic_cast<Fist*>(components[i])->init();
 			continue;
+        case COLLIDER:
+            dynamic_cast<Collider*>(components[i])->init();
+            continue;
 		default:
 			cout << "Error: Unknown component type: " << components[i]->type << endl;
 			continue;
@@ -84,6 +87,9 @@ void GameObject::update()
 		case FIST:
 			dynamic_cast<Fist*>(components[i])->update();
 			continue;
+        case COLLIDER:
+            dynamic_cast<Collider*>(components[i])->init();
+            continue;
 		default:
 			//cout << "Error: Unknown component type: " << components[i]->type << endl;
 			continue;

@@ -13,6 +13,7 @@ public:
 	~World();
 
 	void addObject(GameObject*);
+    GameObject* removeObjectAt(unsigned int);
 
 	void init();
 	void update();
@@ -28,5 +29,13 @@ private:
 	vector<GameObject*> objects;
     vector<Transform*> spawns;
 	int fistIndex;
+<<<<<<< HEAD
 	int numAsteroids;
+=======
+
+    Material* mat_blue;
+    Material* mat_red;
+    Material* mat_green;
+	Material* mat_sky;
+>>>>>>> e704e8ea8540283efc8b2b81914d12f3d797a891
 };

@@ -112,13 +112,14 @@ Input::Input() {}
 
 void Input::init(GLFWwindow* win)
 {
-	window = win;
+    window = win;
 
     setCursorMode(GLFW_CURSOR_DISABLED);
 }
 
-void Input::resetCursor() {
-	glfwSetCursorPos(window, 1280/2, 720/2);
+void Input::resetCursor()
+{
+    glfwSetCursorPos(window, 1280 / 2, 720 / 2);
 }
 
 void Input::update()
@@ -129,7 +130,7 @@ void Input::update()
 
     //store all current keys
     for (int i = 0; i < NUM_KEYS; i++)
-        cur[VALID_KEYS[i]] = glfwGetKey(window, VALID_KEYS[i]);
+        cur[VALID_KEYS[i]] = glfwGetKey(window, VALID_KEYS[i]) == GLFW_PRESS ? true : false;
 
     for (int i = 0; i < NUM_KEYS; i++)
     {
@@ -158,7 +159,7 @@ void Input::update()
 
 bool Input::getKey(int keycode)
 {
-	return glfwGetKey(window, keycode) == GLFW_PRESS;
+    return glfwGetKey(window, keycode) == GLFW_PRESS;
 }
 
 bool Input::getKeyUp(int keycode)
@@ -175,59 +176,59 @@ bool Input::getKeyDown(int keycode)
 
 char Input::getKeyChar(int keycode)
 {
-	bool upper = getKey(GLFW_KEY_LEFT_SHIFT) || getKey(GLFW_KEY_RIGHT_SHIFT);
+    bool upper = getKey(GLFW_KEY_LEFT_SHIFT) || getKey(GLFW_KEY_RIGHT_SHIFT);
 
-	switch (keycode)
-	{
-	case GLFW_KEY_A: return upper ? 'A' : 'a';
-	case GLFW_KEY_B: return upper ? 'B' : 'b';
-	case GLFW_KEY_C: return upper ? 'C' : 'c';
-	case GLFW_KEY_D: return upper ? 'D' : 'd';
-	case GLFW_KEY_E: return upper ? 'E' : 'e';
-	case GLFW_KEY_F: return upper ? 'F' : 'f';
-	case GLFW_KEY_G: return upper ? 'G' : 'g';
-	case GLFW_KEY_H: return upper ? 'H' : 'h';
-	case GLFW_KEY_I: return upper ? 'I' : 'i';
-	case GLFW_KEY_J: return upper ? 'J' : 'j';
-	case GLFW_KEY_K: return upper ? 'K' : 'k';
-	case GLFW_KEY_L: return upper ? 'L' : 'l';
-	case GLFW_KEY_M: return upper ? 'M' : 'm';
-	case GLFW_KEY_N: return upper ? 'N' : 'n';
-	case GLFW_KEY_O: return upper ? 'O' : 'o';
-	case GLFW_KEY_P: return upper ? 'P' : 'p';
-	case GLFW_KEY_Q: return upper ? 'Q' : 'q';
-	case GLFW_KEY_R: return upper ? 'R' : 'r';
-	case GLFW_KEY_S: return upper ? 'S' : 's';
-	case GLFW_KEY_T: return upper ? 'T' : 't';
-	case GLFW_KEY_U: return upper ? 'U' : 'u';
-	case GLFW_KEY_V: return upper ? 'V' : 'v';
-	case GLFW_KEY_W: return upper ? 'W' : 'w';
-	case GLFW_KEY_X: return upper ? 'X' : 'x';
-	case GLFW_KEY_Y: return upper ? 'Y' : 'y';
-	case GLFW_KEY_Z: return upper ? 'Z' : 'z';
-	case GLFW_KEY_1: return upper ? '!' : '1';
-	case GLFW_KEY_2: return upper ? '@' : '2';
-	case GLFW_KEY_3: return upper ? '#' : '3';
-	case GLFW_KEY_4: return upper ? '$' : '4';
-	case GLFW_KEY_5: return upper ? '%' : '5';
-	case GLFW_KEY_6: return upper ? '^' : '6';
-	case GLFW_KEY_7: return upper ? '&' : '7';
-	case GLFW_KEY_8: return upper ? '*' : '8';
-	case GLFW_KEY_9: return upper ? '(' : '9';
-	case GLFW_KEY_0: return upper ? ')' : '0';
-	case GLFW_KEY_GRAVE_ACCENT: return upper ? '~' : '`';
-	case GLFW_KEY_COMMA: return upper ? '<' : ',';
-	case GLFW_KEY_PERIOD: return upper ? '>' : '.';
-	case GLFW_KEY_SLASH: return upper ? '?' : '/';
-	case GLFW_KEY_SEMICOLON: return upper ? ':' : ';';
-	case GLFW_KEY_APOSTROPHE: return upper ? '"' : '\'';
-	case GLFW_KEY_LEFT_BRACKET: return upper ? '{' : '[';
-	case GLFW_KEY_RIGHT_BRACKET: return upper ? '}' : ']';
-	case GLFW_KEY_BACKSLASH: return upper ? '|' : '\\';
-	case GLFW_KEY_MINUS: return upper ? '_' : '-';
-	case GLFW_KEY_EQUAL: return upper ? '+' : '=';
-	default: return '\0';
-	}
+    switch (keycode)
+    {
+    case GLFW_KEY_A: return upper ? 'A' : 'a';
+    case GLFW_KEY_B: return upper ? 'B' : 'b';
+    case GLFW_KEY_C: return upper ? 'C' : 'c';
+    case GLFW_KEY_D: return upper ? 'D' : 'd';
+    case GLFW_KEY_E: return upper ? 'E' : 'e';
+    case GLFW_KEY_F: return upper ? 'F' : 'f';
+    case GLFW_KEY_G: return upper ? 'G' : 'g';
+    case GLFW_KEY_H: return upper ? 'H' : 'h';
+    case GLFW_KEY_I: return upper ? 'I' : 'i';
+    case GLFW_KEY_J: return upper ? 'J' : 'j';
+    case GLFW_KEY_K: return upper ? 'K' : 'k';
+    case GLFW_KEY_L: return upper ? 'L' : 'l';
+    case GLFW_KEY_M: return upper ? 'M' : 'm';
+    case GLFW_KEY_N: return upper ? 'N' : 'n';
+    case GLFW_KEY_O: return upper ? 'O' : 'o';
+    case GLFW_KEY_P: return upper ? 'P' : 'p';
+    case GLFW_KEY_Q: return upper ? 'Q' : 'q';
+    case GLFW_KEY_R: return upper ? 'R' : 'r';
+    case GLFW_KEY_S: return upper ? 'S' : 's';
+    case GLFW_KEY_T: return upper ? 'T' : 't';
+    case GLFW_KEY_U: return upper ? 'U' : 'u';
+    case GLFW_KEY_V: return upper ? 'V' : 'v';
+    case GLFW_KEY_W: return upper ? 'W' : 'w';
+    case GLFW_KEY_X: return upper ? 'X' : 'x';
+    case GLFW_KEY_Y: return upper ? 'Y' : 'y';
+    case GLFW_KEY_Z: return upper ? 'Z' : 'z';
+    case GLFW_KEY_1: return upper ? '!' : '1';
+    case GLFW_KEY_2: return upper ? '@' : '2';
+    case GLFW_KEY_3: return upper ? '#' : '3';
+    case GLFW_KEY_4: return upper ? '$' : '4';
+    case GLFW_KEY_5: return upper ? '%' : '5';
+    case GLFW_KEY_6: return upper ? '^' : '6';
+    case GLFW_KEY_7: return upper ? '&' : '7';
+    case GLFW_KEY_8: return upper ? '*' : '8';
+    case GLFW_KEY_9: return upper ? '(' : '9';
+    case GLFW_KEY_0: return upper ? ')' : '0';
+    case GLFW_KEY_GRAVE_ACCENT: return upper ? '~' : '`';
+    case GLFW_KEY_COMMA: return upper ? '<' : ',';
+    case GLFW_KEY_PERIOD: return upper ? '>' : '.';
+    case GLFW_KEY_SLASH: return upper ? '?' : '/';
+    case GLFW_KEY_SEMICOLON: return upper ? ':' : ';';
+    case GLFW_KEY_APOSTROPHE: return upper ? '"' : '\'';
+    case GLFW_KEY_LEFT_BRACKET: return upper ? '{' : '[';
+    case GLFW_KEY_RIGHT_BRACKET: return upper ? '}' : ']';
+    case GLFW_KEY_BACKSLASH: return upper ? '|' : '\\';
+    case GLFW_KEY_MINUS: return upper ? '_' : '-';
+    case GLFW_KEY_EQUAL: return upper ? '+' : '=';
+    default: return '\0';
+    }
 }
 
 glm::vec2 Input::getMousePosition()

@@ -27,6 +27,8 @@ public:
     void addIndices(int*, int);
     void init() override;
 	void render() override;
+    void setMaterial(Material*);
+    void clearMaterial();
 private:
     void loadData();
     void setStride();
@@ -50,4 +52,5 @@ private:
 
 	Mesh* mesh;
 	Material* material;
+    Material* defMat;
 };
