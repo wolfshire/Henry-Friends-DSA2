@@ -86,9 +86,3 @@ glm::mat4 Transform::getParentMatrix()
 
     return parentMatrix;
 }
-
-void Transform::rotate(glm::vec3 euler)
-{
-    rot = glm::normalize(rot * glm::quat(euler));
-}
-

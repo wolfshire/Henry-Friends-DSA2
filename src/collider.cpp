@@ -2,6 +2,8 @@
 
 Collider::Collider(Mesh* _mesh)
 {
+    type = EGameComponentType::COLLIDER;
+
     mesh = _mesh;
 }
 

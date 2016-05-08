@@ -1,6 +1,7 @@
 #pragma once
 #include "gamec.h"
 #include <glm\gtc\matrix_transform.hpp>
+#include <glm\gtc\quaternion.hpp>
 
 class Camera : public GameComponent
 {
@@ -16,11 +17,11 @@ public:
 private:
 	static Camera* main;
 
+    float sensitivity = 1000.0f; //larger = slower
+
     int w;
     int h;
     glm::mat4 proj;
-    glm::mat4 viewtrans;
-    glm::mat4 viewrotx;
     glm::mat4 view;
 	glm::mat4 rotation;
 	

@@ -1,14 +1,22 @@
 #include "boxcollider.h"
 #include "transform.h"
+#include "gameobject.h"
 
 BoxCollider::BoxCollider(Mesh* mesh) : Collider(mesh)
 {
-
+    type = EGameComponentType::BOX_COLLIDER;
 }
 
 BoxCollider::~BoxCollider()
 {
 
+}
+
+void BoxCollider::init()
+{
+    transform = gameObject->transform;
+
+    calculate();
 }
 
 void BoxCollider::calculate()

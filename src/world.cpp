@@ -14,6 +14,7 @@
 #include "fist.h"
 #include <iostream>
 #include "input.h"
+#include "move.h"
 
 #include <stdio.h>      /* printf, NULL */
 #include <stdlib.h>     /* srand, rand */
@@ -80,16 +81,29 @@ void World::init()
 
     //builds the City
     buildCity();
+    
+    //collision test objs
+    /*
+    GameObject* one = new GameObject();
+    one->transform->pos = vec3(-2, -30, 0);
+    MeshRenderer* oneR = new MeshRenderer(XYZ_UV, mod_cube, mat_green);
+    one->addComponent(oneR);
+    BoxCollider* oneBC = new BoxCollider(mod_cube->getMesh());
+    one->addComponent(oneBC);
+    Move* oneM = new Move(GLFW_KEY_1, GLFW_KEY_2, GLFW_KEY_3, GLFW_KEY_4, GLFW_KEY_5, GLFW_KEY_6);
+    one->addComponent(oneM);
+    addObject(one);
 
-    GameObject* fist = new GameObject();
-    fist->transform->scale = vec3(.5, .9, .5);
-    fist->transform->pos = vec3(0, 1, -10); //right below camera
-    MeshRenderer* fistRenderer = new MeshRenderer(XYZ_UV, fistModel, mat_red);
-    Fist* fistComponent = new Fist();
-    fist->addComponent(fistComponent);
-    fist->addComponent(fistRenderer);
-    addObject(fist);
-    fistIndex = objects.size() - 1;
+    GameObject* two = new GameObject();
+    two->transform->pos = vec3(2, -30, 0);
+    MeshRenderer* twoR = new MeshRenderer(XYZ_UV, mod_cube, mat_green);
+    two->addComponent(twoR);
+    twoR->setMaterial(mat_red);
+    BoxCollider* twoBC = new BoxCollider(mod_cube->getMesh());
+    two->addComponent(twoBC);
+    Move* twoM = new Move(GLFW_KEY_KP_7, GLFW_KEY_KP_9, GLFW_KEY_KP_4, GLFW_KEY_KP_6, GLFW_KEY_KP_8, GLFW_KEY_KP_5);
+    two->addComponent(twoM);
+    addObject(two);*/
 }
 
 void World::update()
@@ -128,13 +142,22 @@ void World::update()
     //physics
     for (unsigned int i = 0; i < objects.size(); i++)
     {
-        BoxCollider* c = (BoxCollider*)(*objects[i]).getComponent(EGameComponentType::COLLIDER);
+        BoxCollider* c = (BoxCollider*)(*objects[i]).getComponent(EGameComponentType::BOX_COLLIDER);
 
+        if (c == nullptr) continue;
+
+        c->colliding = false;
+    }
+
+    for (unsigned int i = 0; i < objects.size(); i++)
+    {
+        BoxCollider* c = (BoxCollider*)(*objects[i]).getComponent(EGameComponentType::BOX_COLLIDER);
+        
         if (c == nullptr) continue;
 
         for (unsigned int k = i + 1; k < objects.size(); k++)
         {
-            BoxCollider* bc = (BoxCollider*)(*objects[k]).getComponent(EGameComponentType::COLLIDER);
+            BoxCollider* bc = (BoxCollider*)(*objects[k]).getComponent(EGameComponentType::BOX_COLLIDER);
 
             if (bc == nullptr) continue;
 
@@ -152,7 +175,7 @@ void World::update()
 
     for (unsigned int i = 0; i < objects.size(); i++)
     {
-        BoxCollider* c = (BoxCollider*)(*objects[i]).getComponent(EGameComponentType::COLLIDER);
+        BoxCollider* c = (BoxCollider*)(*objects[i]).getComponent(EGameComponentType::BOX_COLLIDER);
 
         if (c == nullptr) continue;
 
@@ -184,6 +207,8 @@ void World::spawnAsteroid(Transform* t)
     GameObject* asteroid = new GameObject();
     asteroid->transform = t;
     MeshRenderer* asteroidRenderer = new MeshRenderer(XYZ_UV, asteroidModel, mat_missing);
+    BoxCollider* bc = new BoxCollider(asteroidModel->getMesh());
+    asteroid->addComponent(bc);
     Asteroid* asteroidComponent = new Asteroid();
     asteroid->addComponent(asteroidComponent);
     asteroid->addComponent(asteroidRenderer);
@@ -192,7 +217,6 @@ void World::spawnAsteroid(Transform* t)
 
 void World::punchFist(Transform* t)
 {
-
     Texture* tex_red = TextureManager::instance->getTexture("red.png");
     Material* mat_red = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_red);
 
@@ -201,6 +225,8 @@ void World::punchFist(Transform* t)
     fist->transform->scale = vec3(.5, .9, .5);
     fist->transform->pos = vec3(0, 1, -10); //right below camera
     MeshRenderer* fistRenderer = new MeshRenderer(XYZ_UV, fistModel, mat_red);
+    BoxCollider* bc = new BoxCollider(fistModel->getMesh());
+    fist->addComponent(bc);
     Fist* fistComponent = new Fist();
     fist->addComponent(fistComponent);
     fist->addComponent(fistRenderer);
@@ -264,6 +290,8 @@ void World::buildSkyscraper(Texture* t, Material* m, vec3 pos, vec3 scale)
     GameObject* building = new GameObject();
     building->transform->pos = pos;
     building->transform->scale = scale;
+    BoxCollider* bc = new BoxCollider(city_Cube->getMesh());
+    building->addComponent(bc);
     MeshRenderer* renderer = new MeshRenderer(EVertexFormat::XYZ_UV, city_Cube, city_Material);
     building->addComponent(renderer);
     addObject(building);

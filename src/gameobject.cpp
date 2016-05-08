@@ -1,12 +1,14 @@
 #include <typeinfo>
 #include "camera.h"
 #include "collider.h"
+#include "boxcollider.h"
 #include "flymove.h"
 #include "gameobject.h"
 #include "meshrenderer.h"
 #include "asteroid.h"
 #include "fist.h"
 #include "transform.h"
+#include "move.h"
 
 GameObject::GameObject()
 {
@@ -56,8 +58,14 @@ void GameObject::init()
 		case FIST:
 			dynamic_cast<Fist*>(components[i])->init();
 			continue;
+        case BOX_COLLIDER:
+            dynamic_cast<BoxCollider*>(components[i])->init();
+            continue;
         case COLLIDER:
             dynamic_cast<Collider*>(components[i])->init();
+            continue;
+        case MOVE:
+            dynamic_cast<Move*>(components[i])->init();
             continue;
 		default:
 			cout << "Error: Unknown component type: " << components[i]->type << endl;
@@ -87,8 +95,14 @@ void GameObject::update()
 		case FIST:
 			dynamic_cast<Fist*>(components[i])->update();
 			continue;
+        case BOX_COLLIDER:
+            dynamic_cast<BoxCollider*>(components[i])->update();
+            continue;
         case COLLIDER:
-            dynamic_cast<Collider*>(components[i])->init();
+            dynamic_cast<Collider*>(components[i])->update();
+            continue;
+        case MOVE:
+            dynamic_cast<Move*>(components[i])->update();
             continue;
 		default:
 			//cout << "Error: Unknown component type: " << components[i]->type << endl;

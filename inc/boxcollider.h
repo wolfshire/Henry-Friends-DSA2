@@ -7,6 +7,8 @@ public:
     BoxCollider(Mesh*);
     ~BoxCollider();
 
+    void init() override;
+
     bool isColliding(Collider*) override;
 protected:
     void calculate() override;

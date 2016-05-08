@@ -10,11 +10,16 @@ public:
 	Transform();
     Transform(glm::vec3, glm::vec3, glm::vec3);
 	~Transform();
-    void rotate(glm::vec3);
     void update() override;
     bool hasChanged();
     void setParent(Transform*);
 	void setTransform(Transform*);
+    void rotate(glm::vec3, float angle);
+
+    glm::vec3 getRight();
+    glm::vec3 getForward();
+    glm::vec3 getUp();
+
     glm::mat4 getTransformation();
     glm::mat4 getParentMatrix();
 
