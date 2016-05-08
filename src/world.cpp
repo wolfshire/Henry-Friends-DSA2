@@ -59,12 +59,6 @@ void World::init()
 
     Camera::setMain(camera);
 
-    //spawn locations
-    spawns.push_back(new Transform(vec3(100, -20, 0), vec3(0, 0, 0), vec3(4))); //city A >
-    spawns.push_back(new Transform(vec3(-100, -20, 0), vec3(0, 0, 0), vec3(4))); //city B <
-    spawns.push_back(new Transform(vec3(0, -30, 100), vec3(0, 0, 0), vec3(4))); //city C ^
-    spawns.push_back(new Transform(vec3(0, -20, -100), vec3(0, 0, 0), vec3(4))); //city D v
-
     //textures
     Texture* tex_missing = TextureManager::instance->getTexture("emma.png");
     Texture* tex_blue = TextureManager::instance->getTexture("blue.png");
@@ -135,14 +129,7 @@ void World::update()
 
     //spawn asteroids
     int random = rand() % 400;
-    if (random == 0)
-        spawnAsteroid(spawns[0]);
-    else if (random == 1)
-        spawnAsteroid(spawns[1]);
-    else if (random == 2)
-        spawnAsteroid(spawns[2]);
-    else if (random == 3)
-        spawnAsteroid(spawns[3]);
+    //spawnAsteroid(spawns[0]);
 
     if (Input::getKeyDown(GLFW_KEY_E))
     {
@@ -188,8 +175,15 @@ void World::update()
 
             if (c->isColliding(bc))
             {
+				//c->gameObject->tag == EGameObjectType::GO_CITY
+				//bc...
                 c->colliding = true;
-                bc->colliding = true;
+				bc->colliding = true;
+				removeObjectAt(i);
+				i--;
+				k--;
+				removeObjectAt(k);
+				k--;
             }
             else
             {
@@ -322,6 +316,7 @@ void World::buildSkyscraper(Texture* t, Material* m, vec3 pos, vec3 scale)
     building->addComponent(bc);
     MeshRenderer* renderer = new MeshRenderer(EVertexFormat::XYZ_UV, city_Cube, city_Material);
     building->addComponent(renderer);
+	building->tag = EGameObjectType::GO_CITY;
     addObject(building);
 }
 

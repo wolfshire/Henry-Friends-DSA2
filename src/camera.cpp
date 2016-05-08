@@ -46,7 +46,6 @@ void Camera::update()
     transform->rot = glm::normalize(transform->rot * rotx);
 
     glm::vec3 e = glm::eulerAngles(transform->rot);
-    std::cout << e.x << "," << e.y << "," << e.z << std::endl;
 
     if (e.x > 0.6f) e.x = 0.6f;
     if (e.x < -0.6f) e.x = -0.6f;
