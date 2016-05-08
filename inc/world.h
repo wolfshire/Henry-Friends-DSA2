@@ -33,4 +33,5 @@ private:
     Material* mat_blue;
     Material* mat_red;
     Material* mat_green;
+	Material* mat_sky;
 };

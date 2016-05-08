@@ -67,12 +67,14 @@ void World::init()
     Texture* tex_blue = TextureManager::instance->getTexture("blue.png");
     Texture* tex_green = TextureManager::instance->getTexture("green.png");
     Texture* tex_red = TextureManager::instance->getTexture("red.png");
+	Texture* tex_sky = TextureManager::instance->getTexture("sky.png");
 
     //materials
     Material* mat_missing = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_missing);
     mat_blue = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_blue);
     mat_green = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_green);
     mat_red = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_red);
+	mat_sky = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_sky);
 
     //models
     Model* mod_cube = new Model("cube");
@@ -90,6 +92,17 @@ void World::init()
     fist->addComponent(fistRenderer);
     addObject(fist);
     fistIndex = objects.size() - 1;
+
+	//skybox loading 
+	/*
+	GameObject* skybox = new GameObject();
+	skybox->transform->scale = vec3(300);
+	skybox->transform->pos = vec3(0);
+	Model* skyboxModel = new Model("cube");
+	MeshRenderer* skyRenderer = new MeshRenderer(XYZ_UV, skyboxModel, mat_sky);
+	skybox->addComponent(skyRenderer);
+	addObject(skybox);
+	*/
 }
 
 void World::update()
