@@ -72,3 +72,8 @@ bool BoxCollider::isColliding(Collider* other)
 
     return colliding;
 }
+
+BoundingBox BoxCollider::getBoundingBox()
+{
+    return BoundingBox(min, max);
+}

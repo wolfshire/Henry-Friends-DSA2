@@ -104,36 +104,36 @@ void World::init()
     two->addComponent(twoM);
     addObject(two);*/
 
-    //skybox loading 
-    /*
+    //skybox loading
     GameObject* skybox = new GameObject();
-    skybox->transform->scale = vec3(300);
-    skybox->transform->pos = vec3(0);
-    Model* skyboxModel = new Model("cube");
+    skybox->transform->scale = vec3(275);
+    skybox->transform->rot = glm::quat(glm::vec3(3.1415926f, 0, 0.0f));
+    Model* skyboxModel = new Model("skybox");
     MeshRenderer* skyRenderer = new MeshRenderer(XYZ_UV, skyboxModel, mat_sky);
     skybox->addComponent(skyRenderer);
     addObject(skybox);
-    */
 }
 
 void World::update()
 {
-	spawnTimer += GameTime::dt;
+    spawnTimer += GameTime::dt;
 
     //set spawn vector
-	spawns.clear();
-	for (int i = 0; i < objects.size(); i++)
-		if ((*objects[i]).tag == EGameObjectType::GO_CITY)
-			spawns.push_back((*objects[i]).transform->pos + vec3(0, -100, 0));
-	//spawn asteroid
-	if (spawnTimer > spawnFrequency && spawns.size() > 0) {
-		cout << "spawn asteroid" << endl;
-		spawnTimer = 0;
-		int random = rand() % spawns.size();
-		spawnAsteroid(spawns[random]);
-		if(spawnFrequency > .5f)
-			spawnFrequency -= 0.025f;
-	}
+    spawns.clear();
+    for (unsigned int i = 0; i < objects.size(); i++)
+        if ((*objects[i]).tag == EGameObjectType::GO_CITY)
+            spawns.push_back((*objects[i]).transform->pos + vec3(0, -100, 0));
+
+    //spawn asteroid
+    if (spawnTimer > spawnFrequency && spawns.size() > 0)
+    {
+        spawnTimer = 0;
+        int random = rand() % spawns.size();
+        spawnAsteroid(spawns[random]);
+
+        if (spawnFrequency > .5f)
+            spawnFrequency -= 0.025f;
+    }
 
     if (Input::getKeyDown(GLFW_KEY_E))
     {
@@ -145,6 +145,7 @@ void World::update()
     for (unsigned int i = 0; i < objects.size(); i++)
     {
         (*objects[i]).update();
+
         //if the object has left the play area
         if (objects[i]->transform->pos.y > 300 || objects[i]->transform->pos.y < -300 ||
             objects[i]->transform->pos.x > 300 || objects[i]->transform->pos.x < -300 ||
@@ -154,6 +155,8 @@ void World::update()
             i--;
         }
     }
+
+    buildOctTree();
 
     //physics
     for (unsigned int i = 0; i < objects.size(); i++)
@@ -179,15 +182,15 @@ void World::update()
 
             if (c->isColliding(bc) && c->gameObject->tag != bc->gameObject->tag)
             {
-				//c->gameObject->tag == EGameObjectType::GO_CITY
-				//bc...
+                //c->gameObject->tag == EGameObjectType::GO_CITY
+                //bc...
                 c->colliding = true;
-				bc->colliding = true;
-				removeObjectAt(i);
-				i--;
-				k--;
-				removeObjectAt(k);
-				k--;
+                bc->colliding = true;
+                removeObjectAt(i);
+                i--;
+                k--;
+                removeObjectAt(k);
+                k--;
             }
             else
             {
@@ -228,8 +231,8 @@ void World::spawnAsteroid(vec3 pos)
     Material* mat_missing = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader(), tex_missing);
 
     GameObject* asteroid = new GameObject();
-	asteroid->transform->scale = vec3(3);
-	asteroid->transform->pos = pos;
+    asteroid->transform->scale = vec3(3);
+    asteroid->transform->pos = pos;
     MeshRenderer* asteroidRenderer = new MeshRenderer(XYZ_UV, asteroidModel, mat_missing);
     BoxCollider* bc = new BoxCollider(asteroidModel->getMesh());
     asteroid->addComponent(bc);
@@ -237,6 +240,22 @@ void World::spawnAsteroid(vec3 pos)
     asteroid->addComponent(asteroidComponent);
     asteroid->addComponent(asteroidRenderer);
     addObject(asteroid);
+}
+
+void World::buildOctTree()
+{
+    tree.clearTree();
+
+    for (auto obj : objects)
+    {
+        BoxCollider* bc = (BoxCollider*)(*obj).getComponent(EGameComponentType::BOX_COLLIDER);
+
+        if (bc != nullptr)
+            tree.addObject(obj);
+    }
+
+    tree.updateTree();
+    tree.buildTree();
 }
 
 void World::punchFist(Transform* t)
@@ -280,14 +299,14 @@ void World::buildCity()
 
     //load Game Object 
     GameObject* sun = new GameObject();
-    sun->transform->pos = vec3(-80, -80, 200);
+    sun->transform->pos = vec3(-100, -180, 200);
     sun->transform->scale = vec3(20, 20, 20);
     MeshRenderer* sun_renderer = new MeshRenderer(EVertexFormat::XYZ_UV, sun_sphere, mat_sun);
     sun->addComponent(sun_renderer);
     addObject(sun);
 
     //builds platform				buildPlatform(Texture*, Material*, vec3(pos), vec3(scale))
-    buildPlatform(tex_city_platform, mat_city_platform, vec3(0, 15, 50), vec3(100, 1, 100));
+    buildPlatform(tex_city_platform, mat_city_platform, vec3(0, 15, 50), vec3(300, 1, 300));
 
     int num_Buildings = 6;
 
@@ -296,9 +315,6 @@ void World::buildCity()
         //builds skyscraper             buildSkyscraper(Texture*, Material*, vec3(pos), vec3(scale))
         buildSkyscraper(tex_city_metal, mat_city_building, vec3(-80 + i * 30, 0, 100), vec3(5, 20 + rand() % 30, 5));
         buildSkyscraper(tex_city_metal, mat_city_building, vec3(-80 + i * 30, 0, 50), vec3(5, 20 + rand() % 30, 5));
-        //buildSkyscraper(tex_city_metal, mat_city_building, vec3(-80 + i * 30, 0, 0), vec3(5, 20 + rand() % 20, 5));
-        //buildSkyscraper(tex_city_metal, mat_city_building, vec3(-80 + i * 30, 0, -100), vec3(5, 20 + rand() % 30, 5));
-        //buildSkyscraper(tex_city_metal, mat_city_building, vec3(-80 + i * 30, 0, -50), vec3(5, 20 + rand() % 30, 5));
     }
 }
 
@@ -321,7 +337,7 @@ void World::buildSkyscraper(Texture* t, Material* m, vec3 pos, vec3 scale)
     building->addComponent(bc);
     MeshRenderer* renderer = new MeshRenderer(EVertexFormat::XYZ_UV, city_Cube, city_Material);
     building->addComponent(renderer);
-	building->tag = EGameObjectType::GO_CITY;
+    building->tag = EGameObjectType::GO_CITY;
     addObject(building);
 }
 

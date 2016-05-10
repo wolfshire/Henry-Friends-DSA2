@@ -4,6 +4,7 @@
 #include "transform.h"
 #include "texture.h"
 #include "material.h"
+#include "octtree.h"
 using namespace std;
 
 class World
@@ -22,6 +23,7 @@ public:
 	void spawnAsteroid(vec3);
 	void punchFist(Transform*);
 
+    void buildOctTree();
 	void buildCity();
 	void buildSkyscraper(Texture*, Material*, vec3, vec3);
 	void buildPlatform(Texture*, Material*, vec3, vec3);
@@ -35,6 +37,8 @@ private:
     Material* mat_red;
     Material* mat_green;
 	Material* mat_sky;
+
+    OctTree tree;
 
 	float spawnTimer = 0.0f;
 	float spawnFrequency = 3.0f;

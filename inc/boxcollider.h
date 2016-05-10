@@ -1,5 +1,6 @@
 #pragma once
 #include "collider.h"
+#include "boundingbox.h"
 
 class BoxCollider : public Collider
 {
@@ -10,9 +11,10 @@ public:
     void init() override;
 
     bool isColliding(Collider*) override;
-protected:
-    void calculate() override;
-private:
+    BoundingBox getBoundingBox();
+
     glm::vec3 min;
     glm::vec3 max;
+protected:
+    void calculate() override;
 };
