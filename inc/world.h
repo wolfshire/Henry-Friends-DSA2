@@ -5,6 +5,7 @@
 #include "texture.h"
 #include "material.h"
 #include "octtree.h"
+#include "fontmanager.h"
 using namespace std;
 
 class World
@@ -27,17 +28,21 @@ public:
 	void buildCity();
 	void buildSkyscraper(Texture*, Material*, vec3, vec3);
 	void buildPlatform(Texture*, Material*, vec3, vec3);
+	int Score();
+	int CasualtyScore();
+
 private:
 	vector<GameObject*> objects;
     vector<vec3> spawns;
 	int fistIndex;
 	int numAsteroids;
+	int score;
+	int casualtyScore;
 
     Material* mat_blue;
     Material* mat_red;
     Material* mat_green;
 	Material* mat_sky;
-
     OctTree tree;
 
 	float spawnTimer = 0.0f;

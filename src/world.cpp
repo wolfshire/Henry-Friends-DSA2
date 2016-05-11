@@ -16,6 +16,7 @@
 #include "input.h"
 #include "move.h"
 #include "gametime.h"
+#include "fontmanager.h"
 
 #include <stdio.h>      /* printf, NULL */
 #include <stdlib.h>     /* srand, rand */
@@ -43,6 +44,8 @@ GameObject* World::removeObjectAt(unsigned int index)
 
 void World::init()
 {
+	score = 0;
+
     //random seed
     srand((unsigned int)time(NULL));
 
@@ -55,6 +58,7 @@ void World::init()
     cam->addComponent(camera);
     cam->addComponent(flymove);
     addObject(cam);
+	
 
     numAsteroids = 5;
 
@@ -116,8 +120,9 @@ void World::init()
 
 void World::update()
 {
+	casualtyScore = 0;
+	score++;
     spawnTimer += GameTime::dt;
-
     //set spawn vector
     spawns.clear();
     for (unsigned int i = 0; i < objects.size(); i++)
@@ -308,13 +313,14 @@ void World::buildCity()
     //builds platform				buildPlatform(Texture*, Material*, vec3(pos), vec3(scale))
     buildPlatform(tex_city_platform, mat_city_platform, vec3(0, 15, 50), vec3(300, 1, 300));
 
-    int num_Buildings = 6;
+    int num_Buildings = 8;
 
     for (int i = 0; i < num_Buildings; i++)
     {
         //builds skyscraper             buildSkyscraper(Texture*, Material*, vec3(pos), vec3(scale))
-        buildSkyscraper(tex_city_metal, mat_city_building, vec3(-80 + i * 30, 0, 100), vec3(5, 20 + rand() % 30, 5));
-        buildSkyscraper(tex_city_metal, mat_city_building, vec3(-80 + i * 30, 0, 50), vec3(5, 20 + rand() % 30, 5));
+        buildSkyscraper(tex_city_metal, mat_city_building, vec3(-100 + i * 30, 0, 100), vec3(5, 20 + rand() % 30, 5));
+        buildSkyscraper(tex_city_metal, mat_city_building, vec3(-100 + i * 30, 0, 50), vec3(5, 20 + rand() % 30, 5));
+		buildSkyscraper(tex_city_metal, mat_city_building, vec3(-100 + i * 30, 0, 150), vec3(5, 20 + rand() % 30, 5));
     }
 }
 
@@ -359,4 +365,14 @@ void World::buildPlatform(Texture* t, Material* m, vec3 pos, vec3 scale)
     MeshRenderer* renderer = new MeshRenderer(EVertexFormat::XYZ_UV, platform_Cube, platform_Material);
     platform->addComponent(renderer);
     addObject(platform);
+}
+
+int World::Score()
+{
+	return score;
+}
+
+int World::CasualtyScore()
+{
+	return casualtyScore;
 }

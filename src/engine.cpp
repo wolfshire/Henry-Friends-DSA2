@@ -8,6 +8,7 @@
 #include "gametime.h"
 #include "shadermanager.h"
 #include "camera.h"
+#include <string>
 
 Engine* Engine::instance = nullptr;
 
@@ -154,9 +155,9 @@ void Engine::render()
 
 void Engine::renderGui()
 {
+	int y = 0;
     if (debug)
     {
-        int y = 0;
 
         font->setSize(18);
         ostringstream stream;
@@ -172,6 +173,10 @@ void Engine::renderGui()
         stream << "(" << pos.x << ", " << pos.y << ", " << pos.z << ")";
         font->renderText("Camera Pos: " + stream.str(), -1 + 4 * Font::SX, 1 - (y += 18) * Font::SY, Color(0.0f, 1.0f, 0.0f));
     }
+
+	font->setSize(50);
+	font->renderText("Hero Aptitude: " + std::to_string(world.Score()), -1 + 4 * Font::SX, 1 - (y += 50) * Font::SY, Color(1.0f, 0.0f, 0.0f));
+	font->renderText("Casualties: " + std::to_string(world.CasualtyScore()), -1 + 4 * Font::SX, 1 - (y += 50) * Font::SY, Color(1.0f, 0.0f, 0.0f));
 }
 
 glm::vec2 Engine::getWindowSize()
