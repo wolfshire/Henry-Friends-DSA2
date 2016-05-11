@@ -253,10 +253,10 @@ void OctTree::bufferData()
     glBindVertexArray(vao);
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, , , GL_STREAM_DRAW);
+    //glBufferData(GL_ARRAY_BUFFER, , , GL_STREAM_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, ibo);
-    glBufferData(GL_ARRAY_BUFFER, , , GL_STREAM_DRAW);
+    //glBufferData(GL_ARRAY_BUFFER, , , GL_STREAM_DRAW);
 }
 
 void OctTree::render()
