@@ -11,7 +11,9 @@ public:
     void init() override;
 
     bool isColliding(Collider*) override;
+    BoundingBox getTransformedBoundingBox();
     BoundingBox getBoundingBox();
+    glm::vec3 getBounds();
 
 	bool colliding = false;
 

@@ -74,7 +74,17 @@ bool BoxCollider::isColliding(Collider* other)
     return collide;
 }
 
-BoundingBox BoxCollider::getBoundingBox()
+BoundingBox BoxCollider::getTransformedBoundingBox()
 {
     return BoundingBox(transform->pos + min, transform->pos + max);
+}
+
+BoundingBox BoxCollider::getBoundingBox()
+{
+    return BoundingBox(min, max);
+}
+
+glm::vec3 BoxCollider::getBounds()
+{
+    return max - min;
 }

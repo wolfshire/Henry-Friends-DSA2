@@ -11,6 +11,8 @@ OctTree::OctTree()
 	objects = std::vector<GameObject*>();
 	children = new OctTree*[8];
 	curLife = -1;
+
+    createBuffers();
 }
 
 
@@ -21,6 +23,8 @@ OctTree::OctTree(BoundingBox& reg)
 	objects = std::vector<GameObject*>();
 	children = new OctTree*[8];
 	curLife = -1;
+
+    createBuffers();
 }
 
 OctTree::OctTree(BoundingBox& reg, std::vector<GameObject*>& pend)
@@ -30,6 +34,8 @@ OctTree::OctTree(BoundingBox& reg, std::vector<GameObject*>& pend)
 	objects = std::vector<GameObject*>();
 	children = new OctTree*[8];
 	curLife = -1;
+
+    createBuffers();
 }
 
 OctTree::~OctTree()
@@ -45,6 +51,10 @@ OctTree::~OctTree()
 		delete[] children;
 		children = nullptr;
 	}
+
+    glDeleteVertexArrays(1, &vao);
+    glDeleteBuffers(1, &vbo);
+    glDeleteBuffers(1, &ibo);
 }
 
 void OctTree::clearTree()
@@ -156,6 +166,8 @@ void OctTree::buildTree()
 			children[i]->buildTree();
 		}
 	}
+
+    bufferData();
 		
 	treeBuilt = true;
 	treeReady = true;
@@ -227,4 +239,27 @@ void OctTree::checkTree()
 			}
 		}
 	}*/
+}
+
+void OctTree::createBuffers()
+{
+    glGenVertexArrays(1, &vao);
+    glGenBuffers(1, &vbo);
+    glGenBuffers(1, &ibo);
+}
+
+void OctTree::bufferData()
+{
+    glBindVertexArray(vao);
+
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, , , GL_STREAM_DRAW);
+
+    glBindBuffer(GL_ARRAY_BUFFER, ibo);
+    glBufferData(GL_ARRAY_BUFFER, , , GL_STREAM_DRAW);
+}
+
+void OctTree::render()
+{
+
 }

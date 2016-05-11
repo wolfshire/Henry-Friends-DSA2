@@ -3,6 +3,7 @@
 #include "gameobject.h"
 #include "boundingbox.h"
 #include <bitset>
+#include <GL\glew.h>
 
 class OctTree
 {
@@ -19,10 +20,15 @@ public:
     void updateTree();
     OctTree* createNode(BoundingBox, std::vector<GameObject*>);
 
+    void render();
+
 	void checkTree();
 
     OctTree* parent = nullptr;
 private:
+    void createBuffers();
+    void bufferData();
+
     BoundingBox region;
     std::vector<GameObject*> pending;
     std::vector<GameObject*> objects;
@@ -36,4 +42,8 @@ private:
 
     bool treeBuilt = false;
     bool treeReady = false;
+
+    GLuint vao;
+    GLuint vbo;
+    GLuint ibo;
 };
