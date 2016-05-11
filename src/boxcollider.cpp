@@ -53,27 +53,28 @@ bool BoxCollider::isColliding(Collider* other)
     glm::vec3 mino = glm::vec3(box->transform->getTransformation() * glm::vec4(box->min, 1.0f));
     glm::vec3 maxo = glm::vec3(box->transform->getTransformation() * glm::vec4(box->max, 1.0f));
 
-    bool colliding = true;
+    bool collide = true;
 
     if (maxg.x < mino.x)
-        colliding = false;
+		collide = false;
     if (ming.x > maxo.x)
-        colliding = false;
+		collide = false;
 
     if (maxg.y < mino.y)
-        colliding = false;
+		collide = false;
     if (ming.y > maxo.y)
-        colliding = false;
+		collide = false;
 
     if (maxg.z < mino.z)
-        colliding = false;
+		collide = false;
     if (ming.z > maxo.z)
-        colliding = false;
+		collide = false;
 
-    return colliding;
+	colliding = collide;
+    return collide;
 }
 
 BoundingBox BoxCollider::getBoundingBox()
 {
-    return BoundingBox(min, max);
+    return BoundingBox(transform->pos + min, transform->pos + max);
 }

@@ -38,7 +38,7 @@ private:
     Material* mat_green;
 	Material* mat_sky;
 
-    OctTree tree;
+    OctTree* tree;
 
 	float spawnTimer = 0.0f;
 	float spawnFrequency = 3.0f;

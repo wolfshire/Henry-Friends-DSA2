@@ -46,6 +46,9 @@ void World::init()
     //random seed
     srand((unsigned int)time(NULL));
 
+	//tree
+	tree = new OctTree(BoundingBox(glm::vec3(-350, -350, -350.0f), glm::vec3(350, 350, 350.0f)));
+
     //objects
     GameObject* cam = new GameObject();
     cam->transform->pos.z = -75;
@@ -158,63 +161,16 @@ void World::update()
 
     buildOctTree();
 
-    //physics
+	//check tree collisions
+	tree->checkTree();
+
+    //checking the booleans
     for (unsigned int i = 0; i < objects.size(); i++)
     {
-        BoxCollider* c = (BoxCollider*)(*objects[i]).getComponent(EGameComponentType::BOX_COLLIDER);
-
-        if (c == nullptr) continue;
-
-        c->colliding = false;
-    }
-
-    for (unsigned int i = 0; i < objects.size(); i++)
-    {
-        BoxCollider* c = (BoxCollider*)(*objects[i]).getComponent(EGameComponentType::BOX_COLLIDER);
-
-        if (c == nullptr) continue;
-
-        for (unsigned int k = i + 1; k < objects.size(); k++)
-        {
-            BoxCollider* bc = (BoxCollider*)(*objects[k]).getComponent(EGameComponentType::BOX_COLLIDER);
-
-            if (bc == nullptr) continue;
-
-            if (c->isColliding(bc) && c->gameObject->tag != bc->gameObject->tag)
-            {
-                //c->gameObject->tag == EGameObjectType::GO_CITY
-                //bc...
-                c->colliding = true;
-                bc->colliding = true;
-                removeObjectAt(i);
-                i--;
-                k--;
-                removeObjectAt(k);
-                k--;
-            }
-            else
-            {
-                bc->colliding = false;
-            }
-        }
-    }
-
-    for (unsigned int i = 0; i < objects.size(); i++)
-    {
-        BoxCollider* c = (BoxCollider*)(*objects[i]).getComponent(EGameComponentType::BOX_COLLIDER);
-
-        if (c == nullptr) continue;
-
-        if (c->colliding)
-        {
-            MeshRenderer* mr = (MeshRenderer*)(*objects[i]).getComponent(EGameComponentType::MESH_RENDERER);
-            mr->setMaterial(mat_blue);
-        }
-        else
-        {
-            MeshRenderer* mr = (MeshRenderer*)(*objects[i]).getComponent(EGameComponentType::MESH_RENDERER);
-            mr->clearMaterial();
-        }
+		//get all of the box colliders
+		BoxCollider* b = (BoxCollider*)objects[i]->getComponent(EGameComponentType::BOX_COLLIDER);
+		//if they're colliding, remove the objects
+		if (b != nullptr) if (b->colliding) removeObjectAt(i);
     }
 }
 
@@ -244,18 +200,18 @@ void World::spawnAsteroid(vec3 pos)
 
 void World::buildOctTree()
 {
-    tree.clearTree();
+    tree->clearTree();
 
     for (auto obj : objects)
     {
         BoxCollider* bc = (BoxCollider*)(*obj).getComponent(EGameComponentType::BOX_COLLIDER);
 
         if (bc != nullptr)
-            tree.addObject(obj);
+            tree->addObject(obj);
     }
 
-    tree.updateTree();
-    tree.buildTree();
+    tree->updateTree();
+    tree->buildTree();
 }
 
 void World::punchFist(Transform* t)

@@ -2,11 +2,13 @@
 #include <vector>
 #include "gameobject.h"
 #include "boundingbox.h"
+#include <bitset>
 
 class OctTree
 {
 public:
     OctTree();
+	OctTree(BoundingBox&);
     OctTree(BoundingBox&, std::vector<GameObject*>&);
     ~OctTree();
 
@@ -17,6 +19,8 @@ public:
     void updateTree();
     OctTree* createNode(BoundingBox, std::vector<GameObject*>);
 
+	void checkTree();
+
     OctTree* parent = nullptr;
 private:
     BoundingBox region;
@@ -24,7 +28,7 @@ private:
     std::vector<GameObject*> objects;
     OctTree** children = nullptr;
 
-    unsigned int active = 0;
+	bitset<8> active = 00000000;
     const int MIN_SIZE = 1;
 
     const int MAX_LIFE = 8;

@@ -13,6 +13,8 @@ public:
     bool isColliding(Collider*) override;
     BoundingBox getBoundingBox();
 
+	bool colliding = false;
+
     glm::vec3 min;
     glm::vec3 max;
 protected:
