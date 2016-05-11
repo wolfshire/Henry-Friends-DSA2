@@ -8,6 +8,7 @@
 #include "gametime.h"
 #include "shadermanager.h"
 #include "camera.h"
+#include <string>
 
 Engine* Engine::instance = nullptr;
 
@@ -110,6 +111,8 @@ void Engine::init()
     Input::setCursorLocked(true);
     blankCursor = Input::createBlankCursor();
 
+    GUI_VIEW = glm::translate(glm::mat4(), glm::vec3(*width / 2, *height / 2, 0.0f));
+
     font = FontManager::getDefaultFont();
 
     defaultShader = ShaderManager::getDefaultShader();
@@ -126,6 +129,10 @@ void Engine::update()
     if (Input::getKeyUp(GLFW_KEY_F3))
     {
         debug = !debug;
+    }
+    if (Input::getKeyUp(GLFW_KEY_F4))
+    {
+        renderDebug = !renderDebug;
     }
     if (Input::getKeyUp(GLFW_KEY_ESCAPE))
     {
@@ -152,10 +159,24 @@ void Engine::render()
 
 void Engine::renderGui()
 {
+    Shader* gui = ShaderManager::getShader("gui");
+    gui->bind();
+
+    glUniformMatrix4fv(gui->getUniformLocation("proj"), 1, GL_FALSE,
+        glm::value_ptr(Camera::getMain()->getOrthographicMatrix()));
+
+    glUniformMatrix4fv(gui->getUniformLocation("view"), 1, GL_FALSE,
+        glm::value_ptr(glm::mat4()));
+
+    font->setSize(18);
+    font->renderText("+", 0, 0, Color(0.0f, 1.0f, 0.0f));
+
+    //world.renderGui();
+
+	int y = 0;
+	
     if (debug)
     {
-        int y = 0;
-
         font->setSize(18);
         ostringstream stream;
         stream << lastFrames;
@@ -170,6 +191,10 @@ void Engine::renderGui()
         stream << "(" << pos.x << ", " << pos.y << ", " << pos.z << ")";
         font->renderText("Camera Pos: " + stream.str(), -1 + 4 * Font::SX, 1 - (y += 18) * Font::SY, Color(0.0f, 1.0f, 0.0f));
     }
+
+	font->setSize(50);
+	font->renderText("Hero Aptitude: " + std::to_string(world.Score()), -1 + 4 * Font::SX, 1 - (y += 50) * Font::SY, Color(1.0f, 0.0f, 0.0f));
+	font->renderText("Casualties: " + std::to_string(world.CasualtyScore()), -1 + 4 * Font::SX, 1 - (y += 50) * Font::SY, Color(1.0f, 0.0f, 0.0f));
 }
 
 glm::vec2 Engine::getWindowSize()
