@@ -36,9 +36,9 @@ void Camera::setMain(Camera* newMain) { main = newMain; }
 void Camera::update()
 {
     //set mouse position
-    mousePos = Input::getMousePosition();
-    float dx = -(mousePos.x - midPoint.x);
-    float dy = mousePos.y - midPoint.y;
+    mousePos = Input::getMouseDelta();
+    float dx = -mousePos.x;
+    float dy = mousePos.y;
 
     glm::quat roty = glm::quat(glm::vec3(0, dx / sensitivity, 0));
     transform->rot = glm::normalize(transform->rot * roty);
@@ -56,8 +56,6 @@ void Camera::update()
 
     //pos, eye, up
     view = lookAt(transform->pos, transform->pos + glm::vec3(glm::vec4(0, 0, 1, 1.0f) * transform->rot), glm::vec3(0, 1.0f, 0));
-
-    Input::resetCursor();
 }
 
 glm::mat4 Camera::getProjectionMatrix() { return proj; }

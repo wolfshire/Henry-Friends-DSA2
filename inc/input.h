@@ -14,10 +14,16 @@ public:
     static bool getKeyUp(int);
     static bool getKeyDown(int);
 	static char getKeyChar(int);
+    static bool getMouse(int);
+    static bool getMouseUp(int);
+    static bool getMouseDown(int);
     static glm::vec2 getMousePosition();
     static glm::vec2 getMouseDelta();
-    static void setCursorMode(int);
-	static void resetCursor();
+    static void setCursorLocked(bool);
+    static bool getCursorLocked();
+    static GLFWcursor* createBlankCursor();
+    static void setCursor(GLFWcursor*);
+    static void clearCursor();
 private:
 	static GLFWwindow* window;
     static unordered_map<int, bool> cur;
@@ -28,6 +34,14 @@ private:
     static double* my;
     static double* lx;
     static double* ly;
+    static int left;
+    static int right;
+    static int middle;
+    static int leftPrev;
+    static int rightPrev;
+    static int middlePrev;
+
+    static bool lockCursor;
 
     static int VALID_KEYS[];
     static int NUM_KEYS;

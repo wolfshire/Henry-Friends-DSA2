@@ -33,7 +33,7 @@ void Shader::addUniform(std::string name)
 
 std::string Shader::readText(std::string filename, std::vector<std::string>* unis)
 {
-    std::cout << "Reading shader file: " << filename << std::endl;
+    //std::cout << "Reading shader file: " << filename << std::endl;
     std::ifstream file("shaders\\" + filename);
     std::string line;
     std::string text;
@@ -54,14 +54,14 @@ std::string Shader::readText(std::string filename, std::vector<std::string>* uni
         file.close();
     }
 
-    std::cout << "Finished read" << std::endl;
-	std::cout << text << std::endl;
+    //std::cout << "Finished read" << std::endl;
+	//std::cout << text << std::endl;
 	return text;
 }
 
 void Shader::load(std::string name)
 {
-    std::cout << "Loading shader: " << name << std::endl;
+    //std::cout << "Loading shader: " << name << std::endl;
 
     std::vector<std::string>* unis = new std::vector<std::string>();
     std::string v = readText(name + ".vs", unis);
@@ -69,7 +69,7 @@ void Shader::load(std::string name)
     const char* vert = v.c_str();
     const char* frag = f.c_str();
 
-    std::cout << "Compiling vertex shader" << std::endl;
+    //std::cout << "Compiling vertex shader" << std::endl;
     GLuint vs = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vs, 1, &vert, NULL);
     glCompileShader(vs);
@@ -82,7 +82,7 @@ void Shader::load(std::string name)
         exit(-1);
     }
 
-    std::cout << "Compiling fragment shader" << std::endl;
+    //std::cout << "Compiling fragment shader" << std::endl;
     GLuint fs = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fs, 1, &frag, NULL);
     glCompileShader(fs);
@@ -95,7 +95,7 @@ void Shader::load(std::string name)
         exit(-1);
     }
 
-    std::cout << "Reserving pointer for shader" << std::endl;
+    //std::cout << "Reserving pointer for shader" << std::endl;
     program = glCreateProgram();
 
     if (program == 0)
@@ -104,7 +104,7 @@ void Shader::load(std::string name)
         exit(-1);
     }
 
-    std::cout << "Linking vertex and fragment" << std::endl;
+    //std::cout << "Linking vertex and fragment" << std::endl;
     glAttachShader(program, vs);
     glAttachShader(program, fs);
     glLinkProgram(program);
@@ -127,7 +127,7 @@ void Shader::load(std::string name)
 
     glUseProgram(0);
 
-    std::cout << "Loaded shader!" << std::endl;
+    //std::cout << "Loaded shader!" << std::endl;
 }
 
 std::vector<std::string> &Shader::split(const std::string &s, char delim, std::vector<std::string> &elems)

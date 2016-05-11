@@ -36,10 +36,12 @@ private:
     GLuint uniModel;
     World world;
     Font* font;
+    GLFWcursor* blankCursor;
 
     //option vars
     bool showGui = true;
     bool debug = false;
+    bool renderDebug = false;
 
     //info vars
     double lastFrames = 0;

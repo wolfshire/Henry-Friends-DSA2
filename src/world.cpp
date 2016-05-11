@@ -135,7 +135,7 @@ void World::update()
             spawnFrequency -= 0.025f;
     }
 
-    if (Input::getKeyDown(GLFW_KEY_E))
+    if (Input::getMouseUp(0))
     {
         //punch	
         punchFist(Camera::getMain()->transform);

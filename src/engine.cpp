@@ -107,6 +107,9 @@ void Engine::init()
 
 	world.init();
 
+    Input::setCursorLocked(true);
+    blankCursor = Input::createBlankCursor();
+
     font = FontManager::getDefaultFont();
 
     defaultShader = ShaderManager::getDefaultShader();
@@ -126,12 +129,7 @@ void Engine::update()
     }
     if (Input::getKeyUp(GLFW_KEY_ESCAPE))
     {
-        int mode = glfwGetInputMode(window, GLFW_CURSOR);
-
-        if (mode == GLFW_CURSOR_NORMAL)
-            Input::setCursorMode(GLFW_CURSOR_DISABLED);
-        else
-            Input::setCursorMode(GLFW_CURSOR_NORMAL);
+        Input::setCursorLocked(!Input::getCursorLocked());
     }
 
     world.update();

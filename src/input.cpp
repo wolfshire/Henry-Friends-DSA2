@@ -10,6 +10,13 @@ double* Input::mx = new double();
 double* Input::my = new double();
 double* Input::lx = new double();
 double* Input::ly = new double();
+int Input::left;
+int Input::right;
+int Input::middle;
+int Input::leftPrev;
+int Input::rightPrev;
+int Input::middlePrev;
+bool Input::lockCursor;
 
 int Input::VALID_KEYS[] =
 {
@@ -113,13 +120,6 @@ Input::Input() {}
 void Input::init(GLFWwindow* win)
 {
     window = win;
-
-    setCursorMode(GLFW_CURSOR_DISABLED);
-}
-
-void Input::resetCursor()
-{
-    glfwSetCursorPos(window, 1280 / 2, 720 / 2);
 }
 
 void Input::update()
@@ -155,6 +155,14 @@ void Input::update()
     *lx = *mx;
     *ly = *my;
     glfwGetCursorPos(window, mx, my);
+
+    //buttons
+    leftPrev = left;
+    rightPrev = right;
+    middlePrev = middle;
+    left = glfwGetMouseButton(window, 0);
+    right = glfwGetMouseButton(window, 1);
+    middle = glfwGetMouseButton(window, 2);
 }
 
 bool Input::getKey(int keycode)
@@ -231,6 +239,33 @@ char Input::getKeyChar(int keycode)
     }
 }
 
+bool Input::getMouse(int button)
+{
+    return glfwGetMouseButton(window, button) == GLFW_PRESS;
+}
+
+bool Input::getMouseUp(int button)
+{
+    switch (button)
+    {
+    case 0: return leftPrev == GLFW_RELEASE && left == GLFW_PRESS;
+    case 1: return rightPrev == GLFW_RELEASE && right == GLFW_PRESS;
+    case 2: return middlePrev == GLFW_RELEASE && middle == GLFW_PRESS;
+    default: return false;
+    }
+}
+
+bool Input::getMouseDown(int button)
+{
+    switch (button)
+    {
+    case 0: return leftPrev == GLFW_PRESS && left == GLFW_RELEASE;
+    case 1: return rightPrev == GLFW_PRESS && right == GLFW_RELEASE;
+    case 2: return middlePrev == GLFW_PRESS && middle == GLFW_RELEASE;
+    default: return false;
+    }
+}
+
 glm::vec2 Input::getMousePosition()
 {
     return glm::vec2(*mx, *my);
@@ -241,12 +276,40 @@ glm::vec2 Input::getMouseDelta()
     return glm::vec2(*mx - *lx, *my - *ly);
 }
 
-void Input::setCursorMode(int mode)
+void Input::setCursorLocked(bool locked)
 {
-    if (mode != GLFW_CURSOR_NORMAL ||
-        mode != GLFW_CURSOR_HIDDEN ||
-        mode != GLFW_CURSOR_DISABLED)
-        mode = GLFW_CURSOR_NORMAL;
+    lockCursor = locked;
 
-    glfwSetInputMode(window, GLFW_CURSOR, mode);
+    if (lockCursor)
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    else
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+}
+
+bool Input::getCursorLocked()
+{
+    return lockCursor;
+}
+
+GLFWcursor* Input::createBlankCursor()
+{
+    int w = 1;//16;
+    int h = 1;//16;
+    unsigned char pixels[1];
+    memset(pixels, 0x00, sizeof(pixels));
+    GLFWimage image;
+    image.width = w;
+    image.height = h;
+    image.pixels = pixels;
+    return glfwCreateCursor(&image, 0, 0);
+}
+
+void Input::setCursor(GLFWcursor* newCursor)
+{
+    glfwSetCursor(window, newCursor);
+}
+
+void Input::clearCursor()
+{
+    glfwSetCursor(window, glfwCreateStandardCursor(0));
 }

@@ -22,13 +22,13 @@ Mesh* Model::getMesh()
 
 void Model::load()
 {
-	cout << "Loading " << name << " model..." << endl;
+	//cout << "Loading " << name << " model..." << endl;
 	readModelData();
 }
 
 void Model::readModelData()
 {
-	cout << "Reading data" << endl;
+	//cout << "Reading data" << endl;
 
 	ifstream inFile;
 	string line;
