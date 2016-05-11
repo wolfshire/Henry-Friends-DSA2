@@ -36,10 +36,14 @@ private:
     GLuint uniModel;
     World world;
     Font* font;
+    GLFWcursor* blankCursor;
+
+    glm::mat4 GUI_VIEW;
 
     //option vars
     bool showGui = true;
     bool debug = false;
+    bool renderDebug = false;
 
     //info vars
     double lastFrames = 0;

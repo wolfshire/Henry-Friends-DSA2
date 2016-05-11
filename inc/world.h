@@ -4,6 +4,7 @@
 #include "transform.h"
 #include "texture.h"
 #include "material.h"
+#include "crosshair.h"
 #include "octtree.h"
 #include "fontmanager.h"
 using namespace std;
@@ -20,6 +21,7 @@ public:
 	void init();
 	void update();
 	void render();
+    void renderGui();
 
 	void spawnAsteroid(vec3);
 	void punchFist(Transform*);
@@ -38,6 +40,8 @@ private:
 	int numAsteroids;
 	int score;
 	int casualtyScore;
+
+    Crosshair crosshair;
 
     Material* mat_blue;
     Material* mat_red;
