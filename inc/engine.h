@@ -38,6 +38,8 @@ private:
     Font* font;
     GLFWcursor* blankCursor;
 
+    glm::mat4 GUI_VIEW;
+
     //option vars
     bool showGui = true;
     bool debug = false;

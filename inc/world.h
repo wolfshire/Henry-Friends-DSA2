@@ -4,6 +4,7 @@
 #include "transform.h"
 #include "texture.h"
 #include "material.h"
+#include "crosshair.h"
 #include "octtree.h"
 using namespace std;
 
@@ -19,6 +20,7 @@ public:
 	void init();
 	void update();
 	void render();
+    void renderGui();
 
 	void spawnAsteroid(vec3);
 	void punchFist(Transform*);
@@ -32,6 +34,8 @@ private:
     vector<vec3> spawns;
 	int fistIndex;
 	int numAsteroids;
+
+    Crosshair crosshair;
 
     Material* mat_blue;
     Material* mat_red;

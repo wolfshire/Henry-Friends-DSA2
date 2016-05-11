@@ -53,6 +53,7 @@ void Camera::update()
     transform->rot = glm::quat(e);
 
     proj = glm::perspective(75.0, (double)w / h, 0.01, 500.0);
+    ortho = glm::ortho(0, 1280, 0, 720);
 
     //pos, eye, up
     view = lookAt(transform->pos, transform->pos + glm::vec3(glm::vec4(0, 0, 1, 1.0f) * transform->rot), glm::vec3(0, 1.0f, 0));
@@ -61,3 +62,5 @@ void Camera::update()
 glm::mat4 Camera::getProjectionMatrix() { return proj; }
 
 glm::mat4 Camera::getViewMatrix() { return view; }
+
+glm::mat4 Camera::getOrthographicMatrix() { return ortho; }

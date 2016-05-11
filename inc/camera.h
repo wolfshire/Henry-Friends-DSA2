@@ -11,6 +11,7 @@ public:
 	void update() override;
     glm::mat4 getProjectionMatrix();
     glm::mat4 getViewMatrix();
+    glm::mat4 getOrthographicMatrix();
     void setAspect(glm::vec2);
 	static Camera* getMain();
 	static void setMain(Camera*);
@@ -22,6 +23,7 @@ private:
     int w;
     int h;
     glm::mat4 proj;
+    glm::mat4 ortho;
     glm::mat4 view;
 	glm::mat4 rotation;
 	

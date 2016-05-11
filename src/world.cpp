@@ -46,6 +46,8 @@ void World::init()
     //random seed
     srand((unsigned int)time(NULL));
 
+    crosshair = Crosshair(1280 / 2, 720 / 2);
+
     //objects
     GameObject* cam = new GameObject();
     cam->transform->pos.z = -75;
@@ -222,6 +224,11 @@ void World::render()
 {
     for (unsigned int i = 0; i < objects.size(); i++)
         (*objects[i]).render();
+}
+
+void World::renderGui()
+{
+    crosshair.render();
 }
 
 void World::spawnAsteroid(vec3 pos)

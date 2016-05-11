@@ -110,6 +110,8 @@ void Engine::init()
     Input::setCursorLocked(true);
     blankCursor = Input::createBlankCursor();
 
+    GUI_VIEW = glm::translate(glm::mat4(), glm::vec3(*width / 2, *height / 2, 0.0f));
+
     font = FontManager::getDefaultFont();
 
     defaultShader = ShaderManager::getDefaultShader();
@@ -126,6 +128,10 @@ void Engine::update()
     if (Input::getKeyUp(GLFW_KEY_F3))
     {
         debug = !debug;
+    }
+    if (Input::getKeyUp(GLFW_KEY_F4))
+    {
+        renderDebug = !renderDebug;
     }
     if (Input::getKeyUp(GLFW_KEY_ESCAPE))
     {
@@ -152,6 +158,20 @@ void Engine::render()
 
 void Engine::renderGui()
 {
+    Shader* gui = ShaderManager::getShader("gui");
+    gui->bind();
+
+    glUniformMatrix4fv(gui->getUniformLocation("proj"), 1, GL_FALSE,
+        glm::value_ptr(Camera::getMain()->getOrthographicMatrix()));
+
+    glUniformMatrix4fv(gui->getUniformLocation("view"), 1, GL_FALSE,
+        glm::value_ptr(glm::mat4()));
+
+    font->setSize(18);
+    font->renderText("+", 0, 0, Color(0.0f, 1.0f, 0.0f));
+
+    //world.renderGui();
+
     if (debug)
     {
         int y = 0;
