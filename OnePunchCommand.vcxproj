@@ -131,6 +131,7 @@
     <ClCompile Include="src\boundingbox.cpp" />
     <ClCompile Include="src\boxcollider.cpp" />
     <ClCompile Include="src\collider.cpp" />
+    <ClCompile Include="src\crosshair.cpp" />
     <ClCompile Include="src\fist.cpp" />
     <ClCompile Include="src\asteroid.cpp" />
     <ClCompile Include="src\camera.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="inc\boundingbox.h" />
     <ClInclude Include="inc\boxcollider.h" />
     <ClInclude Include="inc\collider.h" />
+    <ClInclude Include="inc\crosshair.h" />
     <ClInclude Include="inc\fist.h" />
     <ClInclude Include="inc\asteroid.h" />
     <ClInclude Include="inc\camera.h" />

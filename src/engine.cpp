@@ -138,8 +138,10 @@ void Engine::update()
     {
         Input::setCursorLocked(!Input::getCursorLocked());
     }
-
-    world.update();
+	if (world.GameState() == "PLAY") {
+		world.update();
+	}
+    
 }
 
 void Engine::render()
@@ -195,6 +197,21 @@ void Engine::renderGui()
 	font->setSize(50);
 	font->renderText("Hero Aptitude: " + std::to_string(world.Score()), -1 + 4 * Font::SX, 1 - (y += 50) * Font::SY, Color(1.0f, 0.0f, 0.0f));
 	font->renderText("Casualties: " + std::to_string(world.CasualtyScore()), -1 + 4 * Font::SX, 1 - (y += 50) * Font::SY, Color(1.0f, 0.0f, 0.0f));
+
+	if (world.GameState() == "START") {
+			font->setSize(60);
+			font->renderText("ONE PUNCH COMMAND", -1 + 360 * Font::SX, 1 - (y += 360) * Font::SY, Color(1.0f, 0.0f, 0.0f));
+			font->setSize(35);
+			font->renderText("Team Henry and Friends", -1 + 360 * Font::SX, 1 - (y += 50) * Font::SY, Color(1.0f, 0.0f, 0.0f));
+			font->setSize(50);
+			font->renderText("CLICK TO BEGIN THE GAME", -1 + 360 * Font::SX, 1 - (y += 50) * Font::SY, Color(1.0f, 0.0f, 0.0f));
+
+			if (Input::getMouseUp(0))
+			{
+				world.changeGS("PLAY");
+			}	
+	}
+
 }
 
 glm::vec2 Engine::getWindowSize()

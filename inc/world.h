@@ -32,6 +32,9 @@ public:
 	void buildPlatform(Texture*, Material*, vec3, vec3);
 	int Score();
 	int CasualtyScore();
+	string GameState();
+	void changeGS(string);
+	string WinState();
 
 private:
 	vector<GameObject*> objects;
@@ -40,6 +43,8 @@ private:
 	int numAsteroids;
 	int score;
 	int casualtyScore;
+	string gameState;
+	string winState;
 
     Crosshair crosshair;
 

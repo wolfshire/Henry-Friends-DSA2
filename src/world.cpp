@@ -44,12 +44,16 @@ GameObject* World::removeObjectAt(unsigned int index)
 
 void World::init()
 {
+	
 	score = 0;
 
     //random seed
     srand((unsigned int)time(NULL));
 
     crosshair = Crosshair(1280 / 2, 720 / 2);
+
+	//SET GAMESTATE
+	gameState = "START";
 
     //objects
     GameObject* cam = new GameObject();
@@ -118,6 +122,7 @@ void World::init()
     MeshRenderer* skyRenderer = new MeshRenderer(XYZ_UV, skyboxModel, mat_sky);
     skybox->addComponent(skyRenderer);
     addObject(skybox);
+
 }
 
 void World::update()
@@ -382,4 +387,18 @@ int World::Score()
 int World::CasualtyScore()
 {
 	return casualtyScore;
+}
+
+string World::GameState()
+{
+	return gameState;
+}
+
+string World::WinState()
+{
+	return winState;
+}
+void World::changeGS(string newState)
+{
+	gameState = newState;
 }
