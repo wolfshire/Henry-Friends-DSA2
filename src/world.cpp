@@ -184,6 +184,8 @@ void World::render()
 {
     for (unsigned int i = 0; i < objects.size(); i++)
         (*objects[i]).render();
+
+    tree->render();
 }
 
 void World::renderGui()

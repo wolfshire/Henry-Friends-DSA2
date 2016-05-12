@@ -252,14 +252,50 @@ void OctTree::bufferData()
 {
     glBindVertexArray(vao);
 
+    float data[] = {
+        region.min.x, region.min.y, region.min.z,
+        region.max.x, region.min.y, region.min.z,
+        region.max.x, region.min.y, region.max.z,
+        region.min.x, region.min.y, region.max.z,
+
+        region.min.x, region.max.y, region.min.z,
+        region.max.x, region.max.y, region.min.z,
+        region.max.x, region.max.y, region.max.z,
+        region.min.x, region.max.y, region.max.z
+    };
+
+    int indices[] = {
+        //bottom
+        0, 1,
+        1, 2,
+        2, 3,
+        3, 0,
+
+        //middle
+        0, 4,
+        1, 5,
+        2, 6,
+        3, 7,
+
+        //top
+        4, 5,
+        5, 6,
+        6, 7,
+        7, 4
+    };
+
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    //glBufferData(GL_ARRAY_BUFFER, , , GL_STREAM_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(data), data, GL_STREAM_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, ibo);
-    //glBufferData(GL_ARRAY_BUFFER, , , GL_STREAM_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(indices), indices, GL_STREAM_DRAW);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
 }
 
 void OctTree::render()
 {
-
+    glBindVertexArray(vao);
+    glDrawElements(GL_LINES, 24, GL_UNSIGNED_INT, 0);
 }
