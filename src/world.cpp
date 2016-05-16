@@ -40,10 +40,15 @@ GameObject* World::removeObjectAt(unsigned int index)
     objects.erase(objects.begin() + index);
 
     return removedObject;
+
+	//increase casualty score
+	casualtyScore++;
 }
 
 void World::init()
 {
+	//initialize scores
+	casualtyScore = 0;
 	score = 0;
 
     //random seed
@@ -124,8 +129,9 @@ void World::init()
 
 void World::update()
 {
-	casualtyScore = 0;
-	score++;
+	//increase hero aptitude(score)
+	score ++;
+
     spawnTimer += GameTime::dt;
     //set spawn vector
     spawns.clear();
@@ -176,8 +182,13 @@ void World::update()
 		//get all of the box colliders
 		BoxCollider* b = (BoxCollider*)objects[i]->getComponent(EGameComponentType::BOX_COLLIDER);
 		//if they're colliding, remove the objects
-		if (b != nullptr) if (b->colliding) removeObjectAt(i);
+		if (b != nullptr) if (b->colliding) removeObjectAt(i); 
     }
+
+	if (casualtyScore >= 3000)
+	{
+		//end Game
+	}
 }
 
 void World::render()
