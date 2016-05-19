@@ -222,6 +222,9 @@ void MeshRenderer::render()
 {
     if (!loaded) return;
 
+    if (wireframe)
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
     material->readyGL();
     glBindVertexArray(vao);
 
@@ -229,6 +232,9 @@ void MeshRenderer::render()
         value_ptr(transform->getTransformation()));
 
     glDrawElements(drawMode, mesh->getNumIndices(), GL_UNSIGNED_INT, NULL);
+
+    if (wireframe)
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
 void MeshRenderer::setMaterial(Material* newMat)
@@ -239,4 +245,9 @@ void MeshRenderer::setMaterial(Material* newMat)
 void MeshRenderer::clearMaterial()
 {
     material = defMat;
+}
+
+void MeshRenderer::setWireframe(bool wire)
+{
+    wireframe = wire;
 }

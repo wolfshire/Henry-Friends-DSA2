@@ -29,6 +29,7 @@ public:
 	void render() override;
     void setMaterial(Material*);
     void clearMaterial();
+    void setWireframe(bool);
 private:
     void loadData();
     void setStride();
@@ -49,6 +50,7 @@ private:
     bool loaded = false;
     int bufferUsageHint;
     int drawMode;
+    bool wireframe = false;
 
 	Mesh* mesh;
 	Material* material;

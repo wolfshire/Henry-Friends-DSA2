@@ -9,6 +9,7 @@ public:
     ~BoundingBox();
 
     bool contains(BoundingBox&);
+    glm::vec3 getSize();
 
     glm::vec3 min;
     glm::vec3 max;

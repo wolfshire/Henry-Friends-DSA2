@@ -28,3 +28,8 @@ bool BoundingBox::contains(BoundingBox& other)
         max.y > other.max.y &&
         max.z > other.max.z;
 }
+
+glm::vec3 BoundingBox::getSize()
+{
+    return max - min;
+}

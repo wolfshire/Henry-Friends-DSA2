@@ -1,7 +1,11 @@
 #include "octtree.h"
 #include "boxcollider.h"
 #include "meshrenderer.h"
+#include "shadermanager.h"
+#include "camera.h"
+#include "transform.h"
 #include <glm\glm.hpp>
+#include <glm\gtc\type_ptr.hpp>
 using namespace glm;
 
 OctTree::OctTree()
@@ -9,10 +13,9 @@ OctTree::OctTree()
 	region = BoundingBox();
 	pending = std::vector<GameObject*>();
 	objects = std::vector<GameObject*>();
-	children = new OctTree*[8];
-	curLife = -1;
+	children = new OctTree[8];
 
-    createBuffers();
+    boxes = std::vector<GameObject*>();
 }
 
 
@@ -21,10 +24,9 @@ OctTree::OctTree(BoundingBox& reg)
 	region = reg;
 	pending = std::vector<GameObject*>();
 	objects = std::vector<GameObject*>();
-	children = new OctTree*[8];
-	curLife = -1;
+	children = new OctTree[8];
 
-    createBuffers();
+    boxes = std::vector<GameObject*>();
 }
 
 OctTree::OctTree(BoundingBox& reg, std::vector<GameObject*>& pend)
@@ -32,10 +34,19 @@ OctTree::OctTree(BoundingBox& reg, std::vector<GameObject*>& pend)
 	region = reg;
 	pending = pend;
 	objects = std::vector<GameObject*>();
-	children = new OctTree*[8];
-	curLife = -1;
+	children = new OctTree[8];
 
-    createBuffers();
+    boxes = std::vector<GameObject*>();
+}
+
+OctTree& OctTree::operator=(OctTree& other)
+{
+    region = other.region;
+    pending = other.pending;
+    objects = other.objects;
+    children = other.children;
+
+    return *this;
 }
 
 OctTree::~OctTree()
@@ -51,21 +62,14 @@ OctTree::~OctTree()
 		delete[] children;
 		children = nullptr;
 	}
-
-    glDeleteVertexArrays(1, &vao);
-    glDeleteBuffers(1, &vbo);
-    glDeleteBuffers(1, &ibo);
 }
 
 void OctTree::clearTree()
 {
-	pending.clear();
+    pending.clear();
 	objects.clear();
 
 	delete[] children;
-
-	children = new OctTree*[8];
-	curLife = -1;
 
 	treeBuilt = false;
 	treeReady = false;
@@ -163,7 +167,7 @@ void OctTree::buildTree()
 		{
 			children[i] = createNode(octant[i], octList[i]);
 			active[i] = 1;
-			children[i]->buildTree();
+			children[i].buildTree();
 		}
 	}
 
@@ -173,19 +177,21 @@ void OctTree::buildTree()
 	treeReady = true;
 }
 
-OctTree* OctTree::createNode(BoundingBox region, std::vector<GameObject*> objList)
+OctTree& OctTree::createNode(BoundingBox& region, std::vector<GameObject*> objList)
 {
-	if (objList.size() == 0)
-		return nullptr;
+	//if (objList.size() == 0)
+		//return NULL;
 
-	OctTree* ret = new OctTree(region, objList);
-	ret->parent = this;
+	OctTree ret = OctTree(region, objList);
+	ret.parent = this;
 
 	return ret;
 }
 
 void OctTree::checkTree()
 {
+    cout << children[0].active << endl;
+
 	//check if this is a leaf
 	if (active != 00000000) //not a leaf
 	{
@@ -196,13 +202,12 @@ void OctTree::checkTree()
 			//check if the leftmost value is 1
 			if (newSet[0] == 1) {
 				//if so run the check on that tree
-				children[i]->checkTree();
+				children[i].checkTree();
 			}
 		}
 	}
-	/*else //is a leaf - do collision check
+	else //is a leaf - do collision check
 	{
-		cout << "Collision check" << endl;
 		for (unsigned int i = 0; i < objects.size(); i++)
 		{
 			BoxCollider* c = (BoxCollider*)(*objects[i]).getComponent(EGameComponentType::BOX_COLLIDER);
@@ -228,9 +233,7 @@ void OctTree::checkTree()
 				{
 					c->colliding = true;
 					bc->colliding = true;
-					i--;
-					k--;
-					k--;
+                    cout << "colliding" << endl;
 				}
 				else
 				{
@@ -238,64 +241,36 @@ void OctTree::checkTree()
 				}
 			}
 		}
-	}*/
-}
-
-void OctTree::createBuffers()
-{
-    glGenVertexArrays(1, &vao);
-    glGenBuffers(1, &vbo);
-    glGenBuffers(1, &ibo);
+	}
 }
 
 void OctTree::bufferData()
 {
-    glBindVertexArray(vao);
-
-    float data[] = {
-        region.min.x, region.min.y, region.min.z,
-        region.max.x, region.min.y, region.min.z,
-        region.max.x, region.min.y, region.max.z,
-        region.min.x, region.min.y, region.max.z,
-
-        region.min.x, region.max.y, region.min.z,
-        region.max.x, region.max.y, region.min.z,
-        region.max.x, region.max.y, region.max.z,
-        region.min.x, region.max.y, region.max.z
-    };
-
-    int indices[] = {
-        //bottom
-        0, 1,
-        1, 2,
-        2, 3,
-        3, 0,
-
-        //middle
-        0, 4,
-        1, 5,
-        2, 6,
-        3, 7,
-
-        //top
-        4, 5,
-        5, 6,
-        6, 7,
-        7, 4
-    };
-
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(data), data, GL_STREAM_DRAW);
-
-    glBindBuffer(GL_ARRAY_BUFFER, ibo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(indices), indices, GL_STREAM_DRAW);
-
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
+    //std::cout << "bufferdata" << std::endl;
+    /*
+    GameObject* box = new GameObject();
+    box->transform->scale = region.getSize();
+    Model* boxModel = new Model("cube");
+    Material* matBox = new Material(EMaterialType::DEFAULT, ShaderManager::getDefaultShader());
+    MeshRenderer* mr = new MeshRenderer(EVertexFormat::XYZ_UV, boxModel, matBox);
+    mr->setWireframe(true);
+    boxes.push_back(box);*/
 }
 
 void OctTree::render()
 {
-    glBindVertexArray(vao);
-    glDrawElements(GL_LINES, 24, GL_UNSIGNED_INT, 0);
+    //std::cout << "num boxes: " << boxes.size() << std::endl;
+    /*
+    for (unsigned int i = 0; i < boxes.size(); i++)
+    {
+        boxes[i]->render();
+    }
+
+    //remove old boxes
+    if (parent == nullptr)
+    {
+        for (auto obj : boxes)
+            delete obj;
+        boxes.clear();
+    }*/
 }

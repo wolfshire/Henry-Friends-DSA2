@@ -13,6 +13,7 @@
 #include "transform.h"
 #include "fist.h"
 #include <iostream>
+#include "engine.h"
 #include "input.h"
 #include "move.h"
 #include "gametime.h"
@@ -67,7 +68,6 @@ void World::init()
     cam->addComponent(camera);
     cam->addComponent(flymove);
     addObject(cam);
-	
 
     numAsteroids = 5;
 
@@ -97,15 +97,15 @@ void World::init()
     //collision test objs
     /*
     GameObject* one = new GameObject();
-    one->transform->pos = vec3(-2, -30, 0);
+    one->transform->pos = vec3(2, 0, 0);
     MeshRenderer* oneR = new MeshRenderer(XYZ_UV, mod_cube, mat_green);
+    oneR->setWireframe(true);
     one->addComponent(oneR);
-    BoxCollider* oneBC = new BoxCollider(mod_cube->getMesh());
-    one->addComponent(oneBC);
+    //BoxCollider* oneBC = new BoxCollider(mod_cube->getMesh());
+    //one->addComponent(oneBC);
     Move* oneM = new Move(GLFW_KEY_1, GLFW_KEY_2, GLFW_KEY_3, GLFW_KEY_4, GLFW_KEY_5, GLFW_KEY_6);
     one->addComponent(oneM);
     addObject(one);
-
     GameObject* two = new GameObject();
     two->transform->pos = vec3(2, -30, 0);
     MeshRenderer* twoR = new MeshRenderer(XYZ_UV, mod_cube, mat_green);
@@ -171,18 +171,66 @@ void World::update()
         }
     }
 
-    buildOctTree();
-
-	//check tree collisions
-	tree->checkTree();
-
-    //checking the booleans
-    for (unsigned int i = 0; i < objects.size(); i++)
+    if (!Engine::instance->shouldOptimize())
     {
-		//get all of the box colliders
-		BoxCollider* b = (BoxCollider*)objects[i]->getComponent(EGameComponentType::BOX_COLLIDER);
-		//if they're colliding, remove the objects
-		if (b != nullptr) if (b->colliding) removeObjectAt(i); 
+        for (unsigned int i = 0; i < objects.size(); i++)
+        {
+            BoxCollider* c = (BoxCollider*)(*objects[i]).getComponent(EGameComponentType::BOX_COLLIDER);
+
+            if (c == nullptr) continue;
+
+            c->colliding = false;
+        }
+
+        for (unsigned int i = 0; i < objects.size(); i++)
+        {
+            BoxCollider* c = (BoxCollider*)(*objects[i]).getComponent(EGameComponentType::BOX_COLLIDER);
+
+            if (c == nullptr) continue;
+
+            for (unsigned int k = i + 1; k < objects.size(); k++)
+            {
+                BoxCollider* bc = (BoxCollider*)(*objects[k]).getComponent(EGameComponentType::BOX_COLLIDER);
+
+                if (bc == nullptr) continue;
+
+                if (c->isColliding(bc) && c->gameObject->tag != bc->gameObject->tag)
+                {
+                    c->colliding = true;
+                    bc->colliding = true;
+                    removeObjectAt(i);
+                    i--;
+                    k--;
+                    removeObjectAt(k);
+                    k--;
+                }
+                else
+                {
+                    bc->colliding = false;
+                }
+            }
+        }
+    }
+    else
+    {
+        buildOctTree();
+
+        //check tree collisions
+        tree->checkTree();
+
+        //checking the booleans
+        for (unsigned int i = 0; i < objects.size(); i++)
+        {
+            //get all of the box colliders
+            BoxCollider* b = (BoxCollider*)objects[i]->getComponent(EGameComponentType::BOX_COLLIDER);
+            //if they're colliding, remove the objects
+            if (b != nullptr)
+                if (b->colliding)
+                {
+                    removeObjectAt(i);
+                    i--;
+                }
+        }
     }
 
 	if (casualtyScore >= 3000)
@@ -196,7 +244,8 @@ void World::render()
     for (unsigned int i = 0; i < objects.size(); i++)
         (*objects[i]).render();
 
-    tree->render();
+    if (Engine::instance->shouldRenderDebug())
+        tree->render();
 }
 
 void World::renderGui()
@@ -224,6 +273,7 @@ void World::spawnAsteroid(vec3 pos)
 
 void World::buildOctTree()
 {
+    cout << "building tree" << endl;
     tree->clearTree();
 
     for (auto obj : objects)
@@ -236,6 +286,7 @@ void World::buildOctTree()
 
     tree->updateTree();
     tree->buildTree();
+    cout << "built tree" << endl;
 }
 
 void World::punchFist(Transform* t)

@@ -55,8 +55,10 @@ void Camera::update()
     proj = glm::perspective(75.0, (double)w / h, 0.01, 500.0);
     ortho = glm::ortho(0, 1280, 0, 720);
 
+    target = transform->pos + glm::vec3(glm::vec4(0, 0, 1, 1.0f) * transform->rot);
+
     //pos, eye, up
-    view = lookAt(transform->pos, transform->pos + glm::vec3(glm::vec4(0, 0, 1, 1.0f) * transform->rot), glm::vec3(0, 1.0f, 0));
+    view = lookAt(transform->pos, target, glm::vec3(0, 1.0f, 0));
 }
 
 glm::mat4 Camera::getProjectionMatrix() { return proj; }
@@ -64,3 +66,5 @@ glm::mat4 Camera::getProjectionMatrix() { return proj; }
 glm::mat4 Camera::getViewMatrix() { return view; }
 
 glm::mat4 Camera::getOrthographicMatrix() { return ortho; }
+
+glm::vec3 Camera::getTarget() { return target; }

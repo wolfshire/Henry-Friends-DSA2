@@ -100,6 +100,8 @@ void Engine::init()
     glfwSetWindowSizeCallback(window, onResize);
 
     Input::init(window);
+    Input::setCursorLocked(true);
+
     TextureManager::init();
     FreeImage_SetOutputMessage(freeImageErrorHandler);
     FontManager::init();
@@ -107,9 +109,6 @@ void Engine::init()
     ShaderManager::init();
 
 	world.init();
-
-    Input::setCursorLocked(true);
-    blankCursor = Input::createBlankCursor();
 
     GUI_VIEW = glm::translate(glm::mat4(), glm::vec3(*width / 2, *height / 2, 0.0f));
 
@@ -120,6 +119,10 @@ void Engine::init()
     uniView = defaultShader->getUniformLocation("view");
     uniModel = defaultShader->getUniformLocation("model");
 }
+
+bool Engine::shouldRenderDebug() { return renderDebug; }
+
+bool Engine::shouldOptimize() { return optimize; }
 
 void Engine::update()
 {
@@ -133,6 +136,10 @@ void Engine::update()
     if (Input::getKeyUp(GLFW_KEY_F4))
     {
         renderDebug = !renderDebug;
+    }
+    if (Input::getKeyUp(GLFW_KEY_F5))
+    {
+        optimize = !optimize;
     }
     if (Input::getKeyUp(GLFW_KEY_ESCAPE))
     {
@@ -174,11 +181,38 @@ void Engine::renderGui()
     //world.renderGui();
 
 	int y = 0;
+
+    font->setSize(50);
+    font->renderText("Hero Aptitude: " + std::to_string(world.Score()), -1 + 4 * Font::SX, 1 - (y += 50) * Font::SY, Color(1.0f, 0.0f, 0.0f));
+    font->renderText("Casualties: " + std::to_string(world.CasualtyScore()), -1 + 4 * Font::SX, 1 - (y += 50) * Font::SY, Color(1.0f, 0.0f, 0.0f));
 	
     if (debug)
     {
         font->setSize(18);
         ostringstream stream;
+
+        stream.str(""); stream.clear();
+        if (debug)
+            stream << "true";
+        else
+            stream << "false";
+        font->renderText("Debug: " + stream.str(), -1 + 4 * Font::SX, 1 - (y += 18) * Font::SY, Color(0.0f, 1.0f, 0.0f));
+
+        stream.str(""); stream.clear();
+        if (renderDebug)
+            stream << "true";
+        else
+            stream << "false";
+        font->renderText("Render Debug: " + stream.str(), -1 + 4 * Font::SX, 1 - (y += 18) * Font::SY, Color(0.0f, 1.0f, 0.0f));
+
+        stream.str(""); stream.clear();
+        if (optimize)
+            stream << "true";
+        else
+            stream << "false";
+        font->renderText("Using OctTree: " + stream.str(), -1 + 4 * Font::SX, 1 - (y += 18) * Font::SY, Color(0.0f, 1.0f, 0.0f));
+
+        stream.str(""); stream.clear();
         stream << lastFrames;
         font->renderText("FPS: " + stream.str(), -1 + 4 * Font::SX, 1 - (y += 18) * Font::SY, Color(0.0f, 1.0f, 0.0f));
         stream.str(""); stream.clear();
@@ -190,11 +224,12 @@ void Engine::renderGui()
         stream.str(""); stream.clear();
         stream << "(" << pos.x << ", " << pos.y << ", " << pos.z << ")";
         font->renderText("Camera Pos: " + stream.str(), -1 + 4 * Font::SX, 1 - (y += 18) * Font::SY, Color(0.0f, 1.0f, 0.0f));
-    }
 
-	font->setSize(50);
-	font->renderText("Hero Aptitude: " + std::to_string(world.Score()), -1 + 4 * Font::SX, 1 - (y += 50) * Font::SY, Color(1.0f, 0.0f, 0.0f));
-	font->renderText("Casualties: " + std::to_string(world.CasualtyScore()), -1 + 4 * Font::SX, 1 - (y += 50) * Font::SY, Color(1.0f, 0.0f, 0.0f));
+        vec3 target = Camera::getMain()->getTarget();
+        stream.str(""); stream.clear();
+        stream << "(" << target.x << ", " << target.y << ", " << target.z << ")";
+        font->renderText("Camera Target: " + stream.str(), -1 + 4 * Font::SX, 1 - (y += 18) * Font::SY, Color(0.0f, 1.0f, 0.0f));
+    }
 }
 
 glm::vec2 Engine::getWindowSize()

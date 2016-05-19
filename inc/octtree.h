@@ -18,32 +18,30 @@ public:
     void clearTree();
     void buildTree();
     void updateTree();
-    OctTree* createNode(BoundingBox, std::vector<GameObject*>);
+    OctTree& createNode(BoundingBox&, std::vector<GameObject*>);
 
     void render();
 
 	void checkTree();
 
     OctTree* parent = nullptr;
+
+    OctTree& operator=(OctTree&);
 private:
-    void createBuffers();
     void bufferData();
 
     BoundingBox region;
     std::vector<GameObject*> pending;
     std::vector<GameObject*> objects;
-    OctTree** children = nullptr;
+    OctTree* children = nullptr;
 
 	bitset<8> active = 00000000;
     const int MIN_SIZE = 1;
 
     const int MAX_LIFE = 8;
-    int curLife = -1;
 
     bool treeBuilt = false;
     bool treeReady = false;
 
-    GLuint vao;
-    GLuint vbo;
-    GLuint ibo;
+    std::vector<GameObject*> boxes;
 };

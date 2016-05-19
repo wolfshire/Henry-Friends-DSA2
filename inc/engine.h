@@ -16,6 +16,8 @@ public:
     glm::vec2 getWindowSize();
 
     static Engine* instance;
+    bool shouldRenderDebug();
+    bool shouldOptimize();
 private:
     void init();
     void update();
@@ -36,7 +38,6 @@ private:
     GLuint uniModel;
     World world;
     Font* font;
-    GLFWcursor* blankCursor;
 
     glm::mat4 GUI_VIEW;
 
@@ -44,6 +45,7 @@ private:
     bool showGui = true;
     bool debug = false;
     bool renderDebug = false;
+    bool optimize = false;
 
     //info vars
     double lastFrames = 0;

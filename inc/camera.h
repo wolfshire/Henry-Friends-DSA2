@@ -15,6 +15,8 @@ public:
     void setAspect(glm::vec2);
 	static Camera* getMain();
 	static void setMain(Camera*);
+
+    glm::vec3 getTarget();
 private:
 	static Camera* main;
 
@@ -26,6 +28,8 @@ private:
     glm::mat4 ortho;
     glm::mat4 view;
 	glm::mat4 rotation;
+
+    glm::vec3 target;
 	
 	glm::vec2 mousePos;
 	glm::vec2 midPoint;
