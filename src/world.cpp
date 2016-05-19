@@ -213,10 +213,10 @@ void World::update()
     }
     else
     {
-        buildOctTree();
+        //buildOctTree();
 
         //check tree collisions
-        tree->checkTree();
+        //tree->checkTree();
 
         //checking the booleans
         for (unsigned int i = 0; i < objects.size(); i++)

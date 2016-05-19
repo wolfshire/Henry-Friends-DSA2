@@ -13,7 +13,7 @@ OctTree::OctTree()
 	region = BoundingBox();
 	pending = std::vector<GameObject*>();
 	objects = std::vector<GameObject*>();
-	children = new OctTree[8];
+	//children = new OctTree[8];
 
     boxes = std::vector<GameObject*>();
 }
@@ -24,7 +24,7 @@ OctTree::OctTree(BoundingBox& reg)
 	region = reg;
 	pending = std::vector<GameObject*>();
 	objects = std::vector<GameObject*>();
-	children = new OctTree[8];
+	//children = new OctTree[8];
 
     boxes = std::vector<GameObject*>();
 }
@@ -34,7 +34,7 @@ OctTree::OctTree(BoundingBox& reg, std::vector<GameObject*>& pend)
 	region = reg;
 	pending = pend;
 	objects = std::vector<GameObject*>();
-	children = new OctTree[8];
+	//children = new OctTree[8];
 
     boxes = std::vector<GameObject*>();
 }
@@ -69,7 +69,7 @@ void OctTree::clearTree()
     pending.clear();
 	objects.clear();
 
-	delete[] children;
+	//delete[] children;
 
 	treeBuilt = false;
 	treeReady = false;
